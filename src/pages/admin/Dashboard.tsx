@@ -176,45 +176,20 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="ad-two-col">
-        <div className="ad-card">
-          <h3 className="section-title">
-            Source attribution
-            {activeSource && (
-              <button className="ad-btn ad-btn-ghost ad-btn-sm" style={{ marginLeft: 12 }} onClick={() => setActiveSource(null)}>Clear filter</button>
-            )}
-          </h3>
-          <div className="donut-wrap">
-            <Donut slices={slices} activeKey={activeSource} onSelect={setActiveSource} />
-            <div className="donut-legend">
-              {slices.length === 0 ? (
-                <div style={{ color: '#888', fontSize: 13 }}>No traffic in this range yet.</div>
-              ) : slices.map((s) => (
-                <div key={s.key} className={'legend-row' + (activeSource === s.key ? ' active' : '')} onClick={() => setActiveSource(activeSource === s.key ? null : s.key)}>
-                  <span className="swatch" style={{ background: s.color }} />
-                  <span>{s.label}</span>
-                  <span className="leg-pct">{Math.round((s.value / sliceTotal) * 100)}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="ad-card">
-          <h3 className="section-title">Section engagement</h3>
-          <div className="sec-list">
-            {sectionRows.map((s) => (
-              <div key={s.key} className="sec-row">
-                <div className="sec-name">{s.label}</div>
-                <div className="sec-bar-wrap">
-                  <div className="sec-bar" style={{ width: `${s.pct}%`, background: heatColor(s.pct) }} />
-                </div>
-                <div className="sec-stat">{s.pct}%</div>
-                <div className="sec-stat-sub">{s.avg}s avg</div>
-                <div className="sec-stat-sub">{s.drop}% drop</div>
+      <div className="ad-card">
+        <h3 className="section-title" style={{ marginTop: 0 }}>Section engagement</h3>
+        <div className="sec-list">
+          {sectionRows.map((s) => (
+            <div key={s.key} className="sec-row">
+              <div className="sec-name">{s.label}</div>
+              <div className="sec-bar-wrap">
+                <div className="sec-bar" style={{ width: `${s.pct}%`, background: heatColor(s.pct) }} />
               </div>
-            ))}
-          </div>
+              <div className="sec-stat">{s.pct}%</div>
+              <div className="sec-stat-sub">{s.avg}s avg</div>
+              <div className="sec-stat-sub">{s.drop}% drop</div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -235,21 +210,6 @@ export default function Dashboard() {
             <Send size={16} style={{ color: '#FF0069' }} />
             <div style={{ fontWeight: 600, color: '#fff' }}>Manage distribution</div>
             <div style={{ fontSize: 12, color: '#888' }}>HubSpot, LinkedIn, email</div>
-          </Link>
-          <Link to="/admin/insights" className="ad-card" style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
-            <Sparkles size={16} style={{ color: '#FF0069' }} />
-            <div style={{ fontWeight: 600, color: '#fff' }}>AI insights</div>
-            <div style={{ fontSize: 12, color: '#888' }}>Auto-generated takeaways</div>
-          </Link>
-          <Link to="/admin/aeo" className="ad-card" style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
-            <Activity size={16} style={{ color: '#FF0069' }} />
-            <div style={{ fontWeight: 600, color: '#fff' }}>AEO health</div>
-            <div style={{ fontSize: 12, color: '#888' }}>Schema, Lighthouse, citations</div>
-          </Link>
-          <Link to="/admin/content" className="ad-card" style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
-            <Library size={16} style={{ color: '#FF0069' }} />
-            <div style={{ fontWeight: 600, color: '#fff' }}>Content library</div>
-            <div style={{ fontSize: 12, color: '#888' }}>Cards, assets, snippets</div>
           </Link>
         </div>
       </div>
