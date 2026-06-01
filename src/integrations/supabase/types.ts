@@ -131,6 +131,30 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_insights: {
         Row: {
           content: string
@@ -138,9 +162,12 @@ export type Database = {
           generated_at: string
           id: string
           insight_type: string
+          kind: string
+          metadata: Json
           resolved_at: string | null
           resolved_by: string | null
           status: string
+          title: string | null
         }
         Insert: {
           content: string
@@ -148,9 +175,12 @@ export type Database = {
           generated_at?: string
           id?: string
           insight_type: string
+          kind?: string
+          metadata?: Json
           resolved_at?: string | null
           resolved_by?: string | null
           status?: string
+          title?: string | null
         }
         Update: {
           content?: string
@@ -158,9 +188,12 @@ export type Database = {
           generated_at?: string
           id?: string
           insight_type?: string
+          kind?: string
+          metadata?: Json
           resolved_at?: string | null
           resolved_by?: string | null
           status?: string
+          title?: string | null
         }
         Relationships: [
           {
@@ -171,6 +204,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      app_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: []
       }
       authorized_emails: {
         Row: {

@@ -16,6 +16,8 @@ import Distribution from "@/pages/admin/Distribution";
 import AdminSettings from "@/pages/admin/Settings";
 import ContentLibrary from "@/pages/admin/ContentLibrary";
 import AeoHealth from "@/pages/admin/AeoHealth";
+import Insights from "@/pages/admin/Insights";
+import Chat from "@/pages/admin/Chat";
 import { Navigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
@@ -38,6 +40,8 @@ const App = () => (
               <Route path="distribution" element={<Distribution />} />
               <Route path="content" element={<ContentLibrary />} />
               <Route path="aeo" element={<AeoHealth />} />
+              <Route path="insights" element={<Insights />} />
+              <Route path="chat" element={<Chat />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 

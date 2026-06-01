@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AlertTriangle, Check, FileText, ExternalLink, Plug, History, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { useRealtime } from '@/hooks/admin/useRealtime';
@@ -27,28 +28,31 @@ function statusLabel(s: string) {
 
 export default function Distribution() {
   const { isAdmin, user } = useAdminAuth();
+  const navigate = useNavigate();
   const [editions, setEditions] = useState<Edition[]>([]);
   const [channels, setChannels] = useState<Channel[]>([]);
   const [deps, setDeps] = useState<Dep[]>([]);
   const [logOpen, setLogOpen] = useState<Dep | null>(null);
   const [logs, setLogs] = useState<DepLog[]>([]);
+  const [hubspotConnected, setHubspotConnected] = useState(false);
 
   async function load() {
-    const [{ data: ed }, { data: ch }, { data: dp }] = await Promise.all([
+    const [{ data: ed }, { data: ch }, { data: dp }, { data: hs }] = await Promise.all([
       supabase.from('editions').select('id, title, publish_date, status').neq('status', 'archived').order('publish_date', { ascending: false, nullsFirst: false }),
       supabase.from('channels').select('*').order('display_order'),
       supabase.from('deployments').select('*'),
+      supabase.from('app_settings').select('value').eq('key', 'hubspot').maybeSingle(),
     ]);
     setEditions((ed || []) as Edition[]);
     setChannels((ch || []) as Channel[]);
     setDeps((dp || []) as Dep[]);
+    setHubspotConnected(!!(hs?.value as any)?.connected);
   }
   useEffect(() => { load(); }, []);
   useRealtime('deployments', load);
   useRealtime('editions', load);
   useRealtime('channels', load);
-
-  const HUBSPOT_CONNECTED = false; // gated until HubSpot MCP is authorized
+  useRealtime('app_settings', load);
 
   async function openLog(d: Dep) {
     setLogOpen(d);
@@ -126,16 +130,24 @@ export default function Distribution() {
                     const d = cellFor(e.id, c.slug);
                     const s = d?.status || 'not_deployed';
                     const isHubspot = c.slug === 'hubspot';
-                    if (isHubspot && !HUBSPOT_CONNECTED) {
+                    if (isHubspot && !hubspotConnected) {
                       return (
                         <td key={c.id} className="dist-cell dist-cell-disabled">
                           <div className="dist-cell-status"><span className="ad-dot gray" /> <span style={{ color: '#888' }}>Not connected</span></div>
                           <div className="dist-cell-meta">Send time · Recipients · Opens · Clicks</div>
                           <div className="dist-cell-actions" style={{ marginTop: 8 }}>
-                            <button className="ad-btn ad-btn-ghost ad-btn-sm" title="HubSpot MCP not yet authorized" onClick={() => alert('Connect HubSpot via Connectors to auto-populate this column.')}>
+                            <button className="ad-btn ad-btn-ghost ad-btn-sm" title="Connect HubSpot in Settings" onClick={() => navigate('/admin/settings?tab=integrations')}>
                               <Plug size={12} /> Connect HubSpot
                             </button>
                           </div>
+                        </td>
+                      );
+                    }
+                    if (isHubspot && hubspotConnected && !d) {
+                      return (
+                        <td key={c.id} className="dist-cell">
+                          <div className="dist-cell-status"><span className="ad-dot green" /> <span style={{ color: '#fff' }}>Connected</span></div>
+                          <div className="dist-cell-meta">Awaiting first sync…</div>
                         </td>
                       );
                     }
