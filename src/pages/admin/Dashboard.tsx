@@ -123,7 +123,7 @@ export default function Dashboard() {
       <div className="ad-card">
         <h2 style={{ marginTop: 0 }}>No live edition yet</h2>
         <p style={{ color: '#888' }}>Publish an edition to see its analytics here.</p>
-        <Link to="/admin/editions" className="ad-btn ad-btn-sm" style={{ marginTop: 12 }}>Go to Editions</Link>
+        <Link to="/admin/distribution" className="ad-btn ad-btn-sm" style={{ marginTop: 12 }}>Go to Distribution</Link>
       </div>
     );
   }
@@ -150,7 +150,6 @@ export default function Dashboard() {
             <ExternalLink size={12} /> View public page
           </a>
         )}
-        <Link to={`/admin/editions/${edition.id}`} className="ad-btn ad-btn-ghost ad-btn-sm">Full edition</Link>
         <select className="ad-select" value={range} onChange={(e) => setRange(e.target.value as RangeKey)}>
           <option value="24h">Last 24h</option>
           <option value="7d">Last 7 days</option>

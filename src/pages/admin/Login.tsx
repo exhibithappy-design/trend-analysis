@@ -20,7 +20,7 @@ export default function AdminLogin() {
     document.title = 'Admin sign-in';
   }, []);
 
-  if (!loading && user) return <Navigate to="/admin/editions" replace />;
+  if (!loading && user) return <Navigate to="/admin" replace />;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -32,7 +32,7 @@ export default function AdminLogin() {
         ? await supabase.auth.signInWithPassword(creds)
         : await supabase.auth.signUp({
             ...creds,
-            options: { emailRedirectTo: `${window.location.origin}/admin/editions` },
+            options: { emailRedirectTo: `${window.location.origin}/admin` },
           });
     setBusy(false);
     if (error) {
