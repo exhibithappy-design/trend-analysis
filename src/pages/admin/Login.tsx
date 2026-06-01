@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
+import bgTexture from '@/assets/black-background.jpg.asset.json';
 
 export default function AdminLogin() {
   const { user, loading } = useAdminAuth();
@@ -44,11 +45,12 @@ export default function AdminLogin() {
   return (
     <div data-admin>
       <div className="ad-login">
-        <div className="ad-login-bg" aria-hidden="true">
-          <span className="ad-orb ad-orb-1" />
-          <span className="ad-orb ad-orb-2" />
-          <span className="ad-orb ad-orb-3" />
-          <span className="ad-grid" />
+        <div
+          className="ad-login-bg"
+          aria-hidden="true"
+          style={{ backgroundImage: `url(${bgTexture.url})` }}
+        >
+          <span className="ad-login-overlay" />
         </div>
         <div className="ad-login-stack">
           <img src={ehLogo.url} alt="ExhibitHappy" className="ad-login-logo" />
