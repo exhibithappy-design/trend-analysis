@@ -24,7 +24,7 @@
 .tldr ul li::before{content:'';position:absolute;left:0;top:14px;width:12px;height:2px;background:var(--pink)}
 
 /* Pain point cluster pills */
-.pp-intro{font-size:15px;color:var(--gray-body);line-height:1.75;margin:0 0 24px;max-width:880px}
+.pp-intro{font-size:15px;color:var(--gray-subtle);line-height:1.75;margin:0 0 28px;max-width:none;width:100%}
 .pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
 .pp{background:var(--dark-card);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:24px 26px}
 .pp .pp-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;background:var(--pink-soft);color:var(--pink);margin-bottom:16px;border:1px solid rgba(255,0,105,.18)}
@@ -109,3 +109,7 @@
   .trend-card .tc-title{font-size:20px}
   .tc-gallery{grid-template-columns:1fr}
 }
+/* Textured background for dark sections (matches admin login texture) */
+.section--b{position:relative;background-color:#000;background-image:url('/__l5e/assets-v1/54ddde45-55f0-40b9-ac3d-0d68a7856eb7/black-background.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;isolation:isolate}
+.section--b::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.62);pointer-events:none;z-index:0}
+.section--b > *{position:relative;z-index:1}
