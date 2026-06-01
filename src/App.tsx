@@ -10,6 +10,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { AdminAuthProvider } from "@/hooks/admin/useAdminAuth";
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminLogin from "@/pages/admin/Login";
+import Dashboard from "@/pages/admin/Dashboard";
 import EditionsIndex from "@/pages/admin/EditionsIndex";
 import EditionDetail from "@/pages/admin/EditionDetail";
 import Distribution from "@/pages/admin/Distribution";
@@ -34,7 +35,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<Navigate to="/admin/editions" replace />} />
+              <Route index element={<Dashboard />} />
+              <Route path="dashboard" element={<Navigate to="/admin" replace />} />
               <Route path="editions" element={<EditionsIndex />} />
               <Route path="editions/:id" element={<EditionDetail />} />
               <Route path="distribution" element={<Distribution />} />

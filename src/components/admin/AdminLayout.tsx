@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import { NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Send, Settings, LogOut, FileText, Library, Activity, Sparkles, MessageSquare } from 'lucide-react';
+import { Send, Settings, LogOut, FileText, Library, Activity, Sparkles, MessageSquare, LayoutDashboard } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
-function NavRow({ to, icon, label }: { to: string; icon: ReactNode; label: string }) {
+function NavRow({ to, icon, label, end }: { to: string; icon: ReactNode; label: string; end?: boolean }) {
   return (
-    <NavLink to={to} className={({ isActive }) => 'ad-nav-item' + (isActive ? ' active' : '')}>
+    <NavLink to={to} end={end} className={({ isActive }) => 'ad-nav-item' + (isActive ? ' active' : '')}>
       {icon}
       <span>{label}</span>
     </NavLink>
@@ -58,6 +58,7 @@ export default function AdminLayout() {
           <div className="ad-brand">
             <img src={ehLogo.url} alt="ExhibitHappy" className="ad-brand-logo" />
           </div>
+          <NavRow to="/admin" end icon={<LayoutDashboard size={15} />} label="Dashboard" />
           <NavRow to="/admin/editions" icon={<FileText size={15} />} label="Editions" />
           <NavRow to="/admin/distribution" icon={<Send size={15} />} label="Distribution" />
           <NavRow to="/admin/content" icon={<Library size={15} />} label="Content library" />
