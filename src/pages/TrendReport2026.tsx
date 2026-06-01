@@ -1,5 +1,7 @@
 import { useEffect, useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
+import { FileText, AlertTriangle, Download } from 'lucide-react';
+
 
 import './HIMSSReport.css';
 import './TrendReport2026.css';
