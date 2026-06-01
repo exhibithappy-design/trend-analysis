@@ -1,0 +1,83 @@
+/* TrendReport2026 — extends HIMSSReport.css design language */
+
+/* TL;DR block (AEO-friendly) */
+.tldr{background:var(--light-card);border-left:4px solid var(--pink);border-radius:12px;padding:32px 36px;margin-bottom:48px}
+.tldr h3{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--pink);margin-bottom:14px}
+.tldr p{font-size:15px;color:var(--dark-gray);line-height:1.75;margin-bottom:12px}
+.tldr ul{list-style:none;padding:0;margin-top:14px}
+.tldr ul li{font-size:14px;color:var(--gray-body);line-height:1.7;padding:6px 0 6px 22px;position:relative}
+.tldr ul li::before{content:'';position:absolute;left:0;top:14px;width:12px;height:2px;background:var(--pink)}
+
+/* Pain point cluster pills */
+.pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.pp{background:var(--dark-card);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:24px 26px}
+.pp .pp-label{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--pink);margin-bottom:10px}
+.pp .pp-title{font-size:17px;font-weight:700;color:var(--white);margin-bottom:10px}
+.pp .pp-desc{font-size:13px;color:var(--gray-subtle);line-height:1.65;margin-bottom:14px}
+.pp a.pp-link{display:inline-block;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--pink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s;padding:4px 0}
+.pp a.pp-link:hover{border-color:var(--pink)}
+.pp a.pp-link + a.pp-link{margin-left:14px}
+
+/* Trend card (Scan/Depth) */
+.trend-card{background:var(--white);border:1px solid var(--light-card);border-radius:14px;overflow:hidden;margin-bottom:28px;transition:box-shadow .25s,border-color .25s}
+.trend-card:hover{border-color:rgba(255,0,105,.25);box-shadow:0 8px 32px var(--pink-soft)}
+.trend-card .tc-media{position:relative;aspect-ratio:16/9;background:var(--light-card);overflow:hidden}
+.trend-card .tc-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.trend-card:hover .tc-media img{transform:scale(1.02)}
+.trend-card .tc-body{padding:32px 36px}
+.trend-card .tc-meta{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.trend-card .tc-num{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--pink);background:var(--pink-soft);border:1px solid rgba(255,0,105,.15);padding:4px 12px;border-radius:4px}
+.trend-card .tc-cat{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray-light)}
+.trend-card .tc-title{font-family:'Natom Pro',sans-serif;font-size:26px;font-weight:700;color:var(--dark-gray);line-height:1.2;margin-bottom:18px}
+.trend-card ul.tc-bullets{list-style:none;padding:0;margin-bottom:18px}
+.trend-card ul.tc-bullets li{font-size:14px;color:var(--gray-body);line-height:1.7;padding:8px 0 8px 22px;position:relative}
+.trend-card ul.tc-bullets li::before{content:'';position:absolute;left:0;top:17px;width:12px;height:2px;background:var(--pink)}
+
+.tc-depth{border-top:1px dashed var(--light-card);margin-top:8px;padding-top:22px;animation:depthIn .35s ease}
+@keyframes depthIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.tc-depth .tc-yoy{background:var(--light-card);border-radius:8px;padding:16px 20px;margin-bottom:18px}
+.tc-depth .tc-yoy .yoy-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--pink);margin-bottom:6px}
+.tc-depth .tc-yoy p{font-size:13px;color:var(--dark-gray);line-height:1.7}
+.tc-depth .tc-q{background:var(--pink-soft);border-left:4px solid var(--pink);border-radius:10px;padding:20px 24px}
+.tc-depth .tc-q .q-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+.tc-depth .tc-q p{font-size:14px;font-style:italic;color:var(--gray-body);line-height:1.7}
+
+.tc-toggle{display:inline-flex;align-items:center;gap:8px;background:var(--black);color:var(--white);border:none;border-radius:6px;padding:10px 18px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .2s;min-height:40px}
+.tc-toggle:hover{background:var(--pink)}
+.tc-toggle svg{width:14px;height:14px;transition:transform .25s}
+.tc-toggle.open svg{transform:rotate(180deg)}
+
+/* Soft-gate CTA */
+.gate{background:linear-gradient(135deg,var(--black) 0%,#1a1a1a 100%);border-radius:16px;padding:56px 56px;margin-top:24px;position:relative;overflow:hidden}
+.gate::before{content:'';position:absolute;top:-40%;right:-10%;width:380px;height:380px;background:radial-gradient(circle,var(--pink-glow) 0%,transparent 70%);pointer-events:none}
+.gate-inner{position:relative;display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.gate h3{font-family:'Natom Pro',sans-serif;font-size:32px;font-weight:700;color:var(--white);line-height:1.2;margin-bottom:14px}
+.gate p{font-size:14px;color:var(--gray-subtle);line-height:1.7;margin-bottom:18px}
+.gate ul{list-style:none;padding:0}
+.gate ul li{font-size:13px;color:var(--gray-subtle);padding:6px 0 6px 22px;position:relative}
+.gate ul li::before{content:'✓';position:absolute;left:0;color:var(--pink);font-weight:700}
+.gate-form{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px}
+.gate-form label{display:block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-light);margin-bottom:8px}
+.gate-form input{width:100%;background:var(--black);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:14px 16px;color:var(--white);font-size:14px;font-family:inherit;margin-bottom:14px;transition:border-color .2s}
+.gate-form input:focus{outline:none;border-color:var(--pink)}
+.gate-form button{width:100%;background:var(--pink);color:var(--white);border:none;border-radius:8px;padding:14px 16px;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .2s;min-height:48px}
+.gate-form button:hover{background:#d6005a}
+.gate-form .gate-fine{font-size:11px;color:var(--gray-light);margin-top:12px;line-height:1.5}
+.gate-success{color:var(--white);font-size:14px;text-align:center;padding:16px 0}
+.gate-success strong{color:var(--pink);display:block;font-size:18px;margin-bottom:6px}
+
+@media(max-width:1024px){
+  .pp-grid{grid-template-columns:1fr}
+  .gate{padding:40px 32px}
+  .gate-inner{grid-template-columns:1fr;gap:32px}
+  .gate h3{font-size:26px}
+  .trend-card .tc-body{padding:28px 28px}
+  .trend-card .tc-title{font-size:22px}
+}
+@media(max-width:768px){
+  .tldr{padding:24px 22px}
+  .gate{padding:32px 22px}
+  .gate h3{font-size:22px}
+  .trend-card .tc-body{padding:24px 22px}
+  .trend-card .tc-title{font-size:20px}
+}
