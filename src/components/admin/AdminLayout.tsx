@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Send, Settings, LogOut, FileText, Library, Activity } from 'lucide-react';
+import { Send, Settings, LogOut, FileText, Library, Activity, Sparkles, MessageSquare } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
@@ -62,6 +62,8 @@ export default function AdminLayout() {
           <NavRow to="/admin/distribution" icon={<Send size={15} />} label="Distribution" />
           <NavRow to="/admin/content" icon={<Library size={15} />} label="Content library" />
           <NavRow to="/admin/aeo" icon={<Activity size={15} />} label="AEO health" />
+          <NavRow to="/admin/insights" icon={<Sparkles size={15} />} label="AI insights" />
+          <NavRow to="/admin/chat" icon={<MessageSquare size={15} />} label="AI chat" />
           <NavRow to="/admin/settings" icon={<Settings size={15} />} label="Settings" />
 
           <div className="ad-sidebar-footer">
