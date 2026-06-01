@@ -110,6 +110,6 @@
   .tc-gallery{grid-template-columns:1fr}
 }
 /* Textured background for dark sections (matches admin login texture) */
-.section--b{position:relative;background-color:#000;background-image:url('/__l5e/assets-v1/54ddde45-55f0-40b9-ac3d-0d68a7856eb7/black-background.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;isolation:isolate}
-.section--b::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.62);pointer-events:none;z-index:0}
-.section--b > *{position:relative;z-index:1}
+.section--b,.ch{position:relative;background-color:#000;background-image:url('/__l5e/assets-v1/54ddde45-55f0-40b9-ac3d-0d68a7856eb7/black-background.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;isolation:isolate}
+.section--b::before,.ch::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.45);pointer-events:none;z-index:0}
+.section--b > *,.ch > *{position:relative;z-index:1}
