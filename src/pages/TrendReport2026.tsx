@@ -5,6 +5,7 @@ import { FileText, AlertTriangle, Download } from 'lucide-react';
 
 import './HIMSSReport.css';
 import './TrendReport2026.css';
+import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
 // NOTE: Images flagged "confirm license" pull from Unsplash via source.unsplash.com
 // using descriptive queries. These should be replaced with licensed assets before
