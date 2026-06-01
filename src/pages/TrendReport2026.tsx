@@ -511,10 +511,10 @@ const TrendReport2026 = () => {
         <div className="sidebar-nav">
           <div className="nav-group-label">Report</div>
           <a href="#tldr" className="nav-link" onClick={closeMobile}>
-            <span className="nav-num">00</span> TL;DR
+            <FileText size={13} className="nav-icon" /> TL;DR
           </a>
           <a href="#painpoints" className="nav-link" onClick={closeMobile}>
-            <span className="nav-num">01</span> Pain Points
+            <AlertTriangle size={13} className="nav-icon" /> Pain Points
           </a>
           <div className="nav-group-label">Functional</div>
           {functional.map((t) => (
@@ -530,7 +530,7 @@ const TrendReport2026 = () => {
           ))}
           <div className="nav-group-label">Next</div>
           <a href="#gate" className="nav-link" onClick={closeMobile}>
-            <span className="nav-num">--</span> Get Full Report
+            <Download size={13} className="nav-icon" /> Get Full Report
           </a>
         </div>
         <div className="sidebar-footer">
