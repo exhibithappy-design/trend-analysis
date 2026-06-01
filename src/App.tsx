@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import EfaxCompetitiveAnalysis from "./pages/EfaxCompetitiveAnalysis.tsx";
+import TrendReport2026 from "./pages/TrendReport2026.tsx";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/efax-competitors" element={<EfaxCompetitiveAnalysis />} />
+          <Route path="/trend-report-2026" element={<TrendReport2026 />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
