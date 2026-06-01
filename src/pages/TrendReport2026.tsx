@@ -43,6 +43,15 @@ const TRENDS: Trend[] = [
     image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'People at a business exhibition interacting with a booth',
     cluster: 'Design',
+    depth: [
+      'The era of the scripted product theater is closing. Passive stage presentations, with their fixed seating and pre-timed pitches, are giving way to attendee-led, hands-on experience zones where visitors steer the demo themselves. The shift moves the booth from broadcast to laboratory.',
+      "Freeman's 2025 Commerce Report quantifies what floor managers already feel: 71% of attendees now want self-directed product exploration rather than being talked at from a stage. The behavior is consistent across age, role, and industry — buyers expect agency, not a captive audience experience.",
+      'By 2026, leading exhibitors at HIMSS, InfoComm, and NAB have largely eliminated fixed presentation stages from premium footprints. The square footage previously dedicated to seating banks has been re-deployed into interactive stations, AI kiosks, and small-group consultation pods.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=900&auto=format&fit=crop&q=80', alt: 'Attendees engaging hands-on with a product demo station' },
+      { src: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?w=900&auto=format&fit=crop&q=80', alt: 'Modern interactive product experience zone' },
+    ],
   },
   {
     id: 't2',
@@ -60,6 +69,15 @@ const TRENDS: Trend[] = [
     imageAlt: 'Interactive gaming activation at a trade show',
     licenseNote: true,
     cluster: 'Design',
+    depth: [
+      'Gamification has graduated from novelty add-on to primary lead-capture infrastructure. Leaderboards, timed challenges, and spin-to-win mechanics now sit at the front of the booth where the badge scanner used to live, converting curiosity into structured engagement data automatically.',
+      'The CONEXPO 2026 AI photo booth made the case clearly: 400+ interactions in five hours, zero manual badge scanning, and a queue that became its own traffic driver. Play, not pitch, was the entry point — and qualification happened in the background as attendees opted in.',
+      'Booths with a real play mechanic now report three to five times the dwell time of static exhibitors in the same square footage. Longer dwell maps directly to deeper conversations, higher recall, and richer downstream sales sequences after the show ends.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=900&auto=format&fit=crop&q=80', alt: 'Bright interactive game activation at a conference' },
+      { src: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&auto=format&fit=crop&q=80', alt: 'Attendees competing in a branded leaderboard challenge' },
+    ],
   },
   {
     id: 't3',
@@ -77,6 +95,15 @@ const TRENDS: Trend[] = [
     image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Elegant lounge area with plush seating and ambient lighting',
     cluster: 'Flexibility',
+    depth: [
+      'Open, egalitarian floor plans are being replaced with tiered access environments — a public, exploratory front and a private, invitation-only back. The architecture itself signals who the booth is built for and which conversations belong in which zone.',
+      "Jack Morton's CES 2026 deployment delivered the proof point: invite-only areas generated four times the qualified meeting time of equivalent open-access space. The privacy did not deter traffic; it concentrated attention from the right traffic.",
+      'The "public front, private back" pattern lets the same footprint serve casual visitors and priority accounts without either group degrading the other\'s experience. It is the booth equivalent of an airport with a lounge — same building, calibrated experiences.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&auto=format&fit=crop&q=80', alt: 'Private meeting suite within a larger exhibit space' },
+      { src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900&auto=format&fit=crop&q=80', alt: 'Tiered exhibit layout with public and private zones' },
+    ],
   },
   {
     id: 't4',
@@ -94,6 +121,15 @@ const TRENDS: Trend[] = [
     imageAlt: 'Interactive technology kiosk with digital human screen',
     licenseNote: true,
     cluster: 'Budget',
+    depth: [
+      'AI avatar kiosks have moved from concept demos into commercial deployment. They handle front-of-house qualification, product storytelling, and meeting scheduling on the floor without the fatigue, inconsistency, or coverage gaps of human staff during peak hours.',
+      'Samsung and ESTsoft\'s "AI Promoter" debut at CES 2026 engaged thousands of attendees in natural, multi-turn conversation. The interactions weren\'t shallow demos — they triaged, answered objections, and handed warm leads to human reps with full context attached.',
+      'Behavioral analytics layered on top of the kiosks now score leads in real time using dwell, question patterns, and engagement depth. The result is a qualification pipeline that runs continuously across show hours, not just when your strongest closers happen to be standing nearby.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80', alt: 'Interactive AI display engaging visitors' },
+      { src: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=900&auto=format&fit=crop&q=80', alt: 'Touchscreen kiosk with AI-driven interface' },
+    ],
   },
   {
     id: 't5',
@@ -111,6 +147,15 @@ const TRENDS: Trend[] = [
     imageAlt: 'Modular architectural exhibition structure',
     licenseNote: true,
     cluster: 'Budget',
+    depth: [
+      'The single-use custom timber build is being phased out in favor of reconfigurable modular systems. Components travel, reassemble, and adapt to the next footprint — the booth becomes an inventory you own rather than a structure you commission and discard.',
+      'The global modular exhibition stand market reached $1.54B in 2025 and is on a 9.2% CAGR through 2034. That growth is not just budget-driven mid-market exhibitors — it includes enterprise brands recasting modular as a sustainability and brand-discipline story.',
+      "Modular systems consistently deliver 30–50% per-show cost reduction while supporting multiple booth sizes and shapes from the same kit. Somfy's \"Most Sustainable Stand\" award at YED 2026 marked the moment modular became a brand statement, not a compromise.",
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=900&auto=format&fit=crop&q=80', alt: 'Modular exhibition structure being assembled' },
+      { src: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&auto=format&fit=crop&q=80', alt: 'Reconfigurable trade show stand components' },
+    ],
   },
   {
     id: 't6',
@@ -128,6 +173,15 @@ const TRENDS: Trend[] = [
     imageAlt: 'Data analytics dashboard with business metrics',
     licenseNote: true,
     cluster: 'Budget',
+    depth: [
+      'Badge scan count as the headline KPI is in decline. Executives have stopped accepting raw lead volume as proof of value and are demanding pipeline-quality signals: who advanced, who booked a follow-up, who became an opportunity inside the CRM.',
+      'The Exhibitor Group 2026 study delivered the uncomfortable finding bluntly — companies that tracked scan volume as their primary KPI saw no correlation with post-show revenue. The measurement was rewarding theater, not outcomes.',
+      'AI-driven floor analytics now track dwell time, repeat visits, conversation depth, and real-time sentiment scoring. The same booth that produced 1,200 scans last year is reporting 180 high-intent conversations this year — and finance prefers the second number.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&auto=format&fit=crop&q=80', alt: 'Pipeline analytics dashboard on a laptop screen' },
+      { src: 'https://images.unsplash.com/photo-1543286386-713bdd548da4?w=900&auto=format&fit=crop&q=80', alt: 'Sales pipeline data visualization' },
+    ],
   },
   {
     id: 't7',
@@ -145,6 +199,15 @@ const TRENDS: Trend[] = [
     image: 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Luxurious booth seating with mural in dimly lit lounge',
     cluster: 'Design',
+    depth: [
+      'Matte black, charcoal, deep navy, and rich wood tones are replacing the long-default white-and-bright exhibit palette. The change is not aesthetic preference; dark finishes reframe the booth as a backdrop for products and content rather than a structure that competes with them.',
+      'High-contrast lighting against dark surfaces creates dramatic focal zones that pull eyes toward screens, hero products, and demo stages. The visual hierarchy becomes instantly readable from across the aisle, where most attention is captured or lost.',
+      'Dark-finish booths also outperform white ones in social and editorial content. Photos taken inside them require less correction, look more premium, and extend booth ROI well past the show — every attendee with a phone becomes a downstream distribution channel.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=900&auto=format&fit=crop&q=80', alt: 'Dark, dramatic interior with focused lighting' },
+      { src: 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=900&auto=format&fit=crop&q=80', alt: 'Matte black architectural finish with warm accent lighting' },
+    ],
   },
   {
     id: 't8',
@@ -162,6 +225,15 @@ const TRENDS: Trend[] = [
     imageAlt: 'Two-level architectural space with mezzanine',
     licenseNote: true,
     cluster: 'Flexibility',
+    depth: [
+      'Two-story builds are becoming the baseline expectation for enterprise presence at major shows, not the prestige exception. The footprint reads as commitment before a single attendee enters, and the vertical real estate doubles available square footage without doubling floor cost.',
+      'Upper decks serve a dual purpose pattern that has hardened into a standard: private meeting suites above, immersive brand experience and traffic flow below. The two layers operate as different products serving different audiences in the same address.',
+      'Double-deck builds typically run $140–200K but consistently produce higher qualified meeting volume per square foot than single-level footprints of comparable area. The math works once you stop comparing build cost to build cost and start comparing build cost to meetings booked.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&auto=format&fit=crop&q=80', alt: 'Mezzanine level above an active exhibit floor' },
+      { src: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?w=900&auto=format&fit=crop&q=80', alt: 'Two-story architectural structure with upper deck meeting area' },
+    ],
   },
   {
     id: 't9',
@@ -179,6 +251,15 @@ const TRENDS: Trend[] = [
     image: 'https://images.unsplash.com/photo-1564540583246-934409427776?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Elegant lounge area with plush seating and ambient lighting',
     cluster: 'Flexibility',
+    depth: [
+      '"Workspitality" describes the deliberate blend of upscale hospitality cues — lounge seating, premium food and beverage, ambient design — with productive workspace function such as charging stations, fast Wi-Fi, and quiet meeting nooks. The booth becomes somewhere worth staying, not somewhere worth passing through.',
+      'The strategic target is a 14-minute average visit, not a 90-second flyby. Every additional minute deepens recall, increases the probability of conversation with staff, and creates the social proof of a populated, lived-in space that pulls in more traffic.',
+      "Zenus.ai's case study formalized the playbook: data-driven layout revisions, comfort-first furniture, and intentional pacing engineered an average 14-minute booth visit. The booth started feeling like a destination rather than a checkpoint.",
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&auto=format&fit=crop&q=80', alt: 'Upscale hospitality lounge with workspace amenities' },
+      { src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&auto=format&fit=crop&q=80', alt: 'Collaborative lounge with seating and laptops' },
+    ],
   },
   {
     id: 't10',
@@ -196,6 +277,15 @@ const TRENDS: Trend[] = [
     imageAlt: 'Coffee bar and premium beverage service at an event',
     licenseNote: true,
     cluster: 'Flexibility',
+    depth: [
+      'Branded F&B has overtaken swag as the primary traffic driver. Coffee bars, beverage stations, and curated food activations create a sustained reason to visit and revisit — and unlike a tote bag, the experience is consumed on the floor, in conversation, in front of staff.',
+      'RIMS RiskWorld 2026 quantified the play: a branded coffee activation served 850+ drinks across three days, sustaining traffic during the post-keynote dead zones that normally empty the floor. The coffee was the floor plan.',
+      'M2 Academy at DentalExpo 2026 took the pattern further, using a barista bar as the primary engagement mechanism. Visitors queued to enter the booth, and the line itself became a qualification opportunity for staff working the perimeter.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&auto=format&fit=crop&q=80', alt: 'Branded coffee bar at an event activation' },
+      { src: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=900&auto=format&fit=crop&q=80', alt: 'Specialty coffee preparation in a booth setting' },
+    ],
   },
   {
     id: 't11',
@@ -213,6 +303,15 @@ const TRENDS: Trend[] = [
     imageAlt: 'Curved organic architectural interior',
     licenseNote: true,
     cluster: 'Design',
+    depth: [
+      'Rectangular, right-angled exhibit structures are giving way to curved walls, circular layouts, and fluid organic forms. The booth-as-box default is being challenged by geometries that feel sculptural rather than industrial — a visual departure that reads instantly from the aisle.',
+      "Bioscience IMCAS Paris 2026 deployed semi-circle wall elements to create a sculptural entrance arch and a seamless visitor journey through the space. The architecture itself, not a printed graphic, did the work of brand differentiation.",
+      'Curved structures also outperform on the practical metrics — they improve traffic flow, create natural sight lines down the aisle, and photograph dramatically better than orthogonal builds. Less corner, more invitation.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=900&auto=format&fit=crop&q=80', alt: 'Curved organic architectural facade' },
+      { src: 'https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?w=900&auto=format&fit=crop&q=80', alt: 'Sculptural curved interior space' },
+    ],
   },
   {
     id: 't12',
@@ -230,6 +329,15 @@ const TRENDS: Trend[] = [
     imageAlt: 'Bold, colorful brand activation space',
     licenseNote: true,
     cluster: 'Design',
+    depth: [
+      'Every major show has an invisible color rulebook. Healthcare defaults to blue and white, tech to dark neutrals, finance to navy and gold, construction to safety yellow and orange. Walk the floor and you can identify category before you read a single logo.',
+      'Exhibitors who deliberately break their category\'s color convention consistently report higher unsolicited traffic and stronger post-show brand recall. The palette deviation does the work of a billboard — it interrupts the visual pattern attendees have been walking past all day.',
+      'The most memorable booths at CES 2026 and HIMSS 2026 were the ones that picked palette against type. As AI-generated brand guidelines push more exhibitors toward statistically "safe" colors, the gap between conformist and breakout widens — making deliberate deviation more valuable, not less.',
+    ],
+    gallery: [
+      { src: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&auto=format&fit=crop&q=80', alt: 'Bold, saturated color exhibit activation' },
+      { src: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=900&auto=format&fit=crop&q=80', alt: 'Vivid color palette installation breaking category norms' },
+    ],
   },
 ];
 
