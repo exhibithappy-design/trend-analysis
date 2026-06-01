@@ -473,6 +473,24 @@ const TrendReport2026 = () => {
   const functional = TRENDS.filter((t) => t.category === 'Functional Component');
   const design = TRENDS.filter((t) => t.category === 'Design Feature');
 
+  const trendShortLabel = (t: Trend) => {
+    const map: Record<string, string> = {
+      t1: 'Product Theater',
+      t2: 'Gamification',
+      t3: 'Invite-Only',
+      t4: 'AI Booth Staff',
+      t5: 'Modular Builds',
+      t6: 'Pipeline Metrics',
+      t7: 'Dark Finishes',
+      t8: 'Double Deckers',
+      t9: 'Workspitality',
+      t10: 'F&B Retention',
+      t11: 'Curved Forms',
+      t12: 'Color Zig-Zag',
+    };
+    return map[t.id] ?? t.title;
+  };
+
   return (
     <>
       <div className="pink-bar"></div>
@@ -499,18 +517,18 @@ const TrendReport2026 = () => {
           <div className="nav-group-label">Functional</div>
           {functional.map((t) => (
             <a key={t.id} href={`#${t.id}`} className="nav-link" onClick={closeMobile}>
-              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {t.title.split(' ').slice(0, 4).join(' ')}
+              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {trendShortLabel(t)}
             </a>
           ))}
           <div className="nav-group-label">Design</div>
           {design.map((t) => (
             <a key={t.id} href={`#${t.id}`} className="nav-link" onClick={closeMobile}>
-              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {t.title.split(' ').slice(0, 4).join(' ')}
+              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {trendShortLabel(t)}
             </a>
           ))}
           <div className="nav-group-label">Next</div>
           <a href="#gate" className="nav-link" onClick={closeMobile}>
-            <span className="nav-num">--</span> Get the Full Report
+            <span className="nav-num">--</span> Get Full Report
           </a>
         </div>
         <div className="sidebar-footer">
