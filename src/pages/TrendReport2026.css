@@ -61,7 +61,7 @@
 .tc-depth .tc-yoy{background:var(--light-card);border-radius:8px;padding:16px 20px;margin-bottom:18px}
 .tc-depth .tc-yoy .yoy-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--pink);margin-bottom:6px}
 .tc-depth .tc-yoy p{font-size:13px;color:var(--dark-gray);line-height:1.7}
-.tc-depth .tc-q{background:var(--pink-soft);border-left:4px solid var(--pink);border-radius:10px;padding:20px 24px}
+.tc-depth .tc-q{background:var(--pink-soft);border-left:4px solid var(--pink);border-radius:10px;padding:20px 24px;margin-bottom:28px}
 .tc-depth .tc-q .q-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
 .tc-depth .tc-q p{font-size:14px;font-style:italic;color:var(--gray-body);line-height:1.7}
 
