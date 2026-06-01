@@ -411,10 +411,28 @@ const TrendCard = ({ trend, onImage }: { trend: Trend; onImage: (s: string) => v
   );
 };
 
+// NOTE: Hero slider uses placeholder Unsplash trade show / exhibition floor
+// images. Confirm license / replace with owned imagery before public launch.
+const HERO_SLIDES = [
+  'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1920&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1920&auto=format&fit=crop&q=80',
+];
+
 const TrendReport2026 = () => {
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [email, setEmail] = useState('');
+  const [heroIdx, setHeroIdx] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setHeroIdx((i) => (i + 1) % HERO_SLIDES.length);
+    }, 6000);
+    return () => clearInterval(id);
+  }, []);
 
   const toggleNav = useCallback(() => {
     document.getElementById('sidebar2')?.classList.toggle('open');
@@ -502,11 +520,15 @@ const TrendReport2026 = () => {
 
       <div className="main">
         <section className="hero" id="top">
-          <div className="hero-img">
-            <img
-              src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80"
-              alt="2026 trade show exhibit floor"
-            />
+          <div className="hero-img hero-slider" aria-hidden="true">
+            {HERO_SLIDES.map((src, i) => (
+              <div
+                key={src}
+                className={`hero-slide ${i === heroIdx ? 'is-active' : ''}`}
+              >
+                <img src={src} alt="" />
+              </div>
+            ))}
           </div>
           <div className="hero-ov"></div>
           <div className="hero-c">
