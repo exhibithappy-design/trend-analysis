@@ -1,0 +1,10 @@
+
+WITH keep AS (SELECT '11111111-1111-1111-1111-111111111111'::uuid AS id)
+DELETE FROM public.page_events WHERE edition_id IS NOT NULL AND edition_id NOT IN (SELECT id FROM keep);
+DELETE FROM public.deployment_logs WHERE edition_id IS NOT NULL AND edition_id <> '11111111-1111-1111-1111-111111111111';
+DELETE FROM public.deployments WHERE edition_id <> '11111111-1111-1111-1111-111111111111';
+DELETE FROM public.ai_insights WHERE edition_id IS NOT NULL AND edition_id <> '11111111-1111-1111-1111-111111111111';
+DELETE FROM public.trend_cards WHERE edition_id IS NOT NULL AND edition_id <> '11111111-1111-1111-1111-111111111111';
+DELETE FROM public.notes WHERE edition_id IS NOT NULL AND edition_id <> '11111111-1111-1111-1111-111111111111';
+DELETE FROM public.hubspot_signals WHERE edition_id IS NOT NULL AND edition_id <> '11111111-1111-1111-1111-111111111111';
+DELETE FROM public.editions WHERE id <> '11111111-1111-1111-1111-111111111111';
