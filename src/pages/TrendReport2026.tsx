@@ -506,7 +506,7 @@ const TrendReport2026 = () => {
       <div className="sidebar-overlay" id="overlay2" onClick={toggleNav}></div>
       <nav className="sidebar" id="sidebar2">
         <div className="sidebar-brand">
-          <img src={ehLogo.url} alt="Exhibit Happy" style={{ width: '140px' }} />
+          <img src={ehLogo.url} alt="Exhibit Happy" />
           <div className="report-label" style={{ whiteSpace: 'nowrap' }}>2026 Exhibit Trend Report</div>
         </div>
         <div className="sidebar-nav">
