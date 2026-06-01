@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
@@ -7,8 +8,11 @@ import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
 export default function AdminLogin() {
   const { user, loading } = useAdminAuth();
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
-  const [sending, setSending] = useState(false);
+  const [password, setPassword] = useState('');
+  const [showPw, setShowPw] = useState(false);
+  const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
 
   useEffect(() => {
@@ -20,57 +24,97 @@ export default function AdminLogin() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setMsg(null);
-    setSending(true);
-    // Check allowlist first to give a clean rejection
-    const { data: allow, error: allowErr } = await supabase
-      .from('authorized_emails')
-      .select('email')
-      .ilike('email', email.trim())
-      .maybeSingle();
-    if (allowErr || !allow) {
-      // The select runs as anon, so the policy will block it; instead just attempt sign-in
-      // and rely on the post-callback trigger + role check to enforce access.
-    }
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: {
-        emailRedirectTo: `${window.location.origin}/admin/editions`,
-        shouldCreateUser: true,
-      },
-    });
-    setSending(false);
+    setBusy(true);
+    const creds = { email: email.trim(), password };
+    const { error } =
+      mode === 'signin'
+        ? await supabase.auth.signInWithPassword(creds)
+        : await supabase.auth.signUp({
+            ...creds,
+            options: { emailRedirectTo: `${window.location.origin}/admin/editions` },
+          });
+    setBusy(false);
     if (error) {
       setMsg({ kind: 'err', text: error.message });
-    } else {
-      setMsg({ kind: 'ok', text: 'Check your email — a magic sign-in link is on its way.' });
+    } else if (mode === 'signup') {
+      setMsg({ kind: 'ok', text: 'Account created — signing you in…' });
     }
   }
 
   return (
     <div data-admin>
       <div className="ad-login">
+        <div className="ad-login-bg" aria-hidden="true">
+          <span className="ad-orb ad-orb-1" />
+          <span className="ad-orb ad-orb-2" />
+          <span className="ad-orb ad-orb-3" />
+          <span className="ad-grid" />
+        </div>
         <div className="ad-login-stack">
           <img src={ehLogo.url} alt="ExhibitHappy" className="ad-login-logo" />
-          <div className="ad-login-card">
-          <h1>
-            <span style={{ color: '#FF0069' }}>●</span> Steelhead admin
-          </h1>
-          <p>Enter your authorized email. We'll send you a one-time magic link — no password required.</p>
-          <form onSubmit={onSubmit}>
-            <input
-              className="ad-input"
-              type="email"
-              placeholder="you@steelheaddesign.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoFocus
-            />
-            <button className="ad-btn" type="submit" disabled={sending || !email}>
-              {sending ? 'Sending…' : 'Send magic link'}
-            </button>
-          </form>
-          {msg && <div className={`msg ${msg.kind}`}>{msg.text}</div>}
+          <div className="ad-login-card ad-glass">
+            <h1>
+              <span style={{ color: '#FF0069' }}>●</span> Steelhead admin
+            </h1>
+            <p>
+              {mode === 'signin'
+                ? 'Sign in with your authorized email and password.'
+                : 'Create your account with an authorized email.'}
+            </p>
+            <form onSubmit={onSubmit}>
+              <input
+                className="ad-input"
+                type="email"
+                placeholder="you@steelheaddesign.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoFocus
+                autoComplete="email"
+              />
+              <div className="ad-pw-wrap">
+                <input
+                  className="ad-input ad-pw-input"
+                  type={showPw ? 'text' : 'password'}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={8}
+                  autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+                />
+                <button
+                  type="button"
+                  className="ad-pw-toggle"
+                  onClick={() => setShowPw((v) => !v)}
+                  aria-label={showPw ? 'Hide password' : 'Show password'}
+                  tabIndex={-1}
+                >
+                  {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+              <button className="ad-btn" type="submit" disabled={busy || !email || !password}>
+                {busy ? 'Working…' : mode === 'signin' ? 'Sign in' : 'Create account'}
+              </button>
+            </form>
+            {msg && <div className={`msg ${msg.kind}`}>{msg.text}</div>}
+            <div className="ad-login-switch">
+              {mode === 'signin' ? (
+                <>
+                  Need an account?{' '}
+                  <button type="button" onClick={() => { setMode('signup'); setMsg(null); }}>
+                    Create one
+                  </button>
+                </>
+              ) : (
+                <>
+                  Already have an account?{' '}
+                  <button type="button" onClick={() => { setMode('signin'); setMsg(null); }}>
+                    Sign in
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
