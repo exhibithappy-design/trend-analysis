@@ -1,5 +1,9 @@
-@font-face{font-family:'Natom Pro';src:url('/fonts/NatomPro-Bold.otf') format('opentype');font-weight:700;font-display:swap}
-@font-face{font-family:'Natom Pro';src:url('/fonts/NatomPro-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/2d124d6a-aefe-4a17-a36f-4ad01bb43687/NatomPro-ExtraLight.otf') format('opentype');font-weight:200;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/6c75622c-8121-4a94-8b26-a294fccfae4f/NatomPro-Light.otf') format('opentype');font-weight:300;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/91d67def-3ff0-4cd1-bbbe-a29ca6b07505/NatomPro-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/bd25900c-935c-4e62-a80b-8d61f8f4f7b0/NatomPro-Medium.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/13f33e09-82b3-4f47-9636-5feb8a43db4b/NatomPro-Bold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/afc0ab6c-2c87-43c4-a793-d92fbdb91211/NatomPro-Black.otf') format('opentype');font-weight:900;font-display:swap}
 @font-face{font-family:'Covered By Your Grace';src:url('/fonts/CoveredByYourGrace.ttf') format('truetype');font-display:swap}
 :root {
   --black: #000000;
