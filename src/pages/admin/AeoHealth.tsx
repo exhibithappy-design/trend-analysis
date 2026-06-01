@@ -40,8 +40,8 @@ export default function AeoHealth() {
       supabase.from('aeo_keywords').select('*').order('updated_at', { ascending: false }),
       supabase.from('editions').select('id, title, public_url, status, updated_at').eq('status', 'live').order('updated_at', { ascending: false }).limit(1),
     ]);
-    setLighthouse((lh || []) as LH[]);
-    setSchema((sc || []) as SchemaCheck[]);
+    setLighthouse((lh || []) as unknown as LH[]);
+    setSchema((sc || []) as unknown as SchemaCheck[]);
     setCitations((ci || []) as Citation[]);
     setKeywords((kw || []) as Keyword[]);
     setLiveEdition(((eds || [])[0] as Edition) || null);
