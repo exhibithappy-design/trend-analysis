@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Send, Settings, LogOut, FileText, Library, Activity, Sparkles, MessageSquare } from 'lucide-react';
+import { Send, Settings, LogOut, FileText, Library, Activity, Sparkles, MessageSquare, LayoutDashboard } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
@@ -58,6 +58,7 @@ export default function AdminLayout() {
           <div className="ad-brand">
             <img src={ehLogo.url} alt="ExhibitHappy" className="ad-brand-logo" />
           </div>
+          <NavRow to="/admin" icon={<LayoutDashboard size={15} />} label="Dashboard" />
           <NavRow to="/admin/editions" icon={<FileText size={15} />} label="Editions" />
           <NavRow to="/admin/distribution" icon={<Send size={15} />} label="Distribution" />
           <NavRow to="/admin/content" icon={<Library size={15} />} label="Content library" />
