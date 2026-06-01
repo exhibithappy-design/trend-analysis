@@ -11,13 +11,8 @@ import { AdminAuthProvider } from "@/hooks/admin/useAdminAuth";
 import AdminLayout from "@/components/admin/AdminLayout";
 import AdminLogin from "@/pages/admin/Login";
 import Dashboard from "@/pages/admin/Dashboard";
-import EditionsIndex from "@/pages/admin/EditionsIndex";
-import EditionDetail from "@/pages/admin/EditionDetail";
 import Distribution from "@/pages/admin/Distribution";
 import AdminSettings from "@/pages/admin/Settings";
-import ContentLibrary from "@/pages/admin/ContentLibrary";
-import AeoHealth from "@/pages/admin/AeoHealth";
-import Insights from "@/pages/admin/Insights";
 import Chat from "@/pages/admin/Chat";
 import { Navigate } from "react-router-dom";
 
@@ -37,13 +32,13 @@ const App = () => (
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="dashboard" element={<Navigate to="/admin" replace />} />
-              <Route path="editions" element={<EditionsIndex />} />
-              <Route path="editions/:id" element={<EditionDetail />} />
               <Route path="distribution" element={<Distribution />} />
-              <Route path="content" element={<ContentLibrary />} />
-              <Route path="aeo" element={<AeoHealth />} />
-              <Route path="insights" element={<Insights />} />
               <Route path="chat" element={<Chat />} />
+              <Route path="editions" element={<Navigate to="/admin" replace />} />
+              <Route path="editions/:id" element={<Navigate to="/admin" replace />} />
+              <Route path="content" element={<Navigate to="/admin" replace />} />
+              <Route path="aeo" element={<Navigate to="/admin" replace />} />
+              <Route path="insights" element={<Navigate to="/admin" replace />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 

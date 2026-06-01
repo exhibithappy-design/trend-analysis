@@ -1,25 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Send, Sparkles, Library, Activity } from 'lucide-react';
+import { ExternalLink, Send } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useRealtime } from '@/hooks/admin/useRealtime';
-import Donut from '@/components/admin/Donut';
 
 type Edition = { id: string; title: string; slug: string; status: string; publish_date: string | null; public_url: string | null };
 type Event = { edition_id: string | null; event_type: string; source: string | null; source_detail: string | null; ts: string; section: string | null; session_id: string | null; card_id: string | null };
 type Dep = { id: string; edition_id: string; channel: string; status: string; deployed_at: string | null; recipient_count: number };
-
-const SOURCE_GROUPS: { key: string; label: string; color: string; match: (e: Event) => boolean }[] = [
-  { key: 'organic',    label: 'Organic search', color: '#FF0069', match: (e) => e.source === 'organic' },
-  { key: 'chatgpt',    label: 'ChatGPT',        color: '#10A37F', match: (e) => e.source === 'ai' && e.source_detail === 'chatgpt' },
-  { key: 'perplexity', label: 'Perplexity',     color: '#22B8CF', match: (e) => e.source === 'ai' && e.source_detail === 'perplexity' },
-  { key: 'claude',     label: 'Claude',         color: '#D97757', match: (e) => e.source === 'ai' && e.source_detail === 'claude' },
-  { key: 'gemini',     label: 'Gemini',         color: '#8E75D9', match: (e) => e.source === 'ai' && e.source_detail === 'gemini' },
-  { key: 'linkedin',   label: 'LinkedIn',       color: '#0A66C2', match: (e) => e.source === 'linkedin' },
-  { key: 'direct',     label: 'Direct',         color: '#888888', match: (e) => e.source === 'direct' },
-  { key: 'hubspot',    label: 'HubSpot email',  color: '#FF7A59', match: (e) => e.source === 'hubspot' },
-  { key: 'referral',   label: 'Referral',       color: '#AD9675', match: (e) => e.source === 'referral' },
-];
 
 const RANGES = { '24h': 1, '7d': 7, '30d': 30, all: 9999 } as const;
 type RangeKey = keyof typeof RANGES;
