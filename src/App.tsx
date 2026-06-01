@@ -7,6 +7,14 @@ import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 import ScrollToTop from "./components/ScrollToTop";
+import { AdminAuthProvider } from "@/hooks/admin/useAdminAuth";
+import AdminLayout from "@/components/admin/AdminLayout";
+import AdminLogin from "@/pages/admin/Login";
+import EditionsIndex from "@/pages/admin/EditionsIndex";
+import EditionDetail from "@/pages/admin/EditionDetail";
+import Distribution from "@/pages/admin/Distribution";
+import AdminSettings from "@/pages/admin/Settings";
+import { Navigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -17,12 +25,22 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AdminAuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="/admin/editions" replace />} />
+              <Route path="editions" element={<EditionsIndex />} />
+              <Route path="editions/:id" element={<EditionDetail />} />
+              <Route path="distribution" element={<Distribution />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
+
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AdminAuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
