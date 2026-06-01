@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, AlertTriangle, Download } from 'lucide-react';
+import { FileText, AlertTriangle, Download, LayoutGrid, DollarSign, Palette } from 'lucide-react';
 
 
 import './HIMSSReport.css';
@@ -607,8 +607,12 @@ const TrendReport2026 = () => {
           <div className="sl">Section 01</div>
           <h2 className="st">The Three Pain-Point Clusters</h2>
           <FadeIn>
+            <p className="pp-intro">
+              Pain-point clusters are the three recurring challenges exhibit marketers told us they're heading into 2026 with — the friction points showing up across booth briefs, RFPs, and post-show debriefs. Every one of the 12 trends in this report maps back to at least one of them.
+            </p>
             <div className="pp-grid">
               <div className="pp">
+                <div className="pp-icon"><LayoutGrid size={22} /></div>
                 <div className="pp-label">Cluster 01</div>
                 <div className="pp-title">Flexibility</div>
                 <p className="pp-desc">
@@ -620,6 +624,7 @@ const TrendReport2026 = () => {
                 <a className="pp-link" href="#t10">Trend 10</a>
               </div>
               <div className="pp">
+                <div className="pp-icon"><DollarSign size={22} /></div>
                 <div className="pp-label">Cluster 02</div>
                 <div className="pp-title">Budget</div>
                 <p className="pp-desc">
@@ -630,6 +635,7 @@ const TrendReport2026 = () => {
                 <a className="pp-link" href="#t6">Trend 6</a>
               </div>
               <div className="pp">
+                <div className="pp-icon"><Palette size={22} /></div>
                 <div className="pp-label">Cluster 03</div>
                 <div className="pp-title">Design</div>
                 <p className="pp-desc">
