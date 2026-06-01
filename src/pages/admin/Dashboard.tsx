@@ -32,7 +32,6 @@ export default function Dashboard() {
   const [events, setEvents] = useState<Event[]>([]);
   const [deps, setDeps] = useState<Dep[]>([]);
   const [range, setRange] = useState<RangeKey>('7d');
-  const [activeSource, setActiveSource] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function load() {
@@ -81,12 +80,6 @@ export default function Dashboard() {
     return now - t > compareMs && now - t <= compareMs + rangeMs;
   }), [events, compareMs, rangeMs, now]);
 
-  const filteredCurrent = useMemo(() => {
-    if (!activeSource) return currentEvents;
-    const g = SOURCE_GROUPS.find((x) => x.key === activeSource);
-    return g ? currentEvents.filter(g.match) : currentEvents;
-  }, [currentEvents, activeSource]);
-
   function calc(evs: Event[]) {
     const views = evs.filter((e) => e.event_type === 'pageview').length;
     const visitors = new Set(evs.filter((e) => e.event_type === 'pageview').map((e) => e.session_id)).size;
@@ -97,14 +90,8 @@ export default function Dashboard() {
     const scrollDepth = views ? Math.min(95, Math.round(45 + (scroll / Math.max(views, 1)) * 35)) : 0;
     return { views, visitors, cta, avgTime, ctr, scrollDepth };
   }
-  const cur = useMemo(() => calc(filteredCurrent), [filteredCurrent]);
+  const cur = useMemo(() => calc(currentEvents), [currentEvents]);
   const prev = useMemo(() => calc(compareEvents), [compareEvents]);
-
-  const slices = useMemo(() => SOURCE_GROUPS.map((g) => ({
-    key: g.key, label: g.label, color: g.color,
-    value: currentEvents.filter(g.match).filter((e) => e.event_type === 'pageview').length,
-  })).filter((s) => s.value > 0 || activeSource === s.key), [currentEvents, activeSource]);
-  const sliceTotal = slices.reduce((s, x) => s + x.value, 0) || 1;
 
   const sectionRows = useMemo(() => {
     const totalVisitors = new Set(currentEvents.filter((e) => e.event_type === 'pageview').map((e) => e.session_id)).size || 1;
