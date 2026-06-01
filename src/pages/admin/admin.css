@@ -37,7 +37,7 @@
   position: sticky; top: 0; height: 100vh;
 }
 .ad-brand {
-  padding: 4px 10px 22px; border-bottom: 1px solid var(--ad-border); margin-bottom: 14px;
+  padding: 18px 10px 28px; border-bottom: 1px solid var(--ad-border); margin-bottom: 22px;
   display: flex; align-items: center;
 }
 .ad-brand-logo { display: block; height: 26px; width: auto; max-width: 100%; }
