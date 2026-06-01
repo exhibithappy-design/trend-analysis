@@ -501,12 +501,12 @@ const TrendReport2026 = () => {
         <button className="hamburger" onClick={toggleNav} aria-label="Menu">
           <span></span>
         </button>
-        <img src="/images/exhibit-happy-logo.svg" alt="Exhibit Happy" className="brand-mobile-logo" />
+        <img src={ehLogo.url} alt="Exhibit Happy" className="brand-mobile-logo" />
       </div>
       <div className="sidebar-overlay" id="overlay2" onClick={toggleNav}></div>
       <nav className="sidebar" id="sidebar2">
         <div className="sidebar-brand">
-          <img src="/images/exhibit-happy-logo.svg" alt="Exhibit Happy" style={{ width: '140px' }} />
+          <img src={ehLogo.url} alt="Exhibit Happy" style={{ width: '140px' }} />
           <div className="report-label">2026 Exhibit<br />Trend Report</div>
         </div>
         <div className="sidebar-nav">
