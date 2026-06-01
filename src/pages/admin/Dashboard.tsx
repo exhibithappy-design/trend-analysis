@@ -1,25 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink, Send, Sparkles, Library, Activity } from 'lucide-react';
+import { ExternalLink, Send } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useRealtime } from '@/hooks/admin/useRealtime';
-import Donut from '@/components/admin/Donut';
 
 type Edition = { id: string; title: string; slug: string; status: string; publish_date: string | null; public_url: string | null };
 type Event = { edition_id: string | null; event_type: string; source: string | null; source_detail: string | null; ts: string; section: string | null; session_id: string | null; card_id: string | null };
 type Dep = { id: string; edition_id: string; channel: string; status: string; deployed_at: string | null; recipient_count: number };
-
-const SOURCE_GROUPS: { key: string; label: string; color: string; match: (e: Event) => boolean }[] = [
-  { key: 'organic',    label: 'Organic search', color: '#FF0069', match: (e) => e.source === 'organic' },
-  { key: 'chatgpt',    label: 'ChatGPT',        color: '#10A37F', match: (e) => e.source === 'ai' && e.source_detail === 'chatgpt' },
-  { key: 'perplexity', label: 'Perplexity',     color: '#22B8CF', match: (e) => e.source === 'ai' && e.source_detail === 'perplexity' },
-  { key: 'claude',     label: 'Claude',         color: '#D97757', match: (e) => e.source === 'ai' && e.source_detail === 'claude' },
-  { key: 'gemini',     label: 'Gemini',         color: '#8E75D9', match: (e) => e.source === 'ai' && e.source_detail === 'gemini' },
-  { key: 'linkedin',   label: 'LinkedIn',       color: '#0A66C2', match: (e) => e.source === 'linkedin' },
-  { key: 'direct',     label: 'Direct',         color: '#888888', match: (e) => e.source === 'direct' },
-  { key: 'hubspot',    label: 'HubSpot email',  color: '#FF7A59', match: (e) => e.source === 'hubspot' },
-  { key: 'referral',   label: 'Referral',       color: '#AD9675', match: (e) => e.source === 'referral' },
-];
 
 const RANGES = { '24h': 1, '7d': 7, '30d': 30, all: 9999 } as const;
 type RangeKey = keyof typeof RANGES;
@@ -45,7 +32,6 @@ export default function Dashboard() {
   const [events, setEvents] = useState<Event[]>([]);
   const [deps, setDeps] = useState<Dep[]>([]);
   const [range, setRange] = useState<RangeKey>('7d');
-  const [activeSource, setActiveSource] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function load() {
@@ -94,12 +80,6 @@ export default function Dashboard() {
     return now - t > compareMs && now - t <= compareMs + rangeMs;
   }), [events, compareMs, rangeMs, now]);
 
-  const filteredCurrent = useMemo(() => {
-    if (!activeSource) return currentEvents;
-    const g = SOURCE_GROUPS.find((x) => x.key === activeSource);
-    return g ? currentEvents.filter(g.match) : currentEvents;
-  }, [currentEvents, activeSource]);
-
   function calc(evs: Event[]) {
     const views = evs.filter((e) => e.event_type === 'pageview').length;
     const visitors = new Set(evs.filter((e) => e.event_type === 'pageview').map((e) => e.session_id)).size;
@@ -110,14 +90,8 @@ export default function Dashboard() {
     const scrollDepth = views ? Math.min(95, Math.round(45 + (scroll / Math.max(views, 1)) * 35)) : 0;
     return { views, visitors, cta, avgTime, ctr, scrollDepth };
   }
-  const cur = useMemo(() => calc(filteredCurrent), [filteredCurrent]);
+  const cur = useMemo(() => calc(currentEvents), [currentEvents]);
   const prev = useMemo(() => calc(compareEvents), [compareEvents]);
-
-  const slices = useMemo(() => SOURCE_GROUPS.map((g) => ({
-    key: g.key, label: g.label, color: g.color,
-    value: currentEvents.filter(g.match).filter((e) => e.event_type === 'pageview').length,
-  })).filter((s) => s.value > 0 || activeSource === s.key), [currentEvents, activeSource]);
-  const sliceTotal = slices.reduce((s, x) => s + x.value, 0) || 1;
 
   const sectionRows = useMemo(() => {
     const totalVisitors = new Set(currentEvents.filter((e) => e.event_type === 'pageview').map((e) => e.session_id)).size || 1;
@@ -149,7 +123,7 @@ export default function Dashboard() {
       <div className="ad-card">
         <h2 style={{ marginTop: 0 }}>No live edition yet</h2>
         <p style={{ color: '#888' }}>Publish an edition to see its analytics here.</p>
-        <Link to="/admin/editions" className="ad-btn ad-btn-sm" style={{ marginTop: 12 }}>Go to Editions</Link>
+        <Link to="/admin/distribution" className="ad-btn ad-btn-sm" style={{ marginTop: 12 }}>Go to Distribution</Link>
       </div>
     );
   }
@@ -176,7 +150,6 @@ export default function Dashboard() {
             <ExternalLink size={12} /> View public page
           </a>
         )}
-        <Link to={`/admin/editions/${edition.id}`} className="ad-btn ad-btn-ghost ad-btn-sm">Full edition</Link>
         <select className="ad-select" value={range} onChange={(e) => setRange(e.target.value as RangeKey)}>
           <option value="24h">Last 24h</option>
           <option value="7d">Last 7 days</option>
@@ -202,45 +175,20 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="ad-two-col">
-        <div className="ad-card">
-          <h3 className="section-title">
-            Source attribution
-            {activeSource && (
-              <button className="ad-btn ad-btn-ghost ad-btn-sm" style={{ marginLeft: 12 }} onClick={() => setActiveSource(null)}>Clear filter</button>
-            )}
-          </h3>
-          <div className="donut-wrap">
-            <Donut slices={slices} activeKey={activeSource} onSelect={setActiveSource} />
-            <div className="donut-legend">
-              {slices.length === 0 ? (
-                <div style={{ color: '#888', fontSize: 13 }}>No traffic in this range yet.</div>
-              ) : slices.map((s) => (
-                <div key={s.key} className={'legend-row' + (activeSource === s.key ? ' active' : '')} onClick={() => setActiveSource(activeSource === s.key ? null : s.key)}>
-                  <span className="swatch" style={{ background: s.color }} />
-                  <span>{s.label}</span>
-                  <span className="leg-pct">{Math.round((s.value / sliceTotal) * 100)}%</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="ad-card">
-          <h3 className="section-title">Section engagement</h3>
-          <div className="sec-list">
-            {sectionRows.map((s) => (
-              <div key={s.key} className="sec-row">
-                <div className="sec-name">{s.label}</div>
-                <div className="sec-bar-wrap">
-                  <div className="sec-bar" style={{ width: `${s.pct}%`, background: heatColor(s.pct) }} />
-                </div>
-                <div className="sec-stat">{s.pct}%</div>
-                <div className="sec-stat-sub">{s.avg}s avg</div>
-                <div className="sec-stat-sub">{s.drop}% drop</div>
+      <div className="ad-card">
+        <h3 className="section-title" style={{ marginTop: 0 }}>Section engagement</h3>
+        <div className="sec-list">
+          {sectionRows.map((s) => (
+            <div key={s.key} className="sec-row">
+              <div className="sec-name">{s.label}</div>
+              <div className="sec-bar-wrap">
+                <div className="sec-bar" style={{ width: `${s.pct}%`, background: heatColor(s.pct) }} />
               </div>
-            ))}
-          </div>
+              <div className="sec-stat">{s.pct}%</div>
+              <div className="sec-stat-sub">{s.avg}s avg</div>
+              <div className="sec-stat-sub">{s.drop}% drop</div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -261,21 +209,6 @@ export default function Dashboard() {
             <Send size={16} style={{ color: '#FF0069' }} />
             <div style={{ fontWeight: 600, color: '#fff' }}>Manage distribution</div>
             <div style={{ fontSize: 12, color: '#888' }}>HubSpot, LinkedIn, email</div>
-          </Link>
-          <Link to="/admin/insights" className="ad-card" style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
-            <Sparkles size={16} style={{ color: '#FF0069' }} />
-            <div style={{ fontWeight: 600, color: '#fff' }}>AI insights</div>
-            <div style={{ fontSize: 12, color: '#888' }}>Auto-generated takeaways</div>
-          </Link>
-          <Link to="/admin/aeo" className="ad-card" style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
-            <Activity size={16} style={{ color: '#FF0069' }} />
-            <div style={{ fontWeight: 600, color: '#fff' }}>AEO health</div>
-            <div style={{ fontSize: 12, color: '#888' }}>Schema, Lighthouse, citations</div>
-          </Link>
-          <Link to="/admin/content" className="ad-card" style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
-            <Library size={16} style={{ color: '#FF0069' }} />
-            <div style={{ fontWeight: 600, color: '#fff' }}>Content library</div>
-            <div style={{ fontSize: 12, color: '#888' }}>Cards, assets, snippets</div>
           </Link>
         </div>
       </div>
