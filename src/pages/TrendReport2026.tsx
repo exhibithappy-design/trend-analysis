@@ -38,7 +38,7 @@ const TRENDS: Trend[] = [
     yoy: "TSE 2024 flagged the shift beginning; by 2026 it's the dominant model at enterprise booths across all major categories.",
     question: 'Is your booth built around what your team wants to say, or what your attendee wants to discover?',
     // Unsplash photo BKpOVik79lA — free to use
-    image: 'https://source.unsplash.com/BKpOVik79lA/1600x900',
+    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'People at a business exhibition interacting with a booth',
     cluster: 'Design',
   },
@@ -54,7 +54,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'In 2024, gamification was a differentiator; by 2026 mid-market and enterprise exhibitors expect it. Booths without a play mechanic feel transactional.',
     question: 'When a qualified lead walks into your booth, is the first interaction memorable or administrative?',
-    image: 'https://source.unsplash.com/featured/1600x900/?tradeshow,gamification,interactive',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Interactive gaming activation at a trade show',
     licenseNote: true,
     cluster: 'Design',
@@ -72,7 +72,7 @@ const TRENDS: Trend[] = [
     yoy: 'In 2024 this was a luxury-brand tactic (automotive at CES). By 2026, B2B healthcare and tech exhibitors at HIMSS and Money20/20 are adopting it at scale.',
     question: 'Does your booth treat a Fortune 500 prospect the same way as a first-time visitor?',
     // Unsplash photo PwlsQn-RyRU — free to use
-    image: 'https://source.unsplash.com/PwlsQn-RyRU/1600x900',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Elegant lounge area with plush seating and ambient lighting',
     cluster: 'Flexibility',
   },
@@ -88,7 +88,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'In 2024, AI in booths meant chatbots on tablets. By 2026, lifelike interactive avatars are commercially deployed by top exhibitors across CES, GITEX, and CONEXPO.',
     question: 'If your best sales rep could clone themselves for show floor duty, what would change about your ROI?',
-    image: 'https://source.unsplash.com/featured/1600x900/?digital-human,kiosk,touchscreen',
+    image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Interactive technology kiosk with digital human screen',
     licenseNote: true,
     cluster: 'Budget',
@@ -105,7 +105,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'In 2024, modular was budget-driven by mid-size exhibitors. By 2026, enterprise brands (Somfy\'s "Most Sustainable Stand" winner at YED 2026) use it as a brand statement.',
     question: 'What percentage of your exhibit budget is being rebuilt from scratch each cycle?',
-    image: 'https://source.unsplash.com/featured/1600x900/?modular,architecture,exhibition',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Modular architectural exhibition structure',
     licenseNote: true,
     cluster: 'Budget',
@@ -122,7 +122,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'Shift began in 2024 as AI analytics tools hit accessible price points. By 2026, "how many leads?" is being replaced by "how many went to pipeline?" in exec show reports.',
     question: 'If you removed badge scan count from your show report, what would you actually have left to show?',
-    image: 'https://source.unsplash.com/featured/1600x900/?analytics,dashboard,data',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Data analytics dashboard with business metrics',
     licenseNote: true,
     cluster: 'Budget',
@@ -140,7 +140,7 @@ const TRENDS: Trend[] = [
     yoy: 'In 2024 this was a luxury/premium brand signal. By 2026, dark finishes appear in healthcare, tech, and financial services categories where white was once the unchallenged default.',
     question: 'If every competitor in your category shows up in white, what does dark say about your brand confidence?',
     // Unsplash photo tI-Gx5FanJI — free to use
-    image: 'https://source.unsplash.com/tI-Gx5FanJI/1600x900',
+    image: 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Luxurious booth seating with mural in dimly lit lounge',
     cluster: 'Design',
   },
@@ -156,7 +156,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: "In 2024, double deckers were confined to automotive, pharma, and top-tier tech. By 2026 they're appearing across mid-sized healthcare and financial services exhibitors at HIMSS, Money20/20, and NAB.",
     question: 'If your best accounts could have a private, distraction-free conversation above the show floor, would your close rate improve?',
-    image: 'https://source.unsplash.com/featured/1600x900/?mezzanine,two-story,architecture',
+    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Two-level architectural space with mezzanine',
     licenseNote: true,
     cluster: 'Flexibility',
@@ -174,7 +174,7 @@ const TRENDS: Trend[] = [
     yoy: '"Workspitality" as a coined category emerged in 2026, but component behaviors grew across Dubai, European, and North American shows since 2024.',
     question: 'Does your booth give a tired attendee a reason to sit down and stay, or does it expect them to stand and listen?',
     // Unsplash photo PwlsQn-RyRU — free to use
-    image: 'https://source.unsplash.com/PwlsQn-RyRU/1600x900',
+    image: 'https://images.unsplash.com/photo-1564540583246-934409427776?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Elegant lounge area with plush seating and ambient lighting',
     cluster: 'Flexibility',
   },
@@ -190,7 +190,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'In 2024, promotional items still dominated. By 2026, branded F&B is the category default for enterprise exhibitors: more experiential, more social-media-worthy, and more likely to generate repeat visits.',
     question: 'What is your booth offering that makes an attendee want to come back a second time?',
-    image: 'https://source.unsplash.com/featured/1600x900/?coffee-bar,barista,event',
+    image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Coffee bar and premium beverage service at an event',
     licenseNote: true,
     cluster: 'Flexibility',
@@ -207,7 +207,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: "In 2024, curved architecture was primarily a European trade fair aesthetic. By 2026 it's appearing at North American shows (NAB, InfoComm, CONEXPO) as exhibitors break from the booth-as-box default.",
     question: 'If you removed all right angles from your exhibit, would your brand story be clearer or more confusing?',
-    image: 'https://source.unsplash.com/featured/1600x900/?curved,organic,architecture,interior',
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Curved organic architectural interior',
     licenseNote: true,
     cluster: 'Design',
@@ -224,7 +224,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'Color conformity has intensified in 2024–2026 as AI tools generate increasingly "safe" brand guidelines. The gap between conformist and breakout has widened, making palette deviation more powerful.',
     question: "If you removed your logo from your booth, which competitor's design would yours be mistaken for?",
-    image: 'https://source.unsplash.com/featured/1600x900/?colorful,brand,activation,bold',
+    image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1200&auto=format&fit=crop&q=80',
     imageAlt: 'Bold, colorful brand activation space',
     licenseNote: true,
     cluster: 'Design',
@@ -380,7 +380,7 @@ const TrendReport2026 = () => {
         <section className="hero" id="top">
           <div className="hero-img">
             <img
-              src="https://source.unsplash.com/featured/1920x1080/?tradeshow,exhibition,floor"
+              src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80"
               alt="2026 trade show exhibit floor"
             />
           </div>
