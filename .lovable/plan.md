@@ -1,17 +1,17 @@
-I’ll fix the two visible issues directly:
+## Changes
 
-1. **Admin login layout**
-   - Wrap the ExhibitHappy logo and login card in a new `.ad-login-stack` container inside `.ad-login`.
-   - Make `.ad-login-stack` a centered vertical flex column so the logo sits above the card and the whole stack remains centered in the viewport.
-   - Keep the login card at `max-width: 420px` and size the logo with `max-width` so it cannot push the card sideways.
+1. **Upload the black texture as a Lovable asset**
+   - Run `lovable-assets create --file /mnt/user-uploads/Black_Background.jpg --filename black-background.jpg > src/assets/black-background.jpg.asset.json`
 
-2. **Admin sidebar logo**
-   - Keep `AdminLayout.tsx` using the uploaded ExhibitHappy asset for the admin sidebar.
-   - Clean `.ad-brand` CSS so it no longer carries old text-brand styling.
-   - Remove the unused old `.dot` styling.
+2. **`src/pages/admin/Login.tsx`**
+   - Import the new asset JSON.
+   - Remove the three `<span className="ad-orb …" />` elements and the `<span className="ad-grid" />` from `.ad-login-bg`.
+   - Apply the texture as the background via inline style (or a new class) using the asset URL.
+   - Add a dark overlay element on top of the image.
 
-3. **Report sidebar logo shown in your screenshot**
-   - Replace the hardcoded `/images/exhibit-happy-logo.svg` references in `TrendReport2026.tsx` with the uploaded ExhibitHappy asset import.
-   - This addresses the sidebar screenshot that is still pulling the old public logo path instead of the newly uploaded SVG asset.
+3. **`src/pages/admin/admin.css`**
+   - Remove (or leave unused) the `.ad-orb*`, `ad-float*` keyframes, and `.ad-grid` rules tied to the login background.
+   - Update `.ad-login-bg` to render the texture with `background-size: cover; background-position: center;` and add an overlay rule (e.g. `.ad-login-overlay` with `background: rgba(0,0,0,0.55)`).
+   - Keep card glassmorphism and all other styling intact.
 
-No backend or unrelated UI changes.
+No logic, auth, or layout changes.
