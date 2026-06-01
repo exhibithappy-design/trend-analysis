@@ -55,9 +55,7 @@ export default function AdminLogin() {
         <div className="ad-login-stack">
           <img src={ehLogo.url} alt="ExhibitHappy" className="ad-login-logo" />
           <div className="ad-login-card ad-glass">
-            <h1>
-              <span style={{ color: '#FF0069' }}>●</span> Steelhead admin
-            </h1>
+            <h1 style={{ textAlign: 'center' }}>Admin</h1>
             <p>
               {mode === 'signin'
                 ? 'Sign in with your authorized email and password.'
