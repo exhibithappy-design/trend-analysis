@@ -14,6 +14,8 @@ import EditionsIndex from "@/pages/admin/EditionsIndex";
 import EditionDetail from "@/pages/admin/EditionDetail";
 import Distribution from "@/pages/admin/Distribution";
 import AdminSettings from "@/pages/admin/Settings";
+import ContentLibrary from "@/pages/admin/ContentLibrary";
+import AeoHealth from "@/pages/admin/AeoHealth";
 import { Navigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
@@ -34,6 +36,8 @@ const App = () => (
               <Route path="editions" element={<EditionsIndex />} />
               <Route path="editions/:id" element={<EditionDetail />} />
               <Route path="distribution" element={<Distribution />} />
+              <Route path="content" element={<ContentLibrary />} />
+              <Route path="aeo" element={<AeoHealth />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
 

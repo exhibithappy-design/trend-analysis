@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
-import { LayoutGrid, Send, Settings, LogOut, FileText } from 'lucide-react';
+import { Send, Settings, LogOut, FileText, Library, Activity } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
 
@@ -60,6 +60,8 @@ export default function AdminLayout() {
           </div>
           <NavRow to="/admin/editions" icon={<FileText size={15} />} label="Editions" />
           <NavRow to="/admin/distribution" icon={<Send size={15} />} label="Distribution" />
+          <NavRow to="/admin/content" icon={<Library size={15} />} label="Content library" />
+          <NavRow to="/admin/aeo" icon={<Activity size={15} />} label="AEO health" />
           <NavRow to="/admin/settings" icon={<Settings size={15} />} label="Settings" />
 
           <div className="ad-sidebar-footer">

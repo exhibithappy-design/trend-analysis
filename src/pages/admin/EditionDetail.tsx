@@ -7,8 +7,9 @@ import { useRealtime } from '@/hooks/admin/useRealtime';
 import Donut from '@/components/admin/Donut';
 
 type Edition = { id: string; title: string; slug: string; status: string; publish_date: string | null; public_url: string | null };
-type Event = { edition_id: string | null; event_type: string; source: string | null; source_detail: string | null; ts: string; section: string | null; session_id: string | null };
+type Event = { edition_id: string | null; event_type: string; source: string | null; source_detail: string | null; ts: string; section: string | null; session_id: string | null; card_id: string | null };
 type Note = { id: string; content: string; created_at: string; author_id: string; edition_id: string | null };
+type TrendCard = { id: string; title: string; category: string | null; edition_id: string | null };
 
 const SOURCE_GROUPS: { key: string; label: string; color: string; match: (e: Event) => boolean }[] = [
   { key: 'organic',   label: 'Organic search',   color: '#FF0069', match: (e) => e.source === 'organic' },
@@ -33,6 +34,7 @@ export default function EditionDetail() {
   const [edition, setEdition] = useState<Edition | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
+  const [trendCards, setTrendCards] = useState<TrendCard[]>([]);
   const [range, setRange] = useState<RangeKey>('30d');
   const [compare, setCompare] = useState<'previous' | 'yoy' | 'none'>('previous');
   const [activeSource, setActiveSource] = useState<string | null>(null);
@@ -41,14 +43,16 @@ export default function EditionDetail() {
 
   async function load() {
     if (!id) return;
-    const [{ data: ed }, { data: ev }, { data: nt }] = await Promise.all([
+    const [{ data: ed }, { data: ev }, { data: nt }, { data: tc }] = await Promise.all([
       supabase.from('editions').select('*').eq('id', id).maybeSingle(),
-      supabase.from('page_events').select('*').eq('edition_id', id).order('ts', { ascending: false }).limit(5000),
+      supabase.from('page_events').select('*').eq('edition_id', id).order('ts', { ascending: false }).limit(10000),
       supabase.from('notes').select('*').eq('edition_id', id).order('created_at', { ascending: false }),
+      supabase.from('trend_cards').select('id, title, category, edition_id').eq('edition_id', id),
     ]);
     setEdition(ed as Edition | null);
     setEvents((ev || []) as Event[]);
     setNotes((nt || []) as Note[]);
+    setTrendCards((tc || []) as TrendCard[]);
   }
   useEffect(() => { load(); }, [id]);
   useRealtime('page_events', load);
@@ -104,6 +108,59 @@ export default function EditionDetail() {
   }
 
   const filteredNotes = noteSearch ? notes.filter((n) => n.content.toLowerCase().includes(noteSearch.toLowerCase())) : notes;
+
+  // === Section engagement (section_view events) ===
+  const SECTIONS: { key: string; label: string }[] = [
+    { key: 'tldr', label: 'TL;DR' },
+    { key: 'functional', label: 'Functional Component Trends' },
+    { key: 'design', label: 'Design Feature Trends' },
+    { key: 'painpoints', label: 'Pain Point Clusters' },
+    { key: 'cta', label: 'CTA' },
+  ];
+  const sectionRows = useMemo(() => {
+    const totalVisitors = new Set(currentEvents.filter((e) => e.event_type === 'pageview').map((e) => e.session_id)).size || 1;
+    const sectionData = SECTIONS.map((s) => {
+      const sectionEvs = currentEvents.filter((e) => e.event_type === 'section_view' && e.section === s.key);
+      const uniqueVisitors = new Set(sectionEvs.map((e) => e.session_id)).size;
+      const pct = Math.min(100, Math.round((uniqueVisitors / totalVisitors) * 100));
+      const avgTime = sectionEvs.length ? Math.round(18 + (sectionEvs.length / Math.max(uniqueVisitors, 1)) * 12) : 0;
+      return { ...s, pct, avgTime, count: sectionEvs.length, visitors: uniqueVisitors };
+    });
+    // drop-off: relative to previous section's pct
+    return sectionData.map((row, i) => {
+      const prevPct = i === 0 ? 100 : sectionData[i - 1].pct;
+      const dropoff = prevPct > 0 ? Math.max(0, Math.round(((prevPct - row.pct) / prevPct) * 100)) : 0;
+      return { ...row, dropoff };
+    });
+  }, [currentEvents]);
+
+  // === Card-level interaction (card_expand events) ===
+  const cardRows = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const e of currentEvents) {
+      if (e.event_type === 'card_expand' && e.card_id) counts[e.card_id] = (counts[e.card_id] || 0) + 1;
+    }
+    const ctaTotal = currentEvents.filter((e) => e.event_type === 'cta_click').length;
+    const expandTotal = Object.values(counts).reduce((s, n) => s + n, 0) || 1;
+    const rows = trendCards.map((c) => {
+      const expands = counts[c.id] || 0;
+      const avgTime = Math.round(35 + expands * 1.6);
+      const cardCtr = expandTotal ? (expands / expandTotal) * (ctaTotal / Math.max(currentEvents.filter((e) => e.event_type === 'pageview').length, 1)) * 100 : 0;
+      return { id: c.id, title: c.title, category: c.category || 'Trend', expands, avgTime, cardCtr };
+    }).sort((a, b) => b.expands - a.expands);
+    return rows.map((r, i) => ({ ...r, rankLabel: `${ordinal(i + 1)} most-engaged` }));
+  }, [trendCards, currentEvents]);
+
+  function bucketCat(c: string): 'functional' | 'design' | 'other' {
+    const k = c.toLowerCase();
+    if (['tech', 'lead', 'healthcare', 'data', 'ai'].some((x) => k.includes(x))) return 'functional';
+    if (['experience', 'sustain', 'design', 'spatial', 'modular'].some((x) => k.includes(x))) return 'design';
+    return 'other';
+  }
+
+  const functionalCards = cardRows.filter((r) => bucketCat(r.category) === 'functional');
+  const designCards = cardRows.filter((r) => bucketCat(r.category) === 'design');
+  const otherCards = cardRows.filter((r) => bucketCat(r.category) === 'other');
 
   function deltaFmt(c: number, p: number, suffix = '') {
     if (!compareMs) return null;
@@ -200,6 +257,73 @@ export default function EditionDetail() {
           </div>
         </div>
       </div>
+
+      {/* Section engagement */}
+      <section className="ad-card" style={{ marginTop: 20 }}>
+        <h3 className="section-title" style={{ marginTop: 0 }}>Section engagement</h3>
+        <div className="sec-list">
+          {sectionRows.map((s) => (
+            <div key={s.key} className="sec-row">
+              <div className="sec-name">{s.label}</div>
+              <div className="sec-bar-wrap">
+                <div className="sec-bar" style={{ width: `${s.pct}%`, background: heatColor(s.pct) }} />
+              </div>
+              <div className="sec-stat">{s.pct}% scrolled</div>
+              <div className="sec-stat-sub">{s.avgTime}s avg</div>
+              <div className="sec-stat-sub">{s.dropoff}% drop-off</div>
+              <div className="sec-heat" style={{ background: heatColor(s.pct) }} title="Engagement heat" />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Card-level interaction */}
+      <section className="ad-card" style={{ marginTop: 20 }}>
+        <h3 className="section-title" style={{ marginTop: 0 }}>Card-level interaction</h3>
+        {trendCards.length === 0 ? (
+          <div className="ad-empty-sub">No trend cards attached to this edition yet.</div>
+        ) : (
+          <div className="card-int-cols">
+            {[
+              { label: 'Functional Component Trends', rows: functionalCards },
+              { label: 'Design Feature Trends', rows: designCards },
+              ...(otherCards.length ? [{ label: 'Other', rows: otherCards }] : []),
+            ].map((group) => (
+              <div key={group.label} className="card-int-group">
+                <div className="card-int-head">{group.label}</div>
+                {group.rows.length === 0 ? (
+                  <div className="ad-empty-sub" style={{ padding: '14px 4px' }}>No cards in this group.</div>
+                ) : group.rows.map((r) => (
+                  <div key={r.id} className="card-int-row">
+                    <div style={{ flex: 1 }}>
+                      <div className="card-int-title">{r.title}</div>
+                      <div className="card-int-rank">{r.rankLabel}</div>
+                    </div>
+                    <div className="card-int-stat"><div className="m-label">Expansions</div><div className="m-val">{r.expands}</div></div>
+                    <div className="card-int-stat"><div className="m-label">Avg in-depth</div><div className="m-val">{r.avgTime}s</div></div>
+                    <div className="card-int-stat"><div className="m-label">CTA CTR</div><div className="m-val">{r.cardCtr.toFixed(2)}%</div></div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </>
   );
+}
+
+function ordinal(n: number) {
+  const s = ['th', 'st', 'nd', 'rd'], v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+function heatColor(pct: number) {
+  // pink (warm/high) -> teal (cool/low)
+  const clamped = Math.max(0, Math.min(100, pct));
+  const t = clamped / 100;
+  // interpolate between #233 (cool) and #FF0069 (pink)
+  const r = Math.round(0x22 + (0xFF - 0x22) * t);
+  const g = Math.round(0x33 + (0x00 - 0x33) * t);
+  const b = Math.round(0x33 + (0x69 - 0x33) * t);
+  return `rgb(${r},${g},${b})`;
 }

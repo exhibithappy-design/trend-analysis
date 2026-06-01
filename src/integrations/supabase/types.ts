@@ -14,6 +14,123 @@ export type Database = {
   }
   public: {
     Tables: {
+      aeo_citations: {
+        Row: {
+          citation_url: string | null
+          created_at: string
+          date_seen: string
+          id: string
+          logged_by: string | null
+          screenshot: string | null
+          snippet: string | null
+          source: string
+        }
+        Insert: {
+          citation_url?: string | null
+          created_at?: string
+          date_seen?: string
+          id?: string
+          logged_by?: string | null
+          screenshot?: string | null
+          snippet?: string | null
+          source: string
+        }
+        Update: {
+          citation_url?: string | null
+          created_at?: string
+          date_seen?: string
+          id?: string
+          logged_by?: string | null
+          screenshot?: string | null
+          snippet?: string | null
+          source?: string
+        }
+        Relationships: []
+      }
+      aeo_keywords: {
+        Row: {
+          created_at: string
+          current_rank: number | null
+          id: string
+          keyword: string
+          notes: string | null
+          previous_rank: number | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          current_rank?: number | null
+          id?: string
+          keyword: string
+          notes?: string | null
+          previous_rank?: number | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          current_rank?: number | null
+          id?: string
+          keyword?: string
+          notes?: string | null
+          previous_rank?: number | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      aeo_lighthouse: {
+        Row: {
+          desktop_scores: Json | null
+          id: string
+          mobile_scores: Json | null
+          run_at: string
+          run_by: string | null
+          url: string
+        }
+        Insert: {
+          desktop_scores?: Json | null
+          id?: string
+          mobile_scores?: Json | null
+          run_at?: string
+          run_by?: string | null
+          url: string
+        }
+        Update: {
+          desktop_scores?: Json | null
+          id?: string
+          mobile_scores?: Json | null
+          run_at?: string
+          run_by?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
+      aeo_schema_checks: {
+        Row: {
+          checked_at: string
+          checked_by: string | null
+          id: string
+          results: Json
+          url: string
+        }
+        Insert: {
+          checked_at?: string
+          checked_by?: string | null
+          id?: string
+          results?: Json
+          url: string
+        }
+        Update: {
+          checked_at?: string
+          checked_by?: string | null
+          id?: string
+          results?: Json
+          url?: string
+        }
+        Relationships: []
+      }
       ai_insights: {
         Row: {
           content: string
@@ -100,6 +217,45 @@ export type Database = {
           is_custom?: boolean
           name?: string
           slug?: string
+        }
+        Relationships: []
+      }
+      deployment_logs: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          channel: string | null
+          created_at: string
+          deployment_id: string
+          detail: string | null
+          edition_id: string | null
+          id: string
+          result: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          channel?: string | null
+          created_at?: string
+          deployment_id: string
+          detail?: string | null
+          edition_id?: string | null
+          id?: string
+          result?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          channel?: string | null
+          created_at?: string
+          deployment_id?: string
+          detail?: string | null
+          edition_id?: string | null
+          id?: string
+          result?: string | null
         }
         Relationships: []
       }
