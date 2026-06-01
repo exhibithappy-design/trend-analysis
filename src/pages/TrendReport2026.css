@@ -116,6 +116,7 @@
 /* Continuous seam between Pain Points and the Functional category header */
 #painpoints{padding-bottom:32px}
 #cat-functional > .ch{padding-top:40px}
+#cat-functional > .ch{border-top:0 !important}
 #cat-functional > .ch::after{content:'';position:absolute;top:0;left:64px;right:64px;height:1px;background:rgba(255,255,255,.18);z-index:1;pointer-events:none}
 @media(max-width:1024px){#cat-functional > .ch::after{left:40px;right:40px}}
 @media(max-width:768px){#cat-functional > .ch::after{left:20px;right:20px}}
