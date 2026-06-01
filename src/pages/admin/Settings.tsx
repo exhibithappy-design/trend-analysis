@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Trash2, Plus } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { Trash2, Plus, Plug, CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
+import { toast } from 'sonner';
 
 type Allow = { email: string; role: 'admin' | 'viewer'; invited_at: string };
 type Profile = { id: string; email: string; name: string | null; notification_prefs: Record<string, boolean> };
@@ -9,7 +11,14 @@ type Channel = { id: string; name: string; slug: string; is_custom: boolean; dis
 
 export default function Settings() {
   const { isAdmin, user } = useAdminAuth();
-  const [tab, setTab] = useState<'profile' | 'users' | 'channels'>('profile');
+  const [params, setParams] = useSearchParams();
+  const initial = (params.get('tab') as any) || 'profile';
+  const [tab, setTab] = useState<'profile' | 'users' | 'channels' | 'integrations'>(initial);
+
+  function pick(t: typeof tab) {
+    setTab(t);
+    setParams({ tab: t }, { replace: true });
+  }
 
   return (
     <>
@@ -20,14 +29,96 @@ export default function Settings() {
         </div>
       </header>
       <div className="ad-tabs">
-        <button className={'ad-tab' + (tab === 'profile' ? ' active' : '')} onClick={() => setTab('profile')}>Profile</button>
-        {isAdmin && <button className={'ad-tab' + (tab === 'users' ? ' active' : '')} onClick={() => setTab('users')}>Users</button>}
-        {isAdmin && <button className={'ad-tab' + (tab === 'channels' ? ' active' : '')} onClick={() => setTab('channels')}>Channels</button>}
+        <button className={'ad-tab' + (tab === 'profile' ? ' active' : '')} onClick={() => pick('profile')}>Profile</button>
+        {isAdmin && <button className={'ad-tab' + (tab === 'users' ? ' active' : '')} onClick={() => pick('users')}>Users</button>}
+        {isAdmin && <button className={'ad-tab' + (tab === 'channels' ? ' active' : '')} onClick={() => pick('channels')}>Channels</button>}
+        {isAdmin && <button className={'ad-tab' + (tab === 'integrations' ? ' active' : '')} onClick={() => pick('integrations')}>Integrations</button>}
       </div>
       {tab === 'profile' && <ProfileTab />}
       {tab === 'users' && isAdmin && <UsersTab />}
       {tab === 'channels' && isAdmin && <ChannelsTab />}
+      {tab === 'integrations' && isAdmin && <IntegrationsTab />}
     </>
+  );
+}
+
+function IntegrationsTab() {
+  const [status, setStatus] = useState<{ connected: boolean; has_secret: boolean; last_synced_at: string | null } | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  async function load() {
+    const { data: { session } } = await supabase.auth.getSession();
+    const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/hubspot-connect`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${session?.access_token}` },
+    });
+    if (res.ok) setStatus(await res.json());
+  }
+  useEffect(() => { load(); }, []);
+
+  async function action(act: 'connect' | 'disconnect') {
+    setBusy(true);
+    const { data: { session } } = await supabase.auth.getSession();
+    const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/hubspot-connect`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
+      body: JSON.stringify({ action: act }),
+    });
+    const body = await res.json();
+    if (!res.ok) toast.error(body.error || 'Action failed');
+    else toast.success(act === 'connect' ? 'HubSpot connected' : 'HubSpot disconnected');
+    await load();
+    setBusy(false);
+  }
+
+  return (
+    <div className="ad-card ad-integration-card" style={{ maxWidth: 640 }}>
+      <div className="ad-integration-head">
+        <div className="ad-integration-icon"><Plug size={18} /></div>
+        <div style={{ flex: 1 }}>
+          <div className="ad-integration-title">HubSpot</div>
+          <div className="ad-integration-sub">Sync deployment metrics into the distribution tracker.</div>
+        </div>
+        <span className={'ad-status-pill ' + (status?.connected ? 'green' : 'amber')}>
+          {status?.connected ? <><CheckCircle2 size={12} /> Connected</> : 'Pending connection'}
+        </span>
+      </div>
+
+      <div className="ad-integration-body">
+        {!status?.has_secret && (
+          <p style={{ fontSize: 12, color: '#888', margin: '0 0 12px' }}>
+            A <code style={{ color: '#fff' }}>HUBSPOT_API_KEY</code> secret needs to be added to Lovable Cloud before connecting. Ask Lovable in chat to add it, then return here to mark HubSpot connected.
+          </p>
+        )}
+        {status?.has_secret && !status.connected && (
+          <p style={{ fontSize: 12, color: '#888', margin: '0 0 12px' }}>
+            Secret detected. Click connect to activate the HubSpot column on the distribution matrix.
+          </p>
+        )}
+        {status?.connected && status.last_synced_at && (
+          <p style={{ fontSize: 12, color: '#888', margin: '0 0 12px' }}>
+            Last synced {new Date(status.last_synced_at).toLocaleString()}
+          </p>
+        )}
+        {status?.connected && !status.last_synced_at && (
+          <p style={{ fontSize: 12, color: '#888', margin: '0 0 12px' }}>
+            Awaiting first sync. Distribution columns will populate once HubSpot returns data.
+          </p>
+        )}
+
+        <div style={{ display: 'flex', gap: 10 }}>
+          {!status?.connected ? (
+            <button className="ad-btn" onClick={() => action('connect')} disabled={busy || !status?.has_secret}>
+              <Plug size={13} /> Connect HubSpot
+            </button>
+          ) : (
+            <button className="ad-btn ad-btn-ghost" onClick={() => action('disconnect')} disabled={busy}>
+              Disconnect
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
