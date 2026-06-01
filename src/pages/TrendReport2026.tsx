@@ -16,6 +16,8 @@ type Trend = {
   category: 'Functional Component' | 'Design Feature';
   title: string;
   bullets: string[];
+  depth: string[];
+  gallery: { src: string; alt: string }[];
   yoy: string;
   question: string;
   image: string;
