@@ -42,6 +42,8 @@
   padding: 4px 10px 22px; border-bottom: 1px solid var(--ad-border); margin-bottom: 14px;
 }
 .ad-brand .dot { display: inline-block; width: 8px; height: 8px; background: var(--ad-pink); border-radius: 50%; margin-right: 10px; vertical-align: middle; }
+.ad-brand-logo { display: block; height: 26px; width: auto; max-width: 100%; }
+.ad-login-logo { display: block; width: 220px; max-width: 80vw; height: auto; margin: 0 auto 24px; }
 .ad-nav-item {
   display: flex; align-items: center; gap: 12px;
   padding: 9px 12px; border-radius: 6px;

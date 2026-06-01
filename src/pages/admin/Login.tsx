@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
+import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
 export default function AdminLogin() {
   const { user, loading } = useAdminAuth();
@@ -48,6 +49,7 @@ export default function AdminLogin() {
   return (
     <div data-admin>
       <div className="ad-login">
+        <img src={ehLogo.url} alt="ExhibitHappy" className="ad-login-logo" />
         <div className="ad-login-card">
           <h1>
             <span style={{ color: '#FF0069' }}>●</span> Steelhead admin

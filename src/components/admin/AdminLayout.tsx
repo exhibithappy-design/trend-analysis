@@ -3,6 +3,7 @@ import { NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Send, Settings, LogOut, FileText, Library, Activity } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
+import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
 function NavRow({ to, icon, label }: { to: string; icon: ReactNode; label: string }) {
   return (
@@ -55,8 +56,7 @@ export default function AdminLayout() {
       <div className="ad-shell">
         <aside className="ad-sidebar">
           <div className="ad-brand">
-            <span className="dot" />
-            Steelhead
+            <img src={ehLogo.url} alt="ExhibitHappy" className="ad-brand-logo" />
           </div>
           <NavRow to="/admin/editions" icon={<FileText size={15} />} label="Editions" />
           <NavRow to="/admin/distribution" icon={<Send size={15} />} label="Distribution" />
