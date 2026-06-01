@@ -507,7 +507,7 @@ const TrendReport2026 = () => {
       <nav className="sidebar" id="sidebar2">
         <div className="sidebar-brand">
           <img src={ehLogo.url} alt="Exhibit Happy" style={{ width: '140px' }} />
-          <div className="report-label">2026 Exhibit<br />Trend Report</div>
+          <div className="report-label" style={{ whiteSpace: 'nowrap' }}>2026 Exhibit Trend Report</div>
         </div>
         <div className="sidebar-nav">
           <div className="nav-group-label">Report</div>
