@@ -365,13 +365,27 @@ const TrendCard = ({ trend, onImage }: { trend: Trend; onImage: (s: string) => v
           <span className="tc-cat">{trend.category} Trend</span>
         </div>
         <h3 className="tc-title">{trend.title}</h3>
-        <ul className="tc-bullets">
-          {trend.bullets.map((b, i) => (
-            <li key={i}>{b}</li>
-          ))}
-        </ul>
+        {!open && (
+          <ul className="tc-bullets">
+            {trend.bullets.map((b, i) => (
+              <li key={i}>{b}</li>
+            ))}
+          </ul>
+        )}
         {open && (
           <div className="tc-depth">
+            <div className="tc-prose">
+              {trend.depth.map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </div>
+            <div className="tc-gallery">
+              {trend.gallery.map((g, i) => (
+                <figure key={i} className="tc-gallery-item" onClick={() => onImage(g.src)}>
+                  <img src={g.src} alt={g.alt} loading="lazy" />
+                </figure>
+              ))}
+            </div>
             <div className="tc-yoy">
               <div className="yoy-label">Year-over-Year Insight</div>
               <p>{trend.yoy}</p>
@@ -387,7 +401,7 @@ const TrendCard = ({ trend, onImage }: { trend: Trend; onImage: (s: string) => v
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
         >
-          {open ? 'Scan Mode' : 'Enter Depth Mode'}
+          {open ? 'Compact Mode' : 'Enter Depth Mode'}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <path d="M6 9l6 6 6-6" />
           </svg>
@@ -502,7 +516,7 @@ const TrendReport2026 = () => {
               <span className="thin">Reshaping the Show Floor</span>
             </h1>
             <p className="hero-sub">
-              A field-built analysis across HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more — organized into Functional Component Trends and Design Feature Trends. Each card opens from Scan Mode to Depth Mode.
+              A field-built analysis across HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more — organized into Functional Component Trends and Design Feature Trends. Each card opens from Compact Mode to Depth Mode.
             </p>
             <div className="hero-meta">
               <div className="hero-meta-item">
