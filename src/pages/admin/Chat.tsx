@@ -1,42 +1,102 @@
-import { useEffect, useRef, useState } from 'react';
-import { Send, Trash2, Sparkles } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { AnimatePresence, motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
 
 type Msg = { role: 'user' | 'assistant'; content: string };
+type Conversation = { id: string; title: string; updated_at: string };
 
-const SUGGESTED = [
-  'What changed in engagement over the past 7 days?',
-  'Which trends are underperforming in Depth mode?',
-  'Top 5 editions by recent page views',
-  'Which AEO keywords slipped in rank?',
+const SUGGESTIONS = [
+  { title: 'Surface emerging booth formats', sub: 'What experiential formats are gaining traction at major B2B trade shows in 2026?' },
+  { title: 'Pressure-test a hypothesis', sub: 'Is "biophilic exhibit design" a real trend or a one-show anomaly? Find evidence either way.' },
+  { title: 'Trend candidate shortlist', sub: 'Give me 5 candidate trends worth tracking for the next Trend Report, with a one-line definition each.' },
+  { title: 'Brand activation teardown', sub: 'Break down what made the most talked-about activation at CES 2026 work — structurally and editorially.' },
 ];
+
+function groupByDate(convs: Conversation[]) {
+  const today: Conversation[] = [];
+  const week: Conversation[] = [];
+  const month: Conversation[] = [];
+  const older: Conversation[] = [];
+  const now = Date.now();
+  for (const c of convs) {
+    const age = (now - new Date(c.updated_at).getTime()) / 86400000;
+    if (age < 1) today.push(c);
+    else if (age < 7) week.push(c);
+    else if (age < 30) month.push(c);
+    else older.push(c);
+  }
+  return { today, week, month, older };
+}
 
 export default function Chat() {
   const { user } = useAdminAuth();
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [activeId, setActiveId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const listRef = useRef<HTMLDivElement>(null);
+  const taRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
+  const grouped = useMemo(() => groupByDate(conversations), [conversations]);
+
+  // Load conversations
+  async function loadConversations() {
     if (!user) return;
+    const { data } = await supabase
+      .from('chat_conversations')
+      .select('id, title, updated_at')
+      .eq('user_id', user.id)
+      .order('updated_at', { ascending: false })
+      .limit(200);
+    if (data) setConversations(data as Conversation[]);
+  }
+
+  useEffect(() => { loadConversations(); /* eslint-disable-next-line */ }, [user]);
+
+  // Load messages for active conversation
+  useEffect(() => {
+    if (!activeId) { setMessages([]); return; }
     supabase
       .from('ai_chat_messages')
       .select('role, content, created_at')
-      .eq('user_id', user.id)
+      .eq('conversation_id', activeId)
       .order('created_at', { ascending: true })
-      .limit(200)
+      .limit(500)
       .then(({ data }) => {
         if (data) setMessages(data.filter((m: any) => m.role !== 'system') as Msg[]);
       });
-  }, [user]);
+  }, [activeId]);
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages]);
+
+  // Auto-resize textarea
+  useEffect(() => {
+    if (!taRef.current) return;
+    taRef.current.style.height = 'auto';
+    taRef.current.style.height = Math.min(taRef.current.scrollHeight, 220) + 'px';
+  }, [input]);
+
+  function newConversation() {
+    setActiveId(null);
+    setMessages([]);
+    setInput('');
+    setTimeout(() => taRef.current?.focus(), 0);
+  }
+
+  async function deleteConversation(id: string) {
+    if (!confirm('Delete this conversation?')) return;
+    await supabase.from('chat_conversations').delete().eq('id', id);
+    setConversations((cs) => cs.filter((c) => c.id !== id));
+    if (activeId === id) newConversation();
+  }
 
   async function send(text: string) {
     if (!text.trim() || sending) return;
@@ -51,14 +111,16 @@ export default function Chat() {
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, conversation_id: activeId }),
       });
 
       if (res.status === 402) { toast.error('AI credits exhausted.'); setSending(false); return; }
       if (res.status === 429) { toast.error('Rate limit hit — try again shortly.'); setSending(false); return; }
-      if (!res.ok || !res.body) { toast.error('AI request failed'); setSending(false); return; }
+      if (!res.ok || !res.body) { toast.error('Research Lab request failed'); setSending(false); return; }
 
-      // Add empty assistant placeholder
+      const newConvId = res.headers.get('x-conversation-id');
+      if (newConvId && newConvId !== activeId) setActiveId(newConvId);
+
       setMessages((m) => [...m, { role: 'assistant', content: '' }]);
 
       const reader = res.body.getReader();
@@ -92,81 +154,173 @@ export default function Chat() {
           } catch { buf = line + '\n' + buf; break; }
         }
       }
+      await loadConversations();
     } catch (e) {
       toast.error('Network error');
     }
     setSending(false);
   }
 
-  async function clearConversation() {
-    if (!user) return;
-    if (!confirm('Clear conversation history?')) return;
-    await supabase.from('ai_chat_messages').delete().eq('user_id', user.id);
-    setMessages([]);
-  }
-
   function onKey(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       send(input);
     }
   }
 
-  return (
-    <div className="ad-chat-shell">
-      <header className="ad-page-header" style={{ marginBottom: 18 }}>
-        <div>
-          <h1 className="ad-page-title">Ask the data</h1>
-          <p className="ad-page-sub">Grounded in editions, engagement events, content library, and AEO metrics</p>
-        </div>
-        {messages.length > 0 && (
-          <button className="ad-btn ad-btn-ghost" onClick={clearConversation}>
-            <Trash2 size={13} /> Clear
+  const groupBlock = (label: string, list: Conversation[]) =>
+    list.length === 0 ? null : (
+      <div className="rl-group" key={label}>
+        <div className="rl-group-label">{label}</div>
+        {list.map((c) => (
+          <button
+            key={c.id}
+            className={'rl-thread' + (activeId === c.id ? ' active' : '')}
+            onClick={() => setActiveId(c.id)}
+          >
+            <MessageSquare size={13} className="rl-thread-icon" />
+            <span className="rl-thread-title">{c.title}</span>
+            <span className="rl-thread-del" onClick={(e) => { e.stopPropagation(); deleteConversation(c.id); }}>
+              <Trash2 size={12} />
+            </span>
           </button>
-        )}
-      </header>
+        ))}
+      </div>
+    );
 
-      <div className="ad-chat-list" ref={listRef}>
-        {messages.length === 0 ? (
-          <div className="ad-chat-empty">
-            <Sparkles size={20} style={{ color: '#AD9675' }} />
-            <div className="ad-chat-empty-title">Ask anything about your data</div>
-            <div className="ad-chat-empty-sub">Pick a starter or type your own question.</div>
-            <div className="ad-suggest-row">
-              {SUGGESTED.map((s) => (
-                <button key={s} className="ad-suggest-chip" onClick={() => send(s)}>{s}</button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          messages.map((m, idx) => (
-            <div key={idx} className={`ad-chat-bubble ${m.role}`}>
-              <div className="ad-chat-role">{m.role === 'user' ? 'You' : 'AI'}</div>
-              <div className="ad-chat-content">
-                {m.role === 'assistant' ? (
-                  <ReactMarkdown>{m.content || '…'}</ReactMarkdown>
+  return (
+    <div className="rl-shell">
+      <AnimatePresence initial={false}>
+        {sidebarOpen && (
+          <motion.aside
+            key="sidebar"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 280, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: [0.32, 0.72, 0, 1] }}
+            className="rl-sidebar"
+          >
+            <div className="rl-sidebar-inner">
+              <div className="rl-sidebar-head">
+                <button className="rl-new" onClick={newConversation}>
+                  <Plus size={14} /> New thread
+                </button>
+                <button className="rl-icon-btn" onClick={() => setSidebarOpen(false)} title="Collapse">
+                  <PanelLeftClose size={15} />
+                </button>
+              </div>
+              <div className="rl-threads">
+                {conversations.length === 0 ? (
+                  <div className="rl-threads-empty">No saved threads yet.</div>
                 ) : (
-                  m.content
+                  <>
+                    {groupBlock('Today', grouped.today)}
+                    {groupBlock('Previous 7 days', grouped.week)}
+                    {groupBlock('Previous 30 days', grouped.month)}
+                    {groupBlock('Older', grouped.older)}
+                  </>
                 )}
               </div>
             </div>
-          ))
+          </motion.aside>
         )}
-      </div>
+      </AnimatePresence>
 
-      <div className="ad-chat-composer">
-        <textarea
-          className="ad-input ad-chat-textarea"
-          placeholder="Ask about engagement, editions, AEO health… (⌘/Ctrl+Enter to send)"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={onKey}
-          rows={2}
-          disabled={sending}
-        />
-        <button className="ad-btn" onClick={() => send(input)} disabled={sending || !input.trim()}>
-          <Send size={13} /> {sending ? 'Thinking…' : 'Send'}
-        </button>
+      <div className="rl-main">
+        <header className="rl-topbar">
+          {!sidebarOpen && (
+            <button className="rl-icon-btn" onClick={() => setSidebarOpen(true)} title="Open history">
+              <PanelLeft size={15} />
+            </button>
+          )}
+          <div className="rl-topbar-title">
+            <Beaker size={14} /> Trend Research Lab
+          </div>
+        </header>
+
+        <div className="rl-scroll" ref={listRef}>
+          {messages.length === 0 ? (
+            <div className="rl-empty">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                className="rl-empty-inner"
+              >
+                <div className="rl-empty-logo"><Sparkles size={22} /></div>
+                <h1 className="rl-empty-title">What are we researching today?</h1>
+                <p className="rl-empty-sub">
+                  Explore trade show trends, pressure-test ideas, and save promising candidates for future reports.
+                </p>
+                <div className="rl-suggests">
+                  {SUGGESTIONS.map((s, i) => (
+                    <motion.button
+                      key={s.title}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 + i * 0.05, duration: 0.4 }}
+                      className="rl-suggest"
+                      onClick={() => send(s.sub)}
+                    >
+                      <div className="rl-suggest-title">{s.title}</div>
+                      <div className="rl-suggest-sub">{s.sub}</div>
+                    </motion.button>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          ) : (
+            <div className="rl-thread-view">
+              <AnimatePresence initial={false}>
+                {messages.map((m, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.28, ease: 'easeOut' }}
+                    className={'rl-msg ' + m.role}
+                  >
+                    {m.role === 'assistant' && (
+                      <div className="rl-avatar"><Sparkles size={13} /></div>
+                    )}
+                    <div className="rl-bubble">
+                      {m.role === 'assistant' ? (
+                        <div className="rl-md"><ReactMarkdown>{m.content || '…'}</ReactMarkdown></div>
+                      ) : (
+                        <div className="rl-user-text">{m.content}</div>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+              <div style={{ height: 24 }} />
+            </div>
+          )}
+        </div>
+
+        <div className="rl-composer-wrap">
+          <div className="rl-composer">
+            <textarea
+              ref={taRef}
+              className="rl-textarea"
+              placeholder="Ask the Research Lab anything about trade show trends…"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={onKey}
+              rows={1}
+              disabled={sending}
+            />
+            <button
+              className="rl-send"
+              onClick={() => send(input)}
+              disabled={sending || !input.trim()}
+              aria-label="Send"
+            >
+              <ArrowUp size={16} />
+            </button>
+          </div>
+          <div className="rl-hint">Enter to send · Shift + Enter for newline</div>
+        </div>
       </div>
     </div>
   );
