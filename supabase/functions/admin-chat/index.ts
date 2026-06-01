@@ -34,39 +34,39 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Not authorized' }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const { messages } = await req.json();
+    const { messages, conversation_id } = await req.json();
     if (!Array.isArray(messages) || messages.length === 0) {
       return new Response(JSON.stringify({ error: 'messages required' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // Build a compact data snapshot to ground the model
-    const since = new Date(Date.now() - 30 * 86400000).toISOString();
-    const [eds, trends, evCount, deps, kws] = await Promise.all([
-      admin.from('editions').select('id, title, status, publish_date').order('publish_date', { ascending: false }).limit(15),
-      admin.from('trend_cards').select('id, title, category, performance_score, edition_id, tags').order('performance_score', { ascending: false, nullsFirst: false }).limit(30),
-      admin.from('page_events').select('event_type, section, edition_id, ts').gte('ts', since).limit(500),
-      admin.from('deployments').select('edition_id, channel, status, recipient_count'),
-      admin.from('aeo_keywords').select('keyword, current_rank, previous_rank').limit(25),
-    ]);
+    const systemPrompt = `You are the Trend Research Lab assistant for ExhibitHappy — a senior trade-show trend analyst.
 
-    const dataContext = JSON.stringify({
-      editions: eds.data,
-      trend_cards: trends.data,
-      recent_events_sample: evCount.data?.slice(0, 200),
-      event_counts_by_type: (evCount.data || []).reduce((acc: Record<string, number>, e: any) => {
-        acc[e.event_type] = (acc[e.event_type] || 0) + 1;
-        return acc;
-      }, {}),
-      deployments: deps.data,
-      aeo_keywords: kws.data,
-    }).slice(0, 40000);
+Your job is to help the editor research trade show, experiential marketing, and event design trends; surface candidate trends worth tracking for future Trend Reports; pressure-test hypotheses; and summarize signals from across the industry.
 
-    const systemPrompt = `You are the AI data assistant for ExhibitHappy's editorial admin dashboard. Answer questions grounded in the data snapshot below. Be concise, cite specific edition titles, trend names, or numbers when relevant, and use markdown for structure. If asked about something not in the data, say so.\n\nDATA SNAPSHOT (last 30 days):\n${dataContext}`;
+Guidelines:
+- Be concise, specific, and editorial in tone — like a sharp research partner, not a chatbot.
+- When proposing trend candidates, give each a short name, a one-line definition, and 2-3 concrete signals (shows, brands, formats).
+- Use markdown headings, bold, and bullet lists for structure.
+- If you don't have data to back something, say so honestly and propose how to validate it.
+- Never reference internal analytics tables, editions, AEO, or engagement events — focus on trend research itself.`;
 
-    // Persist last user message
+    // Ensure conversation exists & ownership
+    let convId: string | null = conversation_id ?? null;
     const lastUser = [...messages].reverse().find((m: any) => m.role === 'user');
-    if (lastUser) {
-      await admin.from('ai_chat_messages').insert({ user_id: uid, role: 'user', content: lastUser.content });
+    if (convId) {
+      const { data: conv } = await admin.from('chat_conversations').select('id, user_id').eq('id', convId).maybeSingle();
+      if (!conv || conv.user_id !== uid) convId = null;
+    }
+    if (!convId) {
+      const title = (lastUser?.content ?? 'New conversation').slice(0, 80).replace(/\s+/g, ' ').trim() || 'New conversation';
+      const { data: created } = await admin.from('chat_conversations').insert({ user_id: uid, title }).select('id').single();
+      convId = created?.id ?? null;
+    } else {
+      await admin.from('chat_conversations').update({ updated_at: new Date().toISOString() }).eq('id', convId);
+    }
+
+    if (lastUser && convId) {
+      await admin.from('ai_chat_messages').insert({ user_id: uid, role: 'user', content: lastUser.content, conversation_id: convId });
     }
 
     const aiRes = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
@@ -119,14 +119,14 @@ Deno.serve(async (req) => {
           }
         } finally {
           controller.close();
-          if (assistantText.trim()) {
-            await admin.from('ai_chat_messages').insert({ user_id: uid, role: 'assistant', content: assistantText });
+          if (assistantText.trim() && convId) {
+            await admin.from('ai_chat_messages').insert({ user_id: uid, role: 'assistant', content: assistantText, conversation_id: convId });
           }
         }
       },
     });
 
-    return new Response(stream, { headers: { ...corsHeaders, 'Content-Type': 'text/event-stream' } });
+    return new Response(stream, { headers: { ...corsHeaders, 'Content-Type': 'text/event-stream', 'X-Conversation-Id': convId ?? '' } });
   } catch (e) {
     console.error('admin-chat error:', e);
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : 'Unknown' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
