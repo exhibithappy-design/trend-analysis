@@ -1,8 +1,17 @@
-## Plan
+I’ll fix the two visible issues directly:
 
-1. Upload the ExhibitHappy SVG to Lovable Assets via `lovable-assets create` from `/mnt/user-uploads/ExhibitHappy_-_Primary_horizontal_lockup.svg`, writing the pointer to `src/assets/exhibithappy-logo.svg.asset.json`.
-2. Update `src/components/admin/AdminLayout.tsx` to replace the current sidebar brand (the "Steelhead admin" text/dot) with an `<img>` of the ExhibitHappy logo. Constrain height (~28px) and keep it left-aligned in the existing sidebar header.
-3. Update `src/pages/admin/Login.tsx` to render the same logo centered above the auth card (replacing the empty bordered placeholder visible in the screenshot). Width ~220px, with spacing below before the card.
-4. Add minimal styles in `src/pages/admin/admin.css` for `.admin-brand-logo` (sidebar) and `.admin-login-logo` (login) — size, margin, and `display:block`.
+1. **Admin login layout**
+   - Wrap the ExhibitHappy logo and login card in a new `.ad-login-stack` container inside `.ad-login`.
+   - Make `.ad-login-stack` a centered vertical flex column so the logo sits above the card and the whole stack remains centered in the viewport.
+   - Keep the login card at `max-width: 420px` and size the logo with `max-width` so it cannot push the card sideways.
 
-No backend or routing changes.
+2. **Admin sidebar logo**
+   - Keep `AdminLayout.tsx` using the uploaded ExhibitHappy asset for the admin sidebar.
+   - Clean `.ad-brand` CSS so it no longer carries old text-brand styling.
+   - Remove the unused old `.dot` styling.
+
+3. **Report sidebar logo shown in your screenshot**
+   - Replace the hardcoded `/images/exhibit-happy-logo.svg` references in `TrendReport2026.tsx` with the uploaded ExhibitHappy asset import.
+   - This addresses the sidebar screenshot that is still pulling the old public logo path instead of the newly uploaded SVG asset.
+
+No backend or unrelated UI changes.

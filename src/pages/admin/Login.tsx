@@ -49,8 +49,9 @@ export default function AdminLogin() {
   return (
     <div data-admin>
       <div className="ad-login">
-        <img src={ehLogo.url} alt="ExhibitHappy" className="ad-login-logo" />
-        <div className="ad-login-card">
+        <div className="ad-login-stack">
+          <img src={ehLogo.url} alt="ExhibitHappy" className="ad-login-logo" />
+          <div className="ad-login-card">
           <h1>
             <span style={{ color: '#FF0069' }}>●</span> Steelhead admin
           </h1>
@@ -70,6 +71,7 @@ export default function AdminLogin() {
             </button>
           </form>
           {msg && <div className={`msg ${msg.kind}`}>{msg.text}</div>}
+          </div>
         </div>
       </div>
     </div>
