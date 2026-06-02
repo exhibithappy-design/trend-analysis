@@ -354,7 +354,8 @@ export default function Chat() {
       content: trimmed || (pendingImage ? '(image attached)' : ''),
       imageUrl: pendingImage?.dataUrl,
     };
-    const next = [...messages, userMsg];
+    // Strip any prior failed messages so retries don't duplicate them in context
+    const next = [...messages.filter((m) => !m.failed), userMsg];
     setMessages(next);
     setInput('');
     setSending(true);
