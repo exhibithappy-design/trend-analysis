@@ -763,7 +763,7 @@ export default function Chat() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.28, ease: 'easeOut' }}
-                    className={'rl-msg ' + m.role}
+                    className={'rl-msg ' + m.role + (m.failed ? ' is-failed' : '')}
                   >
                     {m.role === 'assistant' && (
                       <div className="rl-avatar"><Sparkles size={13} /></div>
@@ -781,8 +781,35 @@ export default function Chat() {
                           {m.content && m.content !== '(image attached)' && (
                             <div className="rl-user-text">{m.content}</div>
                           )}
+                          {m.failed && (
+                            <div className="rl-msg-failed">
+                              <AlertTriangle size={11} /> Failed to send
+                            </div>
+                          )}
                         </>
                       )}
+                      <div className="rl-msg-actions">
+                        {m.failed && m.role === 'user' && (
+                          <button
+                            className="rl-msg-action"
+                            onClick={() => retryMessage(idx)}
+                            title="Retry"
+                            aria-label="Retry message"
+                            disabled={sending}
+                          >
+                            <RotateCcw size={12} />
+                          </button>
+                        )}
+                        <button
+                          className="rl-msg-action"
+                          onClick={() => deleteMessage(idx)}
+                          title="Delete message"
+                          aria-label="Delete message"
+                          disabled={sending}
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
                     </div>
                   </motion.div>
                 ))}
