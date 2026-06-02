@@ -586,7 +586,7 @@ const TrendReport2026 = () => {
         <section className="section section--w" id="tldr">
           <div className="pr"></div>
           <div className="sl">Section 00</div>
-          <h2 className="st">TL;DR — The 2026 Exhibit Floor in 60 Seconds</h2>
+          <h2 className="st">TL;DR — Your Strategic Edge in 60 Seconds</h2>
           <FadeIn>
             <div className="tldr">
               <h3>What changed in 2026</h3>
