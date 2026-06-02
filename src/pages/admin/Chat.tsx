@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil, Folder, FolderPlus, ChevronRight, FolderOpen, FolderInput } from 'lucide-react';
+import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil, Folder, FolderPlus, ChevronRight, FolderOpen, FolderInput, RotateCcw, AlertTriangle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
 
-type Msg = { role: 'user' | 'assistant'; content: string; imageUrl?: string };
+type Msg = { id?: string; role: 'user' | 'assistant'; content: string; imageUrl?: string; failed?: boolean };
 type Conversation = { id: string; title: string; updated_at: string; starred: boolean; folder_id: string | null };
 type ChatFolder = { id: string; name: string; display_order: number };
 
@@ -110,12 +110,16 @@ export default function Chat() {
     if (!activeId) { setMessages([]); return; }
     supabase
       .from('ai_chat_messages')
-      .select('role, content, created_at')
+      .select('id, role, content, created_at')
       .eq('conversation_id', activeId)
       .order('created_at', { ascending: true })
       .limit(500)
       .then(({ data }) => {
-        if (data) setMessages(data.filter((m: any) => m.role !== 'system') as Msg[]);
+        if (data) setMessages(
+          data
+            .filter((m: any) => m.role !== 'system')
+            .map((m: any) => ({ id: m.id, role: m.role, content: m.content })) as Msg[],
+        );
       });
   }, [activeId]);
 
@@ -305,6 +309,39 @@ export default function Chat() {
     if (f) handleFile(f);
   }
 
+  async function reloadMessages(convId: string) {
+    const { data } = await supabase
+      .from('ai_chat_messages')
+      .select('id, role, content, created_at')
+      .eq('conversation_id', convId)
+      .order('created_at', { ascending: true })
+      .limit(500);
+    if (data) {
+      setMessages(
+        data
+          .filter((m: any) => m.role !== 'system')
+          .map((m: any) => ({ id: m.id, role: m.role, content: m.content })) as Msg[],
+      );
+    }
+  }
+
+  async function deleteMessage(idx: number) {
+    const m = messages[idx];
+    setMessages((ms) => ms.filter((_, i) => i !== idx));
+    if (m?.id) {
+      const { error } = await supabase.from('ai_chat_messages').delete().eq('id', m.id);
+      if (error) toast.error('Could not delete message');
+    }
+  }
+
+  function retryMessage(idx: number) {
+    const m = messages[idx];
+    if (!m || m.role !== 'user') return;
+    // Drop the failed message + anything after it, then re-send
+    setMessages((ms) => ms.slice(0, idx));
+    send(m.content);
+  }
+
   async function send(text: string) {
     if ((!text.trim() && !attached) || sending) return;
     const trimmed = text.trim();
@@ -317,10 +354,21 @@ export default function Chat() {
       content: trimmed || (pendingImage ? '(image attached)' : ''),
       imageUrl: pendingImage?.dataUrl,
     };
-    const next = [...messages, userMsg];
+    // Strip any prior failed messages so retries don't duplicate them in context
+    const next = [...messages.filter((m) => !m.failed), userMsg];
     setMessages(next);
     setInput('');
     setSending(true);
+
+    const markLastUserFailed = () => {
+      setMessages((ms) => {
+        const copy = [...ms];
+        for (let i = copy.length - 1; i >= 0; i--) {
+          if (copy[i].role === 'user') { copy[i] = { ...copy[i], failed: true }; break; }
+        }
+        return copy;
+      });
+    };
 
     try {
       // If image attached, get vision description first
@@ -337,6 +385,7 @@ export default function Chat() {
           if (!vRes.ok) {
             toast.error('Image analysis failed');
             setAnalyzingImage(false);
+            markLastUserFailed();
             setSending(false);
             return;
           }
@@ -366,11 +415,12 @@ export default function Chat() {
         body: JSON.stringify({ messages: outboundMessages, conversation_id: activeId }),
       });
 
-      if (res.status === 402) { toast.error('AI credits exhausted.'); setSending(false); return; }
-      if (res.status === 429) { toast.error('Rate limit hit — try again shortly.'); setSending(false); return; }
-      if (!res.ok || !res.body) { toast.error('Research Lab request failed'); setSending(false); return; }
+      if (res.status === 402) { toast.error('AI credits exhausted.'); markLastUserFailed(); setSending(false); return; }
+      if (res.status === 429) { toast.error('Rate limit hit — try again shortly.'); markLastUserFailed(); setSending(false); return; }
+      if (!res.ok || !res.body) { toast.error('Research Lab request failed'); markLastUserFailed(); setSending(false); return; }
 
       const newConvId = res.headers.get('x-conversation-id');
+      const effectiveConvId = newConvId || activeId;
       if (newConvId && newConvId !== activeId) setActiveId(newConvId);
 
       setMessages((m) => [...m, { role: 'assistant', content: '' }]);
@@ -407,8 +457,10 @@ export default function Chat() {
         }
       }
       await loadConversations();
+      if (effectiveConvId) await reloadMessages(effectiveConvId);
     } catch (e) {
       toast.error('Network error');
+      markLastUserFailed();
     }
     setSending(false);
   }
@@ -712,7 +764,7 @@ export default function Chat() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.28, ease: 'easeOut' }}
-                    className={'rl-msg ' + m.role}
+                    className={'rl-msg ' + m.role + (m.failed ? ' is-failed' : '')}
                   >
                     {m.role === 'assistant' && (
                       <div className="rl-avatar"><Sparkles size={13} /></div>
@@ -730,8 +782,35 @@ export default function Chat() {
                           {m.content && m.content !== '(image attached)' && (
                             <div className="rl-user-text">{m.content}</div>
                           )}
+                          {m.failed && (
+                            <div className="rl-msg-failed">
+                              <AlertTriangle size={11} /> Failed to send
+                            </div>
+                          )}
                         </>
                       )}
+                      <div className="rl-msg-actions">
+                        {m.failed && m.role === 'user' && (
+                          <button
+                            className="rl-msg-action"
+                            onClick={() => retryMessage(idx)}
+                            title="Retry"
+                            aria-label="Retry message"
+                            disabled={sending}
+                          >
+                            <RotateCcw size={12} />
+                          </button>
+                        )}
+                        <button
+                          className="rl-msg-action"
+                          onClick={() => deleteMessage(idx)}
+                          title="Delete message"
+                          aria-label="Delete message"
+                          disabled={sending}
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
                     </div>
                   </motion.div>
                 ))}

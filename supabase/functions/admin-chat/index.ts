@@ -23,12 +23,12 @@ Deno.serve(async (req) => {
     if (!PERPLEXITY_API_KEY) throw new Error('PERPLEXITY_API_KEY not configured');
 
     const userClient = createClient(supabaseUrl, anonKey, { global: { headers: { Authorization: authHeader } } });
-    const token = authHeader.replace('Bearer ', '');
-    const { data: claims, error: authErr } = await userClient.auth.getClaims(token);
-    if (authErr || !claims?.claims?.sub) {
+    // Use getUser() so the SDK auto-refreshes the session when the access token has expired mid-conversation.
+    const { data: userData, error: authErr } = await userClient.auth.getUser();
+    if (authErr || !userData?.user?.id) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
-    const uid = claims.claims.sub;
+    const uid = userData.user.id;
 
     const admin = createClient(supabaseUrl, serviceKey);
     const { data: roles } = await admin.from('user_roles').select('role').eq('user_id', uid);
