@@ -451,8 +451,6 @@ const TrendReport2026 = () => {
     const sects = document.querySelectorAll('section[id], .trend-card[id]');
     const links = document.querySelectorAll('.sidebar .nav-link');
     let lockedId: string | null = null;
-    let lockUntilScroll = false;
-    let lockScrollY = window.scrollY;
 
     const setActive = (id: string) => {
       links.forEach((l) =>
@@ -465,24 +463,10 @@ const TrendReport2026 = () => {
       const href = a.getAttribute('href') || '';
       if (!href.startsWith('#')) return;
       lockedId = href.slice(1);
-      lockUntilScroll = true;
-      lockScrollY = window.scrollY;
       setActive(lockedId);
     };
     links.forEach((l) => l.addEventListener('click', onClick));
 
-    const onScroll = () => {
-      if (lockUntilScroll && Math.abs(window.scrollY - lockScrollY) > 4) {
-        // user has scrolled away from clicked target — release lock
-        // small delay to let smooth-scroll settle first
-        setTimeout(() => {
-          lockUntilScroll = false;
-          lockedId = null;
-        }, 600);
-        lockUntilScroll = false;
-      }
-    };
-    // arm release after scroll-to completes
     let scrollTimer: number | undefined;
     const onUserScroll = () => {
       if (!lockedId) return;
