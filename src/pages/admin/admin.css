@@ -941,6 +941,21 @@
   --ad-text-2: #6A6A72;
   --ad-text-3: #9A9AA2;
   --ad-text-strong: #0A0A0F;
+  /* Theme-aware semantic tokens — light overrides */
+  --ad-hover-1: rgba(15,15,20,0.035);
+  --ad-hover-2: rgba(15,15,20,0.06);
+  --ad-hover-3: rgba(15,15,20,0.10);
+  --ad-border-soft: rgba(15,15,20,0.08);
+  --ad-border-strong: rgba(15,15,20,0.16);
+  --ad-bubble-bg: rgba(15,15,20,0.05);
+  --ad-composer-bg: rgba(255,255,255,0.92);
+  --ad-composer-fade: linear-gradient(180deg, transparent, rgba(244,244,247,0.9) 35%);
+  --ad-topbar-bg: rgba(255,255,255,0.6);
+  --ad-rl-sidebar-bg: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(248,248,250,0.85));
+  --ad-code-bg: rgba(15,15,20,0.06);
+  --ad-pre-bg: rgba(15,15,20,0.05);
+  --ad-send-bg-disabled: rgba(15,15,20,0.12);
+  --ad-scroll-thumb: rgba(15,15,20,0.18);
   background:
     radial-gradient(900px 500px at 0% -10%, rgba(255,0,105,0.08), transparent 55%),
     radial-gradient(900px 600px at 110% 110%, rgba(173,150,117,0.10), transparent 55%),
