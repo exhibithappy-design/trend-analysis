@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil } from 'lucide-react';
+import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil, Folder, FolderPlus, ChevronRight, FolderOpen, FolderInput } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { AnimatePresence, motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
 
 type Msg = { role: 'user' | 'assistant'; content: string; imageUrl?: string };
-type Conversation = { id: string; title: string; updated_at: string; starred: boolean };
+type Conversation = { id: string; title: string; updated_at: string; starred: boolean; folder_id: string | null };
+type ChatFolder = { id: string; name: string; display_order: number };
 
 const SUGGESTIONS = [
   { title: 'Surface emerging booth formats', sub: 'What experiential formats are gaining traction at major B2B trade shows in 2026?' },
@@ -46,24 +48,59 @@ export default function Chat() {
   const [menuFor, setMenuFor] = useState<string | null>(null);
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState('');
+  const [folders, setFolders] = useState<ChatFolder[]>([]);
+  const [folderMenuFor, setFolderMenuFor] = useState<string | null>(null);
+  const [renamingFolderId, setRenamingFolderId] = useState<string | null>(null);
+  const [folderRenameValue, setFolderRenameValue] = useState('');
+  const [moveSubmenuFor, setMoveSubmenuFor] = useState<string | null>(null);
+  const [collapsedFolders, setCollapsedFolders] = useState<Record<string, boolean>>(() => {
+    if (typeof window === 'undefined') return {};
+    try { return JSON.parse(localStorage.getItem('rl-collapsed-folders') ?? '{}'); } catch { return {}; }
+  });
+  const [dragOverFolderId, setDragOverFolderId] = useState<string | null | 'root'>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const taRef = useRef<HTMLTextAreaElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const starred = useMemo(() => conversations.filter((c) => c.starred), [conversations]);
-  const unstarred = useMemo(() => conversations.filter((c) => !c.starred), [conversations]);
-  const grouped = useMemo(() => groupByDate(unstarred), [unstarred]);
+  const ungroupedUnstarred = useMemo(
+    () => conversations.filter((c) => !c.starred && !c.folder_id),
+    [conversations],
+  );
+  const grouped = useMemo(() => groupByDate(ungroupedUnstarred), [ungroupedUnstarred]);
+  const conversationsByFolder = useMemo(() => {
+    const map = new Map<string, Conversation[]>();
+    for (const c of conversations) {
+      if (c.starred || !c.folder_id) continue;
+      if (!map.has(c.folder_id)) map.set(c.folder_id, []);
+      map.get(c.folder_id)!.push(c);
+    }
+    return map;
+  }, [conversations]);
+
+  useEffect(() => {
+    try { localStorage.setItem('rl-collapsed-folders', JSON.stringify(collapsedFolders)); } catch {}
+  }, [collapsedFolders]);
 
   // Load conversations
   async function loadConversations() {
     if (!user) return;
-    const { data } = await supabase
-      .from('chat_conversations')
-      .select('id, title, updated_at, starred')
-      .eq('user_id', user.id)
-      .order('updated_at', { ascending: false })
-      .limit(200);
-    if (data) setConversations(data as Conversation[]);
+    const [convRes, folderRes] = await Promise.all([
+      supabase
+        .from('chat_conversations')
+        .select('id, title, updated_at, starred, folder_id')
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false })
+        .limit(200),
+      supabase
+        .from('chat_folders')
+        .select('id, name, display_order')
+        .eq('user_id', user.id)
+        .order('display_order', { ascending: true })
+        .order('created_at', { ascending: true }),
+    ]);
+    if (convRes.data) setConversations(convRes.data as Conversation[]);
+    if (folderRes.data) setFolders(folderRes.data as ChatFolder[]);
   }
 
   useEffect(() => { loadConversations(); /* eslint-disable-next-line */ }, [user]);
@@ -142,10 +179,98 @@ export default function Chat() {
 
   useEffect(() => {
     if (!menuFor) return;
-    const onDown = () => setMenuFor(null);
+    const onDown = () => { setMenuFor(null); setMoveSubmenuFor(null); };
     window.addEventListener('click', onDown);
     return () => window.removeEventListener('click', onDown);
   }, [menuFor]);
+
+  useEffect(() => {
+    if (!folderMenuFor) return;
+    const onDown = () => setFolderMenuFor(null);
+    window.addEventListener('click', onDown);
+    return () => window.removeEventListener('click', onDown);
+  }, [folderMenuFor]);
+
+  // ===== Folder actions =====
+  async function createFolder() {
+    if (!user) return;
+    const maxOrder = folders.reduce((m, f) => Math.max(m, f.display_order), -1);
+    const { data, error } = await supabase
+      .from('chat_folders')
+      .insert({ user_id: user.id, name: 'New folder', display_order: maxOrder + 1 })
+      .select('id, name, display_order')
+      .single();
+    if (error || !data) { toast.error('Could not create folder'); return; }
+    setFolders((fs) => [...fs, data as ChatFolder]);
+    setRenamingFolderId(data.id);
+    setFolderRenameValue(data.name);
+  }
+
+  function toggleFolderCollapse(id: string) {
+    setCollapsedFolders((m) => ({ ...m, [id]: !m[id] }));
+  }
+
+  function startFolderRename(f: ChatFolder) {
+    setFolderMenuFor(null);
+    setRenamingFolderId(f.id);
+    setFolderRenameValue(f.name);
+  }
+
+  async function commitFolderRename(id: string) {
+    const value = folderRenameValue.trim();
+    setRenamingFolderId(null);
+    if (!value) return;
+    const prev = folders.find((f) => f.id === id)?.name;
+    if (value === prev) return;
+    setFolders((fs) => fs.map((f) => (f.id === id ? { ...f, name: value } : f)));
+    const { error } = await supabase.from('chat_folders').update({ name: value }).eq('id', id);
+    if (error) {
+      if (prev) setFolders((fs) => fs.map((f) => (f.id === id ? { ...f, name: prev } : f)));
+      toast.error('Rename failed');
+    }
+  }
+
+  async function deleteFolder(id: string) {
+    const f = folders.find((x) => x.id === id);
+    if (!f) return;
+    if (!confirm(`Delete folder "${f.name}"? Its threads will move back to ungrouped.`)) return;
+    setFolderMenuFor(null);
+    const { error } = await supabase.from('chat_folders').delete().eq('id', id);
+    if (error) { toast.error('Could not delete folder'); return; }
+    setFolders((fs) => fs.filter((f) => f.id !== id));
+    setConversations((cs) => cs.map((c) => (c.folder_id === id ? { ...c, folder_id: null } : c)));
+  }
+
+  async function moveThreadToFolder(threadId: string, folderId: string | null) {
+    const conv = conversations.find((c) => c.id === threadId);
+    if (!conv || conv.folder_id === folderId) { setMenuFor(null); setMoveSubmenuFor(null); return; }
+    const prev = conv.folder_id;
+    setMenuFor(null);
+    setMoveSubmenuFor(null);
+    setConversations((cs) => cs.map((c) => (c.id === threadId ? { ...c, folder_id: folderId } : c)));
+    const { error } = await supabase.from('chat_conversations').update({ folder_id: folderId }).eq('id', threadId);
+    if (error) {
+      setConversations((cs) => cs.map((c) => (c.id === threadId ? { ...c, folder_id: prev } : c)));
+      toast.error('Could not move thread');
+    }
+  }
+
+  function onThreadDragStart(e: React.DragEvent, threadId: string) {
+    e.dataTransfer.setData('application/x-rl-thread', threadId);
+    e.dataTransfer.effectAllowed = 'move';
+  }
+  function onFolderDragOver(e: React.DragEvent, folderId: string | null) {
+    if (!e.dataTransfer.types.includes('application/x-rl-thread')) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverFolderId(folderId ?? 'root');
+  }
+  function onFolderDrop(e: React.DragEvent, folderId: string | null) {
+    e.preventDefault();
+    const id = e.dataTransfer.getData('application/x-rl-thread');
+    setDragOverFolderId(null);
+    if (id) moveThreadToFolder(id, folderId);
+  }
 
   async function readFileAsDataUrl(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -309,6 +434,8 @@ export default function Chat() {
       <div
         key={c.id}
         className={'rl-thread' + (activeId === c.id ? ' active' : '') + (c.starred ? ' is-starred' : '')}
+        draggable={!isRenaming}
+        onDragStart={(e) => onThreadDragStart(e, c.id)}
         onClick={() => !isRenaming && setActiveId(c.id)}
         onContextMenu={(e) => { e.preventDefault(); startRename(c); }}
       >
@@ -353,6 +480,39 @@ export default function Chat() {
             <button className="rl-pop-item" onClick={() => toggleStar(c.id)}>
               <Star size={12} /> {c.starred ? 'Unstar' : 'Star'}
             </button>
+            <button
+              className="rl-pop-item"
+              onClick={(e) => { e.stopPropagation(); setMoveSubmenuFor(moveSubmenuFor === c.id ? null : c.id); }}
+            >
+              <FolderInput size={12} /> Move to folder…
+            </button>
+            {moveSubmenuFor === c.id && (
+              <div className="rl-pop-submenu">
+                {c.folder_id && (
+                  <button className="rl-pop-item" onClick={() => moveThreadToFolder(c.id, null)}>
+                    <FolderOpen size={12} /> Remove from folder
+                  </button>
+                )}
+                {folders.length === 0 ? (
+                  <div className="rl-pop-empty">No folders yet</div>
+                ) : (
+                  folders.map((f) => (
+                    <button
+                      key={f.id}
+                      className={'rl-pop-item' + (c.folder_id === f.id ? ' is-current' : '')}
+                      disabled={c.folder_id === f.id}
+                      onClick={() => moveThreadToFolder(c.id, f.id)}
+                    >
+                      <Folder size={12} /> {f.name}
+                    </button>
+                  ))
+                )}
+                <div className="rl-pop-sep" />
+                <button className="rl-pop-item" onClick={() => { setMenuFor(null); setMoveSubmenuFor(null); createFolder(); }}>
+                  <FolderPlus size={12} /> New folder…
+                </button>
+              </div>
+            )}
             <button className="rl-pop-item danger" onClick={() => { setMenuFor(null); deleteConversation(c.id); }}>
               <Trash2 size={12} /> Delete
             </button>
@@ -362,9 +522,83 @@ export default function Chat() {
     );
   };
 
+  const renderFolder = (f: ChatFolder) => {
+    const isRenamingF = renamingFolderId === f.id;
+    const collapsed = !!collapsedFolders[f.id];
+    const list = conversationsByFolder.get(f.id) ?? [];
+    return (
+      <div
+        key={f.id}
+        className={'rl-folder' + (dragOverFolderId === f.id ? ' is-drop-target' : '')}
+        onDragOver={(e) => onFolderDragOver(e, f.id)}
+        onDragLeave={() => setDragOverFolderId(null)}
+        onDrop={(e) => onFolderDrop(e, f.id)}
+      >
+        <div
+          className="rl-folder-head"
+          onClick={() => !isRenamingF && toggleFolderCollapse(f.id)}
+          onContextMenu={(e) => { e.preventDefault(); startFolderRename(f); }}
+        >
+          <ChevronRight size={13} className={'rl-folder-chev' + (collapsed ? '' : ' open')} />
+          {collapsed ? <Folder size={13} className="rl-folder-ico" /> : <FolderOpen size={13} className="rl-folder-ico" />}
+          {isRenamingF ? (
+            <input
+              autoFocus
+              className="rl-thread-rename"
+              value={folderRenameValue}
+              onChange={(e) => setFolderRenameValue(e.target.value)}
+              onBlur={() => commitFolderRename(f.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') { e.preventDefault(); commitFolderRename(f.id); }
+                if (e.key === 'Escape') { e.preventDefault(); setRenamingFolderId(null); }
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <span className="rl-folder-name">{f.name}</span>
+          )}
+          <span className="rl-folder-count">{list.length}</span>
+          <button
+            className="rl-thread-menu"
+            onClick={(e) => { e.stopPropagation(); setFolderMenuFor(folderMenuFor === f.id ? null : f.id); }}
+            title="Folder actions"
+            aria-label="Folder actions"
+          >
+            <MoreHorizontal size={14} />
+          </button>
+          {folderMenuFor === f.id && (
+            <div className="rl-thread-popover" onClick={(e) => e.stopPropagation()}>
+              <button className="rl-pop-item" onClick={() => startFolderRename(f)}>
+                <Pencil size={12} /> Rename
+              </button>
+              <button className="rl-pop-item danger" onClick={() => deleteFolder(f.id)}>
+                <Trash2 size={12} /> Delete folder
+              </button>
+            </div>
+          )}
+        </div>
+        {!collapsed && (
+          <div className="rl-folder-body">
+            {list.length === 0 ? (
+              <div className="rl-folder-empty">Drop threads here</div>
+            ) : (
+              list.map(renderThread)
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const groupBlock = (label: string, list: Conversation[]) =>
     list.length === 0 ? null : (
-      <div className="rl-group" key={label}>
+      <div
+        className={'rl-group' + (dragOverFolderId === 'root' ? ' is-drop-target' : '')}
+        key={label}
+        onDragOver={(e) => onFolderDragOver(e, null)}
+        onDragLeave={() => setDragOverFolderId(null)}
+        onDrop={(e) => onFolderDrop(e, null)}
+      >
         <div className="rl-group-label">{label}</div>
         {list.map(renderThread)}
       </div>
@@ -387,12 +621,15 @@ export default function Chat() {
                 <button className="rl-new" onClick={newConversation}>
                   <Plus size={14} /> New thread
                 </button>
+                <button className="rl-icon-btn" onClick={createFolder} title="New folder" aria-label="New folder">
+                  <FolderPlus size={15} />
+                </button>
                 <button className="rl-icon-btn" onClick={() => setSidebarOpen(false)} title="Collapse">
                   <PanelLeftClose size={15} />
                 </button>
               </div>
               <div className="rl-threads">
-                {conversations.length === 0 ? (
+                {conversations.length === 0 && folders.length === 0 ? (
                   <div className="rl-threads-empty">No saved threads yet.</div>
                 ) : (
                   <>
@@ -403,6 +640,12 @@ export default function Chat() {
                           Starred
                         </div>
                         {starred.map(renderThread)}
+                      </div>
+                    )}
+                    {folders.length > 0 && (
+                      <div className="rl-group" key="folders">
+                        <div className="rl-group-label">Folders</div>
+                        {folders.map(renderFolder)}
                       </div>
                     )}
                     {groupBlock('Today', grouped.today)}
@@ -476,7 +719,9 @@ export default function Chat() {
                     )}
                     <div className="rl-bubble">
                       {m.role === 'assistant' ? (
-                        <div className="rl-md"><ReactMarkdown>{m.content || '…'}</ReactMarkdown></div>
+                        <div className="rl-md">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content || '…'}</ReactMarkdown>
+                        </div>
                       ) : (
                         <>
                           {m.imageUrl && (
