@@ -1,4 +1,10 @@
-/* Admin dashboard — scoped dark theme. Applied via [data-admin] wrapper. */
+/* Admin dashboard — scoped theme. Applied via [data-admin] wrapper. */
+
+/* Natom Pro — admin headings */
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/91d67def-3ff0-4cd1-bbbe-a29ca6b07505/NatomPro-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/bd25900c-935c-4e62-a80b-8d61f8f4f7b0/NatomPro-Medium.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/13f33e09-82b3-4f47-9636-5feb8a43db4b/NatomPro-Bold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/afc0ab6c-2c87-43c4-a793-d92fbdb91211/NatomPro-Black.otf') format('opentype');font-weight:900;font-display:swap}
 
 [data-admin] {
   --ad-bg: #000000;
@@ -37,7 +43,7 @@
   position: sticky; top: 0; height: 100vh;
 }
 .ad-brand {
-  padding: 6px 16px 16px; border-bottom: 1px solid var(--ad-border); margin-bottom: 14px;
+  padding: 6px 16px 18px; margin-bottom: 10px;
   display: flex; align-items: center;
 }
 .ad-brand-logo { display: block; height: 32px; width: auto; max-width: 100%; }
@@ -812,3 +818,267 @@
 @keyframes rl-spin {
   to { transform: rotate(360deg); }
 }
+
+/* ================================================================
+   NATOM PRO HEADINGS · GLASSMORPHISM · LIGHT/DARK THEME
+   ================================================================ */
+
+[data-admin] h1, [data-admin] h2, [data-admin] h3, [data-admin] h4,
+[data-admin] .ad-page-title,
+[data-admin] .detail-strip h1,
+[data-admin] .metric-value,
+[data-admin] .rl-empty-title,
+[data-admin] .rl-topbar-title,
+[data-admin] .ad-empty-title,
+[data-admin] .lib-title,
+[data-admin] .ad-insight-title,
+[data-admin] .ad-chat-empty-title {
+  font-family: 'Natom Pro', 'Poppins', system-ui, sans-serif;
+  letter-spacing: -0.015em;
+}
+
+/* Sidebar theme toggle button */
+.ad-theme-toggle {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; margin-top: 2px;
+  background: transparent; border: none; border-radius: 6px;
+  color: var(--ad-text-3); font-size: 12.5px; font-weight: 500; font-family: inherit;
+  text-align: left; cursor: pointer; width: 100%;
+  transition: color 140ms, background 140ms;
+}
+.ad-theme-toggle svg { opacity: 0.7; transition: opacity 140ms; }
+.ad-theme-toggle:hover { color: var(--ad-text-strong); background: rgba(255,255,255,0.04); }
+.ad-theme-toggle:hover svg { opacity: 1; }
+
+/* ============ MAIN VIEWPORT — glassy backdrop, themed ============ */
+
+[data-admin] .ad-main {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
+  /* glass surface tokens that override the sidebar dark surfaces */
+  --ad-surface: rgba(22,22,26,0.55);
+  --ad-surface-2: rgba(30,30,36,0.55);
+  --ad-border: rgba(255,255,255,0.08);
+}
+
+/* Dark theme backdrop — layered radial color */
+[data-admin] .ad-main[data-theme="dark"] {
+  background:
+    radial-gradient(900px 500px at 0% -10%, rgba(255,0,105,0.10), transparent 55%),
+    radial-gradient(900px 600px at 110% 110%, rgba(173,150,117,0.07), transparent 55%),
+    radial-gradient(600px 400px at 50% 40%, rgba(43,213,118,0.04), transparent 70%),
+    #08080A;
+  color: #E6E6EA;
+}
+
+/* Light theme — sidebar stays dark, this viewport flips */
+[data-admin] .ad-main[data-theme="light"] {
+  --ad-bg: #F4F4F7;
+  --ad-surface: rgba(255,255,255,0.72);
+  --ad-surface-2: rgba(255,255,255,0.55);
+  --ad-border: rgba(15,15,20,0.08);
+  --ad-text: #3A3A42;
+  --ad-text-2: #6A6A72;
+  --ad-text-3: #9A9AA2;
+  --ad-text-strong: #0A0A0F;
+  background:
+    radial-gradient(900px 500px at 0% -10%, rgba(255,0,105,0.08), transparent 55%),
+    radial-gradient(900px 600px at 110% 110%, rgba(173,150,117,0.10), transparent 55%),
+    radial-gradient(600px 400px at 50% 40%, rgba(43,213,118,0.05), transparent 70%),
+    #F4F4F7;
+  color: #2A2A30;
+}
+[data-admin] .ad-main[data-theme="light"] .ad-input,
+[data-admin] .ad-main[data-theme="light"] .ad-select,
+[data-admin] .ad-main[data-theme="light"] .note-input {
+  background: rgba(255,255,255,0.6); color: #0A0A0F;
+  border-color: rgba(15,15,20,0.1);
+}
+[data-admin] .ad-main[data-theme="light"] .ad-table thead th,
+[data-admin] .ad-main[data-theme="light"] .dist-matrix th,
+[data-admin] .ad-main[data-theme="light"] .dist-matrix td.row-head {
+  background: rgba(255,255,255,0.45);
+}
+
+/* ============ GLASS CARDS ============ */
+
+[data-admin] .ad-main .ad-card,
+[data-admin] .ad-main .ad-table-wrap,
+[data-admin] .ad-main .dist-matrix,
+[data-admin] .ad-main .ad-modal,
+[data-admin] .ad-main .card-int-group {
+  background: var(--ad-surface);
+  border: 1px solid var(--ad-border);
+  border-radius: 16px;
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.05) inset,
+    0 20px 40px -28px rgba(0,0,0,0.55);
+  position: relative;
+  overflow: hidden;
+}
+[data-admin] .ad-main[data-theme="light"] .ad-card,
+[data-admin] .ad-main[data-theme="light"] .ad-table-wrap,
+[data-admin] .ad-main[data-theme="light"] .dist-matrix,
+[data-admin] .ad-main[data-theme="light"] .card-int-group {
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.9) inset,
+    0 18px 36px -28px rgba(15,15,30,0.22);
+}
+
+/* Subtle highlight on the top edge of every glass card */
+[data-admin] .ad-main .ad-card::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(155deg, rgba(255,255,255,0.07), transparent 38%);
+  border-radius: inherit; mix-blend-mode: overlay;
+}
+
+/* ============ DASHBOARD COMMAND CENTER POLISH ============ */
+
+[data-admin] .ad-main .detail-strip {
+  padding: 22px 24px;
+  border-radius: 18px;
+  border: 1px solid var(--ad-border);
+  background:
+    linear-gradient(135deg, rgba(255,0,105,0.06), transparent 50%),
+    var(--ad-surface);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  margin-bottom: 22px;
+}
+[data-admin] .ad-main .detail-strip h1 {
+  font-family: 'Natom Pro', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  color: var(--ad-text-strong);
+  margin: 4px 0 6px;
+}
+
+/* Metric cards — taller, gradient sheen, big Natom Pro number */
+[data-admin] .ad-main .ad-grid-6 .ad-card {
+  padding: 18px 20px;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,0.04), transparent 60%),
+    var(--ad-surface);
+  border-radius: 14px;
+  transition: transform 240ms cubic-bezier(.2,.7,.2,1), box-shadow 240ms;
+}
+[data-admin] .ad-main .ad-grid-6 .ad-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 28px 50px -28px rgba(255,0,105,0.25);
+}
+[data-admin] .ad-main .metric-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ad-text-3);
+  font-weight: 600;
+}
+[data-admin] .ad-main .metric-value {
+  font-family: 'Natom Pro', sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin-top: 10px;
+  color: var(--ad-text-strong);
+  background: linear-gradient(180deg, var(--ad-text-strong), var(--ad-text-strong) 60%, rgba(255,0,105,0.85));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+[data-admin] .ad-main[data-theme="light"] .metric-value {
+  background: linear-gradient(180deg, #0A0A0F, #1A1A20 55%, #FF0069);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+[data-admin] .ad-main .metric-delta { margin-top: 8px; font-size: 11.5px; }
+
+/* Section engagement — refined bar with gradient + glow */
+[data-admin] .ad-main .section-title {
+  font-family: 'Natom Pro', sans-serif;
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--ad-text-strong);
+  margin: 0 0 18px;
+}
+[data-admin] .ad-main .sec-row {
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--ad-border);
+  border-radius: 8px;
+  transition: background 160ms;
+}
+[data-admin] .ad-main .sec-row:hover {
+  background: rgba(255,255,255,0.03);
+}
+[data-admin] .ad-main[data-theme="light"] .sec-row:hover {
+  background: rgba(15,15,30,0.03);
+}
+[data-admin] .ad-main .sec-bar-wrap {
+  background: rgba(255,255,255,0.06);
+  height: 8px; border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25) inset;
+}
+[data-admin] .ad-main[data-theme="light"] .sec-bar-wrap {
+  background: rgba(15,15,30,0.06);
+  box-shadow: 0 1px 2px rgba(15,15,30,0.08) inset;
+}
+[data-admin] .ad-main .sec-bar {
+  height: 100%; border-radius: 5px;
+  background: linear-gradient(90deg, #FF0069, #FF6B9B) !important;
+  box-shadow: 0 0 18px rgba(255,0,105,0.45);
+  transition: width 380ms cubic-bezier(.2,.7,.2,1);
+}
+[data-admin] .ad-main .sec-name {
+  font-family: 'Natom Pro', sans-serif;
+  font-weight: 500; font-size: 14px;
+  color: var(--ad-text-strong);
+  letter-spacing: -0.005em;
+}
+[data-admin] .ad-main .sec-stat {
+  font-family: 'Natom Pro', sans-serif;
+  font-weight: 600; font-size: 14px;
+  color: var(--ad-text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Distribution snapshot card overrides — nested glass cards smaller */
+[data-admin] .ad-main .ad-card .ad-card {
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  box-shadow: none;
+}
+[data-admin] .ad-main[data-theme="light"] .ad-card .ad-card {
+  background: rgba(255,255,255,0.5);
+}
+
+/* Page title (.ad-page-title) */
+[data-admin] .ad-main .ad-page-title {
+  font-family: 'Natom Pro', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  color: var(--ad-text-strong);
+}
+
+/* Inputs/selects/buttons keep glass-friendly look in dark */
+[data-admin] .ad-main .ad-select,
+[data-admin] .ad-main .ad-input {
+  background: var(--ad-surface);
+  border-color: var(--ad-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Soft "live" pulse on the badge in the detail strip */
+@keyframes ad-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(43,213,118,0.55); }
+  50% { box-shadow: 0 0 0 6px rgba(43,213,118,0); }
+}
+[data-admin] .ad-main .ad-badge.live { animation: ad-pulse 2.4s ease-out infinite; }

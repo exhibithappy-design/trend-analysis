@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Send, Settings, LogOut, MessageSquare, LayoutDashboard } from 'lucide-react';
+import { Send, Settings, LogOut, MessageSquare, LayoutDashboard, Sun, Moon } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
@@ -17,6 +17,13 @@ function NavRow({ to, icon, label, end }: { to: string; icon: ReactNode; label: 
 export default function AdminLayout() {
   const { loading, isAuthorized, user, role, signOut } = useAdminAuth();
   const location = useLocation();
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window === 'undefined') return 'dark';
+    return (localStorage.getItem('ad-theme') as 'light' | 'dark') || 'dark';
+  });
+  useEffect(() => {
+    localStorage.setItem('ad-theme', theme);
+  }, [theme]);
 
   if (loading) {
     return (
@@ -66,13 +73,22 @@ export default function AdminLayout() {
           <div className="ad-sidebar-footer">
             <div className="ad-user-chip">{role === 'admin' ? 'Admin' : 'Viewer'}</div>
             <div className="ad-user-email">{user.email}</div>
+            <button
+              className="ad-theme-toggle"
+              onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+              <span>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</span>
+            </button>
             <button className="ad-signout" onClick={signOut}>
               <LogOut size={14} />
               <span>Sign out</span>
             </button>
           </div>
         </aside>
-        <main className="ad-main">
+        <main className="ad-main" data-theme={theme}>
           <Outlet />
         </main>
       </div>
