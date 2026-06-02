@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker } from 'lucide-react';
+import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { AnimatePresence, motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
 
-type Msg = { role: 'user' | 'assistant'; content: string };
+type Msg = { role: 'user' | 'assistant'; content: string; imageUrl?: string };
 type Conversation = { id: string; title: string; updated_at: string };
 
 const SUGGESTIONS = [
@@ -40,8 +40,12 @@ export default function Chat() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [attached, setAttached] = useState<{ dataUrl: string; name: string } | null>(null);
+  const [dragOver, setDragOver] = useState(false);
+  const [analyzingImage, setAnalyzingImage] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const taRef = useRef<HTMLTextAreaElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const grouped = useMemo(() => groupByDate(conversations), [conversations]);
 
@@ -88,6 +92,7 @@ export default function Chat() {
     setActiveId(null);
     setMessages([]);
     setInput('');
+    setAttached(null);
     setTimeout(() => taRef.current?.focus(), 0);
   }
 
@@ -98,20 +103,98 @@ export default function Chat() {
     if (activeId === id) newConversation();
   }
 
+  async function readFileAsDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result as string);
+      r.onerror = () => reject(r.error);
+      r.readAsDataURL(file);
+    });
+  }
+
+  async function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) { toast.error('Only image files are supported'); return; }
+    if (file.size > 8 * 1024 * 1024) { toast.error('Image must be under 8 MB'); return; }
+    try {
+      const dataUrl = await readFileAsDataUrl(file);
+      setAttached({ dataUrl, name: file.name });
+    } catch {
+      toast.error('Could not read image');
+    }
+  }
+
+  function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (f) handleFile(f);
+    e.target.value = '';
+  }
+
+  function onDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setDragOver(false);
+    const f = e.dataTransfer.files?.[0];
+    if (f) handleFile(f);
+  }
+
   async function send(text: string) {
-    if (!text.trim() || sending) return;
-    const userMsg: Msg = { role: 'user', content: text.trim() };
+    if ((!text.trim() && !attached) || sending) return;
+    const trimmed = text.trim();
+    const pendingImage = attached;
+    setAttached(null);
+
+    // Optimistic user message (with thumbnail if image attached)
+    const userMsg: Msg = {
+      role: 'user',
+      content: trimmed || (pendingImage ? '(image attached)' : ''),
+      imageUrl: pendingImage?.dataUrl,
+    };
     const next = [...messages, userMsg];
     setMessages(next);
     setInput('');
     setSending(true);
 
     try {
+      // If image attached, get vision description first
+      let visionDescription: string | null = null;
+      if (pendingImage) {
+        setAnalyzingImage(true);
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          const vRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/vision-describe`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
+            body: JSON.stringify({ image_data_url: pendingImage.dataUrl }),
+          });
+          if (!vRes.ok) {
+            toast.error('Image analysis failed');
+            setAnalyzingImage(false);
+            setSending(false);
+            return;
+          }
+          const vJson = await vRes.json();
+          visionDescription = vJson.description as string;
+        } finally {
+          setAnalyzingImage(false);
+        }
+      }
+
+      // Build outbound messages — replace last user content with description + question for Perplexity
+      const outboundMessages = next.map((m, i) => {
+        if (i !== next.length - 1) return { role: m.role, content: m.content };
+        if (visionDescription) {
+          const body = trimmed
+            ? `${trimmed}\n\n[Attached image description]:\n${visionDescription}`
+            : `Research this image and align it to a North American trade show trend or activation pattern.\n\n[Attached image description]:\n${visionDescription}`;
+          return { role: 'user' as const, content: body };
+        }
+        return { role: m.role, content: m.content };
+      });
+
       const { data: { session } } = await supabase.auth.getSession();
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ messages: next, conversation_id: activeId }),
+        body: JSON.stringify({ messages: outboundMessages, conversation_id: activeId }),
       });
 
       if (res.status === 402) { toast.error('AI credits exhausted.'); setSending(false); return; }
@@ -165,6 +248,14 @@ export default function Chat() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       send(input);
+    }
+  }
+
+  function onPaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+    const item = Array.from(e.clipboardData.items).find((i) => i.type.startsWith('image/'));
+    if (item) {
+      const file = item.getAsFile();
+      if (file) { e.preventDefault(); handleFile(file); }
     }
   }
 
@@ -250,7 +341,7 @@ export default function Chat() {
                 <div className="rl-empty-logo"><Sparkles size={22} /></div>
                 <h1 className="rl-empty-title">What are we researching today?</h1>
                 <p className="rl-empty-sub">
-                  Explore trade show trends, pressure-test ideas, and save promising candidates for future reports.
+                  Explore North American trade show trends, pressure-test ideas, or drop an image to align it to a trend.
                 </p>
                 <div className="rl-suggests">
                   {SUGGESTIONS.map((s, i) => (
@@ -287,7 +378,14 @@ export default function Chat() {
                       {m.role === 'assistant' ? (
                         <div className="rl-md"><ReactMarkdown>{m.content || '…'}</ReactMarkdown></div>
                       ) : (
-                        <div className="rl-user-text">{m.content}</div>
+                        <>
+                          {m.imageUrl && (
+                            <img src={m.imageUrl} alt="attached" className="rl-msg-image" />
+                          )}
+                          {m.content && m.content !== '(image attached)' && (
+                            <div className="rl-user-text">{m.content}</div>
+                          )}
+                        </>
                       )}
                     </div>
                   </motion.div>
@@ -298,28 +396,62 @@ export default function Chat() {
           )}
         </div>
 
-        <div className="rl-composer-wrap">
+        <div
+          className={'rl-composer-wrap' + (dragOver ? ' drag' : '')}
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={onDrop}
+        >
+          {dragOver && <div className="rl-drop-overlay"><ImageIcon size={28} /><span>Drop image to analyze</span></div>}
           <div className="rl-composer">
+            {attached && (
+              <div className="rl-attached">
+                <img src={attached.dataUrl} alt={attached.name} />
+                <button className="rl-attached-x" onClick={() => setAttached(null)} aria-label="Remove image">
+                  <X size={12} />
+                </button>
+              </div>
+            )}
+            <button
+              type="button"
+              className="rl-attach-btn"
+              onClick={() => fileRef.current?.click()}
+              disabled={sending}
+              title="Attach image"
+              aria-label="Attach image"
+            >
+              {analyzingImage ? <Loader2 size={16} className="rl-spin" /> : <Paperclip size={16} />}
+            </button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              onChange={onPickFile}
+              style={{ display: 'none' }}
+            />
             <textarea
               ref={taRef}
               className="rl-textarea"
-              placeholder="Ask the Research Lab anything about trade show trends…"
+              placeholder={attached ? 'Add context for this image, or just send…' : 'Ask about NA trade show trends, or drop an image…'}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKey}
+              onPaste={onPaste}
               rows={1}
               disabled={sending}
             />
             <button
               className="rl-send"
               onClick={() => send(input)}
-              disabled={sending || !input.trim()}
+              disabled={sending || (!input.trim() && !attached)}
               aria-label="Send"
             >
               <ArrowUp size={16} />
             </button>
           </div>
-          <div className="rl-hint">Enter to send · Shift + Enter for newline</div>
+          <div className="rl-hint">
+            {analyzingImage ? 'Analyzing image…' : 'Enter to send · Shift + Enter for newline · Drop or paste images'}
+          </div>
         </div>
       </div>
     </div>
