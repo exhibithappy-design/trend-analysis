@@ -41,6 +41,15 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'messages required' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
+    // Sanitize messages: only allow user/assistant roles, cap count and length to prevent prompt injection / abuse
+    const safeMessages = (messages as any[])
+      .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+      .slice(-40)
+      .map((m) => ({ role: m.role, content: String(m.content).slice(0, 8000) }));
+    if (safeMessages.length === 0) {
+      return new Response(JSON.stringify({ error: 'no valid messages' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
     const systemPrompt = `You are the Trend Research Lab assistant for ExhibitHappy — a senior analyst of the NORTH AMERICAN trade show and B2B exhibitor market, with live web access via Perplexity.
 
 Scope (strict):
@@ -61,7 +70,7 @@ Guidelines:
 
     // Ensure conversation exists & ownership
     let convId: string | null = conversation_id ?? null;
-    const lastUser = [...messages].reverse().find((m: any) => m.role === 'user');
+    const lastUser = [...safeMessages].reverse().find((m) => m.role === 'user');
     if (convId) {
       const { data: conv } = await admin.from('chat_conversations').select('id, user_id').eq('id', convId).maybeSingle();
       if (!conv || conv.user_id !== uid) convId = null;
@@ -83,7 +92,7 @@ Guidelines:
       headers: { Authorization: `Bearer ${PERPLEXITY_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'sonar',
-        messages: [{ role: 'system', content: systemPrompt }, ...messages],
+        messages: [{ role: 'system', content: systemPrompt }, ...safeMessages],
         stream: true,
         return_citations: true,
       }),
