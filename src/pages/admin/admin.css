@@ -1169,3 +1169,24 @@
 [data-admin] .ad-main[data-theme="light"] .ad-select-opt:hover { color: #0A0A0F; }
 [data-admin] .ad-select-opt.selected { color: var(--ad-pink); }
 [data-admin] .ad-select-opt + .ad-select-opt { margin-top: 2px; }
+
+/* Mobile reflow for dashboard widgets */
+@media (max-width: 700px) {
+  [data-admin] .sec-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "name stat"
+      "bar bar"
+      "sub heat";
+    row-gap: 6px;
+  }
+  [data-admin] .sec-row > .sec-name { grid-area: name; }
+  [data-admin] .sec-row > .sec-bar-wrap { grid-area: bar; }
+  [data-admin] .sec-row > .sec-stat { grid-area: stat; text-align: right; }
+  [data-admin] .sec-row > .sec-stat-sub { grid-area: sub; }
+  [data-admin] .sec-row > .sec-heat { grid-area: heat; justify-self: end; }
+  .donut-wrap { flex-direction: column; align-items: stretch; }
+  .ad-card { padding: 16px; }
+  .detail-strip h1 { font-size: 20px; }
+  .ad-form-row { grid-template-columns: 1fr; }
+}
