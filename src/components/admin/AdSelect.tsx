@@ -68,13 +68,14 @@ export function AdSelect({ value, onChange, options, className = '', placeholder
         <ChevronDown size={14} className="ad-select-chev" />
       </button>
       {open && pos && createPortal(
-        <div
-          ref={menuRef}
-          className="ad-select-menu ad-select-menu-portal"
-          role="listbox"
-          style={{ position: 'fixed', top: pos.top, left: pos.left, minWidth: pos.width, zIndex: 9999 }}
-        >
-          {options.map((opt) => {
+        <div data-admin style={{ position: 'fixed', top: pos.top, left: pos.left, minWidth: pos.width, zIndex: 9999 }}>
+          <div
+            ref={menuRef}
+            className="ad-select-menu ad-select-menu-portal"
+            role="listbox"
+            style={{ position: 'static', display: 'flex', flexDirection: 'column' }}
+          >
+            {options.map((opt) => {
             const sel = opt.value === value;
             return (
               <button
@@ -89,7 +90,8 @@ export function AdSelect({ value, onChange, options, className = '', placeholder
                 {sel && <Check size={13} />}
               </button>
             );
-          })}
+            })}
+          </div>
         </div>,
         document.body
       )}
