@@ -231,11 +231,7 @@
     0 1px 0 rgba(255,255,255,0.08) inset;
   position: relative;
 }
-.ad-glass::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: linear-gradient(145deg, rgba(255,255,255,0.12), transparent 40%);
-  opacity: 0.6; mix-blend-mode: overlay;
-}
+/* glare highlight removed */
 .ad-login h1 { font-size: 22px; color: var(--ad-text-strong); font-weight: 700; margin: 0 0 8px; letter-spacing: -0.01em; position: relative; }
 .ad-login p { font-size: 13px; color: var(--ad-text-2); margin: 0 0 24px; line-height: 1.6; position: relative; }
 .ad-login form { display: flex; flex-direction: column; gap: 12px; position: relative; }
@@ -928,12 +924,7 @@
     0 18px 36px -28px rgba(15,15,30,0.22);
 }
 
-/* Subtle highlight on the top edge of every glass card */
-[data-admin] .ad-main .ad-card::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(155deg, rgba(255,255,255,0.07), transparent 38%);
-  border-radius: inherit; mix-blend-mode: overlay;
-}
+/* glare highlight removed */
 
 /* ============ DASHBOARD COMMAND CENTER POLISH ============ */
 
@@ -986,16 +977,6 @@
   line-height: 1.05;
   margin-top: 10px;
   color: var(--ad-text-strong);
-  background: linear-gradient(180deg, var(--ad-text-strong), var(--ad-text-strong) 60%, rgba(255,0,105,0.85));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-[data-admin] .ad-main[data-theme="light"] .metric-value {
-  background: linear-gradient(180deg, #0A0A0F, #1A1A20 55%, #FF0069);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 [data-admin] .ad-main .metric-delta { margin-top: 8px; font-size: 11.5px; }
 
