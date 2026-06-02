@@ -433,6 +433,8 @@ export default function Chat() {
       <div
         key={c.id}
         className={'rl-thread' + (activeId === c.id ? ' active' : '') + (c.starred ? ' is-starred' : '')}
+        draggable={!isRenaming}
+        onDragStart={(e) => onThreadDragStart(e, c.id)}
         onClick={() => !isRenaming && setActiveId(c.id)}
         onContextMenu={(e) => { e.preventDefault(); startRename(c); }}
       >
@@ -477,6 +479,39 @@ export default function Chat() {
             <button className="rl-pop-item" onClick={() => toggleStar(c.id)}>
               <Star size={12} /> {c.starred ? 'Unstar' : 'Star'}
             </button>
+            <button
+              className="rl-pop-item"
+              onClick={(e) => { e.stopPropagation(); setMoveSubmenuFor(moveSubmenuFor === c.id ? null : c.id); }}
+            >
+              <FolderInput size={12} /> Move to folder…
+            </button>
+            {moveSubmenuFor === c.id && (
+              <div className="rl-pop-submenu">
+                {c.folder_id && (
+                  <button className="rl-pop-item" onClick={() => moveThreadToFolder(c.id, null)}>
+                    <FolderOpen size={12} /> Remove from folder
+                  </button>
+                )}
+                {folders.length === 0 ? (
+                  <div className="rl-pop-empty">No folders yet</div>
+                ) : (
+                  folders.map((f) => (
+                    <button
+                      key={f.id}
+                      className={'rl-pop-item' + (c.folder_id === f.id ? ' is-current' : '')}
+                      disabled={c.folder_id === f.id}
+                      onClick={() => moveThreadToFolder(c.id, f.id)}
+                    >
+                      <Folder size={12} /> {f.name}
+                    </button>
+                  ))
+                )}
+                <div className="rl-pop-sep" />
+                <button className="rl-pop-item" onClick={() => { setMenuFor(null); setMoveSubmenuFor(null); createFolder(); }}>
+                  <FolderPlus size={12} /> New folder…
+                </button>
+              </div>
+            )}
             <button className="rl-pop-item danger" onClick={() => { setMenuFor(null); deleteConversation(c.id); }}>
               <Trash2 size={12} /> Delete
             </button>
@@ -486,9 +521,83 @@ export default function Chat() {
     );
   };
 
+  const renderFolder = (f: ChatFolder) => {
+    const isRenamingF = renamingFolderId === f.id;
+    const collapsed = !!collapsedFolders[f.id];
+    const list = conversationsByFolder.get(f.id) ?? [];
+    return (
+      <div
+        key={f.id}
+        className={'rl-folder' + (dragOverFolderId === f.id ? ' is-drop-target' : '')}
+        onDragOver={(e) => onFolderDragOver(e, f.id)}
+        onDragLeave={() => setDragOverFolderId(null)}
+        onDrop={(e) => onFolderDrop(e, f.id)}
+      >
+        <div
+          className="rl-folder-head"
+          onClick={() => !isRenamingF && toggleFolderCollapse(f.id)}
+          onContextMenu={(e) => { e.preventDefault(); startFolderRename(f); }}
+        >
+          <ChevronRight size={13} className={'rl-folder-chev' + (collapsed ? '' : ' open')} />
+          {collapsed ? <Folder size={13} className="rl-folder-ico" /> : <FolderOpen size={13} className="rl-folder-ico" />}
+          {isRenamingF ? (
+            <input
+              autoFocus
+              className="rl-thread-rename"
+              value={folderRenameValue}
+              onChange={(e) => setFolderRenameValue(e.target.value)}
+              onBlur={() => commitFolderRename(f.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') { e.preventDefault(); commitFolderRename(f.id); }
+                if (e.key === 'Escape') { e.preventDefault(); setRenamingFolderId(null); }
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <span className="rl-folder-name">{f.name}</span>
+          )}
+          <span className="rl-folder-count">{list.length}</span>
+          <button
+            className="rl-thread-menu"
+            onClick={(e) => { e.stopPropagation(); setFolderMenuFor(folderMenuFor === f.id ? null : f.id); }}
+            title="Folder actions"
+            aria-label="Folder actions"
+          >
+            <MoreHorizontal size={14} />
+          </button>
+          {folderMenuFor === f.id && (
+            <div className="rl-thread-popover" onClick={(e) => e.stopPropagation()}>
+              <button className="rl-pop-item" onClick={() => startFolderRename(f)}>
+                <Pencil size={12} /> Rename
+              </button>
+              <button className="rl-pop-item danger" onClick={() => deleteFolder(f.id)}>
+                <Trash2 size={12} /> Delete folder
+              </button>
+            </div>
+          )}
+        </div>
+        {!collapsed && (
+          <div className="rl-folder-body">
+            {list.length === 0 ? (
+              <div className="rl-folder-empty">Drop threads here</div>
+            ) : (
+              list.map(renderThread)
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const groupBlock = (label: string, list: Conversation[]) =>
     list.length === 0 ? null : (
-      <div className="rl-group" key={label}>
+      <div
+        className={'rl-group' + (dragOverFolderId === 'root' ? ' is-drop-target' : '')}
+        key={label}
+        onDragOver={(e) => onFolderDragOver(e, null)}
+        onDragLeave={() => setDragOverFolderId(null)}
+        onDrop={(e) => onFolderDrop(e, null)}
+      >
         <div className="rl-group-label">{label}</div>
         {list.map(renderThread)}
       </div>
