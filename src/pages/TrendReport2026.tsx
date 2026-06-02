@@ -561,22 +561,8 @@ const TrendReport2026 = () => {
               <span className="thin">So You Don't Have To</span>
             </h1>
             <p className="hero-sub">
-              Our team spent the year on the ground at HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more — distilling 12 actionable trends that give busy B2B exhibit marketers a strategic edge. No flights. No badge lines. Just the intelligence that matters.
+              From January through June 2026, our team was on the ground at HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more — distilling 12 actionable trends that give busy B2B exhibit marketers a strategic edge. No flights. No badge lines. Just the intelligence that matters.
             </p>
-            <div className="hero-meta">
-              <div className="hero-meta-item">
-                <div className="label">Trends</div>
-                <div className="value">12</div>
-              </div>
-              <div className="hero-meta-item">
-                <div className="label">Categories</div>
-                <div className="value">Functional · Design</div>
-              </div>
-              <div className="hero-meta-item">
-                <div className="label">Published</div>
-                <div className="value">June 2026</div>
-              </div>
-            </div>
           </div>
           <div className="hero-scroll">
             Scroll<br />&#9662;
