@@ -609,7 +609,7 @@ const TrendReport2026 = () => {
           <h2 className="st">The Three Pain-Point Clusters</h2>
           <FadeIn>
             <p className="pp-intro">
-              Pain-point clusters are the three recurring challenges exhibit marketers told us they're heading into 2026 with — the friction points showing up across booth briefs, RFPs, and post-show debriefs. Every one of the 12 trends in this report maps back to at least one of them.
+              We heard the same three challenges from marketers at every show we covered — the friction points that keep showing up in booth briefs, RFPs, and post-show debriefs. Every trend in this report maps back to at least one of them, so you can focus on strategy instead of scouting.
             </p>
             <div className="pp-grid">
               <div className="pp">
