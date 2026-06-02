@@ -178,10 +178,98 @@ export default function Chat() {
 
   useEffect(() => {
     if (!menuFor) return;
-    const onDown = () => setMenuFor(null);
+    const onDown = () => { setMenuFor(null); setMoveSubmenuFor(null); };
     window.addEventListener('click', onDown);
     return () => window.removeEventListener('click', onDown);
   }, [menuFor]);
+
+  useEffect(() => {
+    if (!folderMenuFor) return;
+    const onDown = () => setFolderMenuFor(null);
+    window.addEventListener('click', onDown);
+    return () => window.removeEventListener('click', onDown);
+  }, [folderMenuFor]);
+
+  // ===== Folder actions =====
+  async function createFolder() {
+    if (!user) return;
+    const maxOrder = folders.reduce((m, f) => Math.max(m, f.display_order), -1);
+    const { data, error } = await supabase
+      .from('chat_folders')
+      .insert({ user_id: user.id, name: 'New folder', display_order: maxOrder + 1 })
+      .select('id, name, display_order')
+      .single();
+    if (error || !data) { toast.error('Could not create folder'); return; }
+    setFolders((fs) => [...fs, data as ChatFolder]);
+    setRenamingFolderId(data.id);
+    setFolderRenameValue(data.name);
+  }
+
+  function toggleFolderCollapse(id: string) {
+    setCollapsedFolders((m) => ({ ...m, [id]: !m[id] }));
+  }
+
+  function startFolderRename(f: ChatFolder) {
+    setFolderMenuFor(null);
+    setRenamingFolderId(f.id);
+    setFolderRenameValue(f.name);
+  }
+
+  async function commitFolderRename(id: string) {
+    const value = folderRenameValue.trim();
+    setRenamingFolderId(null);
+    if (!value) return;
+    const prev = folders.find((f) => f.id === id)?.name;
+    if (value === prev) return;
+    setFolders((fs) => fs.map((f) => (f.id === id ? { ...f, name: value } : f)));
+    const { error } = await supabase.from('chat_folders').update({ name: value }).eq('id', id);
+    if (error) {
+      if (prev) setFolders((fs) => fs.map((f) => (f.id === id ? { ...f, name: prev } : f)));
+      toast.error('Rename failed');
+    }
+  }
+
+  async function deleteFolder(id: string) {
+    const f = folders.find((x) => x.id === id);
+    if (!f) return;
+    if (!confirm(`Delete folder "${f.name}"? Its threads will move back to ungrouped.`)) return;
+    setFolderMenuFor(null);
+    const { error } = await supabase.from('chat_folders').delete().eq('id', id);
+    if (error) { toast.error('Could not delete folder'); return; }
+    setFolders((fs) => fs.filter((f) => f.id !== id));
+    setConversations((cs) => cs.map((c) => (c.folder_id === id ? { ...c, folder_id: null } : c)));
+  }
+
+  async function moveThreadToFolder(threadId: string, folderId: string | null) {
+    const conv = conversations.find((c) => c.id === threadId);
+    if (!conv || conv.folder_id === folderId) { setMenuFor(null); setMoveSubmenuFor(null); return; }
+    const prev = conv.folder_id;
+    setMenuFor(null);
+    setMoveSubmenuFor(null);
+    setConversations((cs) => cs.map((c) => (c.id === threadId ? { ...c, folder_id: folderId } : c)));
+    const { error } = await supabase.from('chat_conversations').update({ folder_id: folderId }).eq('id', threadId);
+    if (error) {
+      setConversations((cs) => cs.map((c) => (c.id === threadId ? { ...c, folder_id: prev } : c)));
+      toast.error('Could not move thread');
+    }
+  }
+
+  function onThreadDragStart(e: React.DragEvent, threadId: string) {
+    e.dataTransfer.setData('application/x-rl-thread', threadId);
+    e.dataTransfer.effectAllowed = 'move';
+  }
+  function onFolderDragOver(e: React.DragEvent, folderId: string | null) {
+    if (!e.dataTransfer.types.includes('application/x-rl-thread')) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverFolderId(folderId ?? 'root');
+  }
+  function onFolderDrop(e: React.DragEvent, folderId: string | null) {
+    e.preventDefault();
+    const id = e.dataTransfer.getData('application/x-rl-thread');
+    setDragOverFolderId(null);
+    if (id) moveThreadToFolder(id, folderId);
+  }
 
   async function readFileAsDataUrl(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
