@@ -408,67 +408,54 @@ export default function Chat() {
         return { role: m.role, content: m.content };
       });
 
-      const attemptChat = async (): Promise<
-        | { ok: true; res: Response }
-        | { ok: false; retryable: boolean; message: string }
-      > => {
+      type ChatAttempt =
+        | { ok: true; res: Response; retryable: false; message: '' }
+        | { ok: false; res: null; retryable: boolean; message: string };
+      const attemptChat = async (): Promise<ChatAttempt> => {
         const { data: { session } } = await supabase.auth.getSession();
-        let res: Response;
+        let httpRes: Response;
         try {
-          res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-chat`, {
+          httpRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
             body: JSON.stringify({ messages: outboundMessages, conversation_id: activeId }),
           });
         } catch {
-          return { ok: false, retryable: true, message: 'Network error' };
+          return { ok: false, res: null, retryable: true, message: 'Network error' };
         }
-        if (res.status === 402) return { ok: false, retryable: false, message: 'AI credits exhausted.' };
-        if (res.status === 429) return { ok: false, retryable: false, message: 'Rate limit hit — try again shortly.' };
-        if (!res.ok || !res.body) {
+        if (httpRes.status === 402) return { ok: false, res: null, retryable: false, message: 'AI credits exhausted.' };
+        if (httpRes.status === 429) return { ok: false, res: null, retryable: false, message: 'Rate limit hit — try again shortly.' };
+        if (!httpRes.ok || !httpRes.body) {
           let message = 'Research Lab request failed';
           let code: string | undefined;
           try {
-            const j = await res.clone().json();
+            const j = await httpRes.clone().json();
             code = j?.code;
-            if (code === 'timeout' || res.status === 504 || res.status === 408) {
+            if (code === 'timeout' || httpRes.status === 504 || httpRes.status === 408) {
               message = 'This search took too long — try rephrasing or breaking the question into smaller parts.';
             } else if (typeof j?.error === 'string' && j.error) {
               message = j.error;
             }
           } catch { /* non-JSON body */ }
-          // Retry transient upstream/timeout errors once; never retry timeouts (they'll just time out again).
-          const retryable = code !== 'timeout' && (res.status === 502 || res.status === 503);
-          return { ok: false, retryable, message };
+          // Retry transient upstream errors once; never retry timeouts (they'll just time out again).
+          const retryable = code !== 'timeout' && (httpRes.status === 502 || httpRes.status === 503);
+          return { ok: false, res: null, retryable, message };
         }
-        return { ok: true, res };
+        return { ok: true, res: httpRes, retryable: false, message: '' };
       };
 
-      let res: Response;
-      {
-        const first = await attemptChat();
-        if (first.ok) {
-          res = first.res;
-        } else {
-          if (first.retryable) {
-            await new Promise((r) => setTimeout(r, 2000));
-            const second = await attemptChat();
-            if (second.ok) {
-              res = second.res;
-            } else {
-              toast.error(second.message);
-              markLastUserFailed();
-              setSending(false);
-              return;
-            }
-          } else {
-            toast.error(first.message);
-            markLastUserFailed();
-            setSending(false);
-            return;
-          }
-        }
+      let attempt: ChatAttempt = await attemptChat();
+      if (!attempt.ok && attempt.retryable) {
+        await new Promise((r) => setTimeout(r, 2000));
+        attempt = await attemptChat();
       }
+      if (!attempt.ok) {
+        toast.error(attempt.message);
+        markLastUserFailed();
+        setSending(false);
+        return;
+      }
+      const res = attempt.res;
 
       const newConvId = res.headers.get('x-conversation-id');
       const effectiveConvId = newConvId || activeId;
