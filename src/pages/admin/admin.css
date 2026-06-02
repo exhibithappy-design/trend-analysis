@@ -1,4 +1,10 @@
-/* Admin dashboard — scoped dark theme. Applied via [data-admin] wrapper. */
+/* Admin dashboard — scoped theme. Applied via [data-admin] wrapper. */
+
+/* Natom Pro — admin headings */
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/91d67def-3ff0-4cd1-bbbe-a29ca6b07505/NatomPro-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/bd25900c-935c-4e62-a80b-8d61f8f4f7b0/NatomPro-Medium.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/13f33e09-82b3-4f47-9636-5feb8a43db4b/NatomPro-Bold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:'Natom Pro';src:url('/__l5e/assets-v1/afc0ab6c-2c87-43c4-a793-d92fbdb91211/NatomPro-Black.otf') format('opentype');font-weight:900;font-display:swap}
 
 [data-admin] {
   --ad-bg: #000000;
@@ -37,7 +43,7 @@
   position: sticky; top: 0; height: 100vh;
 }
 .ad-brand {
-  padding: 6px 16px 16px; border-bottom: 1px solid var(--ad-border); margin-bottom: 14px;
+  padding: 6px 16px 18px; margin-bottom: 10px;
   display: flex; align-items: center;
 }
 .ad-brand-logo { display: block; height: 32px; width: auto; max-width: 100%; }
