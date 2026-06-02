@@ -145,6 +145,39 @@ Guidelines:
           controller.close();
           if (assistantText.trim() && convId) {
             await admin.from('ai_chat_messages').insert({ user_id: uid, role: 'assistant', content: assistantText, conversation_id: convId });
+            // Auto-rename on first assistant response
+            try {
+              const { count } = await admin
+                .from('ai_chat_messages')
+                .select('id', { count: 'exact', head: true })
+                .eq('conversation_id', convId)
+                .eq('role', 'assistant');
+              if ((count ?? 0) <= 1 && LOVABLE_API_KEY) {
+                const firstUser = lastUser?.content?.slice(0, 1200) ?? '';
+                const firstAssistant = assistantText.slice(0, 1200);
+                const titleRes = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+                  method: 'POST',
+                  headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    model: 'google/gemini-2.5-flash-lite',
+                    messages: [
+                      { role: 'system', content: 'You write ultra-short conversation titles. Reply with ONLY a 3 to 5 word title in Title Case. No quotes, no punctuation at the end, no prefixes like "Title:".' },
+                      { role: 'user', content: `User asked:\n${firstUser}\n\nAssistant replied:\n${firstAssistant}\n\nWrite the title.` },
+                    ],
+                  }),
+                });
+                if (titleRes.ok) {
+                  const j = await titleRes.json();
+                  let title: string = j.choices?.[0]?.message?.content?.trim() ?? '';
+                  title = title.replace(/^["'`]+|["'`]+$/g, '').replace(/[.!?]+$/, '').slice(0, 80);
+                  if (title) {
+                    await admin.from('chat_conversations').update({ title }).eq('id', convId);
+                  }
+                }
+              }
+            } catch (e) {
+              console.error('auto-title error', e);
+            }
           }
         }
       },
