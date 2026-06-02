@@ -1063,3 +1063,64 @@
   50% { box-shadow: 0 0 0 6px rgba(43,213,118,0); }
 }
 [data-admin] .ad-main .ad-badge.live { animation: ad-pulse 2.4s ease-out infinite; }
+
+/* ============ CUSTOM SELECT ============ */
+[data-admin] .ad-select-root { position: relative; display: inline-block; font-family: inherit; }
+[data-admin] .ad-select-trigger {
+  display: inline-flex; align-items: center; gap: 12px;
+  min-width: 140px;
+  padding: 9px 14px 9px 14px;
+  background: var(--ad-surface);
+  border: 1px solid var(--ad-border);
+  border-radius: 8px;
+  color: var(--ad-text-strong);
+  font-size: 13px; font-family: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  transition: border-color 160ms, background 160ms;
+  width: 100%;
+  justify-content: space-between;
+}
+[data-admin] .ad-select-trigger:hover { border-color: rgba(255,0,105,0.4); }
+[data-admin] .ad-select-trigger.open { border-color: var(--ad-pink); }
+[data-admin] .ad-select-value { text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+[data-admin] .ad-select-chev { color: var(--ad-text-2); margin-left: 4px; transition: transform 200ms; flex: 0 0 auto; }
+[data-admin] .ad-select-trigger.open .ad-select-chev { transform: rotate(180deg); color: var(--ad-pink); }
+[data-admin] .ad-select-menu {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 60;
+  min-width: 100%;
+  background: rgba(18,18,22,0.92);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 6px;
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  box-shadow: 0 24px 50px -18px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  transform-origin: top center;
+  animation: ad-select-in 160ms cubic-bezier(.2,.7,.2,1);
+}
+[data-admin] .ad-main[data-theme="light"] .ad-select-menu {
+  background: rgba(255,255,255,0.96);
+  border-color: rgba(15,15,30,0.10);
+  box-shadow: 0 24px 50px -18px rgba(15,15,30,0.25);
+}
+@keyframes ad-select-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+[data-admin] .ad-select-opt {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 9px 12px;
+  background: transparent; border: none; border-radius: 6px;
+  color: var(--ad-text); font-size: 13px; font-family: inherit;
+  cursor: pointer; text-align: left;
+  transition: background 120ms, color 120ms;
+}
+[data-admin] .ad-select-opt:hover {
+  background: linear-gradient(90deg, rgba(255,0,105,0.18), rgba(255,0,105,0.06));
+  color: #fff;
+}
+[data-admin] .ad-main[data-theme="light"] .ad-select-opt:hover { color: #0A0A0F; }
+[data-admin] .ad-select-opt.selected { color: var(--ad-pink); }
+[data-admin] .ad-select-opt + .ad-select-opt { margin-top: 2px; }
