@@ -620,12 +620,15 @@ export default function Chat() {
                 <button className="rl-new" onClick={newConversation}>
                   <Plus size={14} /> New thread
                 </button>
+                <button className="rl-icon-btn" onClick={createFolder} title="New folder" aria-label="New folder">
+                  <FolderPlus size={15} />
+                </button>
                 <button className="rl-icon-btn" onClick={() => setSidebarOpen(false)} title="Collapse">
                   <PanelLeftClose size={15} />
                 </button>
               </div>
               <div className="rl-threads">
-                {conversations.length === 0 ? (
+                {conversations.length === 0 && folders.length === 0 ? (
                   <div className="rl-threads-empty">No saved threads yet.</div>
                 ) : (
                   <>
@@ -636,6 +639,12 @@ export default function Chat() {
                           Starred
                         </div>
                         {starred.map(renderThread)}
+                      </div>
+                    )}
+                    {folders.length > 0 && (
+                      <div className="rl-group" key="folders">
+                        <div className="rl-group-label">Folders</div>
+                        {folders.map(renderFolder)}
                       </div>
                     )}
                     {groupBlock('Today', grouped.today)}
