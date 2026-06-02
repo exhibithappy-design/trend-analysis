@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil } from 'lucide-react';
+import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil, Folder, FolderPlus, ChevronRight, FolderOpen, FolderInput } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { AnimatePresence, motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
@@ -7,7 +7,8 @@ import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
 
 type Msg = { role: 'user' | 'assistant'; content: string; imageUrl?: string };
-type Conversation = { id: string; title: string; updated_at: string; starred: boolean };
+type Conversation = { id: string; title: string; updated_at: string; starred: boolean; folder_id: string | null };
+type ChatFolder = { id: string; name: string; display_order: number };
 
 const SUGGESTIONS = [
   { title: 'Surface emerging booth formats', sub: 'What experiential formats are gaining traction at major B2B trade shows in 2026?' },
@@ -46,24 +47,59 @@ export default function Chat() {
   const [menuFor, setMenuFor] = useState<string | null>(null);
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState('');
+  const [folders, setFolders] = useState<ChatFolder[]>([]);
+  const [folderMenuFor, setFolderMenuFor] = useState<string | null>(null);
+  const [renamingFolderId, setRenamingFolderId] = useState<string | null>(null);
+  const [folderRenameValue, setFolderRenameValue] = useState('');
+  const [moveSubmenuFor, setMoveSubmenuFor] = useState<string | null>(null);
+  const [collapsedFolders, setCollapsedFolders] = useState<Record<string, boolean>>(() => {
+    if (typeof window === 'undefined') return {};
+    try { return JSON.parse(localStorage.getItem('rl-collapsed-folders') ?? '{}'); } catch { return {}; }
+  });
+  const [dragOverFolderId, setDragOverFolderId] = useState<string | null | 'root'>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const taRef = useRef<HTMLTextAreaElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const starred = useMemo(() => conversations.filter((c) => c.starred), [conversations]);
-  const unstarred = useMemo(() => conversations.filter((c) => !c.starred), [conversations]);
-  const grouped = useMemo(() => groupByDate(unstarred), [unstarred]);
+  const ungroupedUnstarred = useMemo(
+    () => conversations.filter((c) => !c.starred && !c.folder_id),
+    [conversations],
+  );
+  const grouped = useMemo(() => groupByDate(ungroupedUnstarred), [ungroupedUnstarred]);
+  const conversationsByFolder = useMemo(() => {
+    const map = new Map<string, Conversation[]>();
+    for (const c of conversations) {
+      if (c.starred || !c.folder_id) continue;
+      if (!map.has(c.folder_id)) map.set(c.folder_id, []);
+      map.get(c.folder_id)!.push(c);
+    }
+    return map;
+  }, [conversations]);
+
+  useEffect(() => {
+    try { localStorage.setItem('rl-collapsed-folders', JSON.stringify(collapsedFolders)); } catch {}
+  }, [collapsedFolders]);
 
   // Load conversations
   async function loadConversations() {
     if (!user) return;
-    const { data } = await supabase
-      .from('chat_conversations')
-      .select('id, title, updated_at, starred')
-      .eq('user_id', user.id)
-      .order('updated_at', { ascending: false })
-      .limit(200);
-    if (data) setConversations(data as Conversation[]);
+    const [convRes, folderRes] = await Promise.all([
+      supabase
+        .from('chat_conversations')
+        .select('id, title, updated_at, starred, folder_id')
+        .eq('user_id', user.id)
+        .order('updated_at', { ascending: false })
+        .limit(200),
+      supabase
+        .from('chat_folders')
+        .select('id, name, display_order')
+        .eq('user_id', user.id)
+        .order('display_order', { ascending: true })
+        .order('created_at', { ascending: true }),
+    ]);
+    if (convRes.data) setConversations(convRes.data as Conversation[]);
+    if (folderRes.data) setFolders(folderRes.data as ChatFolder[]);
   }
 
   useEffect(() => { loadConversations(); /* eslint-disable-next-line */ }, [user]);
