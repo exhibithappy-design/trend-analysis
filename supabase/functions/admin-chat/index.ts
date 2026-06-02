@@ -19,7 +19,8 @@ Deno.serve(async (req) => {
     const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY not configured');
+    const PERPLEXITY_API_KEY = Deno.env.get('PERPLEXITY_API_KEY');
+    if (!PERPLEXITY_API_KEY) throw new Error('PERPLEXITY_API_KEY not configured');
 
     const userClient = createClient(supabaseUrl, anonKey, { global: { headers: { Authorization: authHeader } } });
     const token = authHeader.replace('Bearer ', '');
@@ -40,14 +41,15 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'messages required' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const systemPrompt = `You are the Trend Research Lab assistant for ExhibitHappy — a senior trade-show trend analyst.
+    const systemPrompt = `You are the Trend Research Lab assistant for ExhibitHappy — a senior trade-show trend analyst with live web access via Perplexity.
 
-Your job is to help the editor research trade show, experiential marketing, and event design trends; surface candidate trends worth tracking for future Trend Reports; pressure-test hypotheses; and summarize signals from across the industry.
+Your job is to help the editor research trade show, experiential marketing, and event design trends; surface candidate trends worth tracking for future Trend Reports; pressure-test hypotheses; and summarize signals from across the industry. Always ground claims in current web sources when possible.
 
 Guidelines:
 - Be concise, specific, and editorial in tone — like a sharp research partner, not a chatbot.
 - When proposing trend candidates, give each a short name, a one-line definition, and 2-3 concrete signals (shows, brands, formats).
 - Use markdown headings, bold, and bullet lists for structure.
+- Cite sources inline with numbered references [1], [2] that map to the citations list you receive.
 - If you don't have data to back something, say so honestly and propose how to validate it.
 - Never reference internal analytics tables, editions, AEO, or engagement events — focus on trend research itself.`;
 
@@ -70,13 +72,14 @@ Guidelines:
       await admin.from('ai_chat_messages').insert({ user_id: uid, role: 'user', content: lastUser.content, conversation_id: convId });
     }
 
-    const aiRes = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const aiRes = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, 'Content-Type': 'application/json' },
+      headers: { Authorization: `Bearer ${PERPLEXITY_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'google/gemini-3-flash-preview',
+        model: 'sonar',
         messages: [{ role: 'system', content: systemPrompt }, ...messages],
         stream: true,
+        return_citations: true,
       }),
     });
 
@@ -84,12 +87,13 @@ Guidelines:
     if (aiRes.status === 402) return new Response(JSON.stringify({ error: 'AI credits exhausted' }), { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     if (!aiRes.ok || !aiRes.body) {
       const t = await aiRes.text();
-      console.error('AI error', aiRes.status, t);
-      return new Response(JSON.stringify({ error: 'AI gateway error' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      console.error('Perplexity error', aiRes.status, t);
+      return new Response(JSON.stringify({ error: 'Perplexity error' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // Tee stream: pass through to client, collect for persistence
+    // Tee stream: pass through to client, collect for persistence (and append citations at end)
     let assistantText = '';
+    let citations: string[] = [];
     const decoder = new TextDecoder();
     const encoder = new TextEncoder();
     const reader = aiRes.body.getReader();
@@ -115,8 +119,21 @@ Guidelines:
                 const parsed = JSON.parse(json);
                 const c = parsed.choices?.[0]?.delta?.content;
                 if (c) assistantText += c;
+                if (Array.isArray(parsed.citations) && parsed.citations.length) {
+                  citations = parsed.citations;
+                }
+                if (Array.isArray(parsed.search_results) && parsed.search_results.length && !citations.length) {
+                  citations = parsed.search_results.map((s: any) => s.url).filter(Boolean);
+                }
               } catch { /* ignore */ }
             }
+          }
+          // Append a citations block as a synthetic SSE delta so the client renders it inline
+          if (citations.length) {
+            const block = '\n\n---\n**Sources**\n' + citations.map((u, i) => `${i + 1}. ${u}`).join('\n');
+            assistantText += block;
+            const chunk = `data: ${JSON.stringify({ choices: [{ delta: { content: block } }] })}\n\n`;
+            controller.enqueue(encoder.encode(chunk));
           }
         } finally {
           controller.close();
