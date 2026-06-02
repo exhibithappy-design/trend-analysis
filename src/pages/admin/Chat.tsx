@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil, Folder, FolderPlus, ChevronRight, FolderOpen, FolderInput } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { AnimatePresence, motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
@@ -718,7 +719,9 @@ export default function Chat() {
                     )}
                     <div className="rl-bubble">
                       {m.role === 'assistant' ? (
-                        <div className="rl-md"><ReactMarkdown>{m.content || '…'}</ReactMarkdown></div>
+                        <div className="rl-md">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.content || '…'}</ReactMarkdown>
+                        </div>
                       ) : (
                         <>
                           {m.imageUrl && (
