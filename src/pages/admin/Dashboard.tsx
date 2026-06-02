@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ExternalLink, Send } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useRealtime } from '@/hooks/admin/useRealtime';
+import { AdSelect } from '@/components/admin/AdSelect';
 
 type Edition = { id: string; title: string; slug: string; status: string; publish_date: string | null; public_url: string | null };
 type Event = { edition_id: string | null; event_type: string; source: string | null; source_detail: string | null; ts: string; section: string | null; session_id: string | null; card_id: string | null };
@@ -150,12 +151,17 @@ export default function Dashboard() {
             <ExternalLink size={12} /> View public page
           </a>
         )}
-        <select className="ad-select" value={range} onChange={(e) => setRange(e.target.value as RangeKey)}>
-          <option value="24h">Last 24h</option>
-          <option value="7d">Last 7 days</option>
-          <option value="30d">Last 30 days</option>
-          <option value="all">All time</option>
-        </select>
+        <AdSelect
+          value={range}
+          onChange={(v) => setRange(v as RangeKey)}
+          options={[
+            { value: '24h', label: 'Last 24h' },
+            { value: '7d', label: 'Last 7 days' },
+            { value: '30d', label: 'Last 30 days' },
+            { value: 'all', label: 'All time' },
+          ]}
+          width={160}
+        />
       </div>
 
       <div className="ad-grid-6">
