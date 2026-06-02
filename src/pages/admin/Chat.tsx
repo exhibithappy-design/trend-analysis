@@ -110,12 +110,16 @@ export default function Chat() {
     if (!activeId) { setMessages([]); return; }
     supabase
       .from('ai_chat_messages')
-      .select('role, content, created_at')
+      .select('id, role, content, created_at')
       .eq('conversation_id', activeId)
       .order('created_at', { ascending: true })
       .limit(500)
       .then(({ data }) => {
-        if (data) setMessages(data.filter((m: any) => m.role !== 'system') as Msg[]);
+        if (data) setMessages(
+          data
+            .filter((m: any) => m.role !== 'system')
+            .map((m: any) => ({ id: m.id, role: m.role, content: m.content })) as Msg[],
+        );
       });
   }, [activeId]);
 
