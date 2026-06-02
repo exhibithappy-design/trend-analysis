@@ -555,11 +555,12 @@ const TrendReport2026 = () => {
           <div className="hero-c">
             <div className="hero-ey">2026 Trend Report</div>
             <h1>
-              12 Trends<br />
-              <span className="thin">Reshaping the Show Floor</span>
+              We Attended the Biggest<br />
+              Trade Shows of 2026<br />
+              <span className="thin">So You Don't Have To</span>
             </h1>
             <p className="hero-sub">
-              A field-built analysis across HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more — organized into Functional Component Trends and Design Feature Trends. Each card opens from Compact Mode to Depth Mode.
+              Our team spent the year on the ground at HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more — distilling 12 actionable trends that give busy B2B exhibit marketers a strategic edge. No flights. No badge lines. Just the intelligence that matters.
             </p>
             <div className="hero-meta">
               <div className="hero-meta-item">
@@ -585,12 +586,12 @@ const TrendReport2026 = () => {
         <section className="section section--w" id="tldr">
           <div className="pr"></div>
           <div className="sl">Section 00</div>
-          <h2 className="st">TL;DR — The 2026 Exhibit Floor in 60 Seconds</h2>
+          <h2 className="st">TL;DR — Your Strategic Edge in 60 Seconds</h2>
           <FadeIn>
             <div className="tldr">
               <h3>What changed in 2026</h3>
               <p>
-                The 2026 trade show floor has moved decisively from <strong>broadcast</strong> to <strong>experience</strong>. Static booths, scripted theaters, and badge-scan KPIs are being replaced by self-directed demos, AI staff, modular architecture, and pipeline-quality measurement. On the design side, dark architectural finishes, double-decker builds, curved organic forms, and integrated F&B are the new defaults across categories that used to be uniformly white.
+                We spent 2026 embedded at the industry's most important trade shows so you don't have to. The exhibit floor has moved decisively from <strong>broadcast</strong> to <strong>experience</strong>. Static booths, scripted theaters, and badge-scan KPIs are being replaced by self-directed demos, AI staff, modular architecture, and pipeline-quality measurement. On the design side, dark architectural finishes, double-decker builds, curved organic forms, and integrated F&B are the new defaults across categories that used to be uniformly white.
               </p>
               <ul>
                 <li><strong>Functional shift:</strong> attendee-led discovery, AI avatars, invite-only zones, modular systems, gamified lead capture, and pipeline metrics over scan counts.</li>
@@ -608,7 +609,7 @@ const TrendReport2026 = () => {
           <h2 className="st">The Three Pain-Point Clusters</h2>
           <FadeIn>
             <p className="pp-intro">
-              Pain-point clusters are the three recurring challenges exhibit marketers told us they're heading into 2026 with — the friction points showing up across booth briefs, RFPs, and post-show debriefs. Every one of the 12 trends in this report maps back to at least one of them.
+              We heard the same three challenges from marketers at every show we covered — the friction points that keep showing up in booth briefs, RFPs, and post-show debriefs. Every trend in this report maps back to at least one of them, so you can focus on strategy instead of scouting.
             </p>
             <div className="pp-grid">
               <div className="pp">
