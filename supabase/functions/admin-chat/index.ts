@@ -87,24 +87,56 @@ Guidelines:
       await admin.from('ai_chat_messages').insert({ user_id: uid, role: 'user', content: lastUser.content, conversation_id: convId });
     }
 
-    const aiRes = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${PERPLEXITY_API_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'sonar',
-        messages: [{ role: 'system', content: systemPrompt }, ...safeMessages],
-        stream: true,
-        return_citations: true,
-      }),
-    });
+    // 55s upstream timeout so we surface a clean error before the edge function itself times out.
+    const aiController = new AbortController();
+    const aiTimeout = setTimeout(() => aiController.abort(), 55000);
+    let aiRes: Response;
+    try {
+      aiRes = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${PERPLEXITY_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'sonar-pro',
+          messages: [{ role: 'system', content: systemPrompt }, ...safeMessages],
+          stream: true,
+          return_citations: true,
+        }),
+        signal: aiController.signal,
+      });
+    } catch (e) {
+      clearTimeout(aiTimeout);
+      const aborted = (e as any)?.name === 'AbortError';
+      console.error('Perplexity fetch failed', aborted ? 'timeout' : e);
+      return new Response(
+        JSON.stringify({
+          error: aborted
+            ? 'This search took too long — try rephrasing or breaking the question into smaller parts.'
+            : 'Could not reach the research model. Please try again.',
+          code: aborted ? 'timeout' : 'upstream_unreachable',
+        }),
+        { status: aborted ? 504 : 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+      );
+    }
 
-    if (aiRes.status === 429) return new Response(JSON.stringify({ error: 'Rate limit exceeded' }), { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-    if (aiRes.status === 402) return new Response(JSON.stringify({ error: 'AI credits exhausted' }), { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    if (aiRes.status === 429) { clearTimeout(aiTimeout); return new Response(JSON.stringify({ error: 'Rate limit exceeded', code: 'rate_limited' }), { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }); }
+    if (aiRes.status === 402) { clearTimeout(aiTimeout); return new Response(JSON.stringify({ error: 'AI credits exhausted', code: 'credits_exhausted' }), { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }); }
     if (!aiRes.ok || !aiRes.body) {
+      clearTimeout(aiTimeout);
       const t = await aiRes.text();
       console.error('Perplexity error', aiRes.status, t);
-      return new Response(JSON.stringify({ error: 'Perplexity error' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      const isTimeout = aiRes.status === 408 || aiRes.status === 504 || /timeout/i.test(t);
+      return new Response(
+        JSON.stringify({
+          error: isTimeout
+            ? 'This search took too long — try rephrasing or breaking the question into smaller parts.'
+            : 'Perplexity error',
+          code: isTimeout ? 'timeout' : 'upstream_error',
+        }),
+        { status: isTimeout ? 504 : 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+      );
     }
+    // Headers received — cancel the request-level timeout; streaming has its own lifecycle.
+    clearTimeout(aiTimeout);
 
     // Tee stream: pass through to client, collect for persistence (and append citations at end)
     let assistantText = '';

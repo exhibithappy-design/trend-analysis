@@ -408,16 +408,54 @@ export default function Chat() {
         return { role: m.role, content: m.content };
       });
 
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ messages: outboundMessages, conversation_id: activeId }),
-      });
+      type ChatAttempt =
+        | { ok: true; res: Response; retryable: false; message: '' }
+        | { ok: false; res: null; retryable: boolean; message: string };
+      const attemptChat = async (): Promise<ChatAttempt> => {
+        const { data: { session } } = await supabase.auth.getSession();
+        let httpRes: Response;
+        try {
+          httpRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
+            body: JSON.stringify({ messages: outboundMessages, conversation_id: activeId }),
+          });
+        } catch {
+          return { ok: false, res: null, retryable: true, message: 'Network error' };
+        }
+        if (httpRes.status === 402) return { ok: false, res: null, retryable: false, message: 'AI credits exhausted.' };
+        if (httpRes.status === 429) return { ok: false, res: null, retryable: false, message: 'Rate limit hit — try again shortly.' };
+        if (!httpRes.ok || !httpRes.body) {
+          let message = 'Research Lab request failed';
+          let code: string | undefined;
+          try {
+            const j = await httpRes.clone().json();
+            code = j?.code;
+            if (code === 'timeout' || httpRes.status === 504 || httpRes.status === 408) {
+              message = 'This search took too long — try rephrasing or breaking the question into smaller parts.';
+            } else if (typeof j?.error === 'string' && j.error) {
+              message = j.error;
+            }
+          } catch { /* non-JSON body */ }
+          // Retry transient upstream errors once; never retry timeouts (they'll just time out again).
+          const retryable = code !== 'timeout' && (httpRes.status === 502 || httpRes.status === 503);
+          return { ok: false, res: null, retryable, message };
+        }
+        return { ok: true, res: httpRes, retryable: false, message: '' };
+      };
 
-      if (res.status === 402) { toast.error('AI credits exhausted.'); markLastUserFailed(); setSending(false); return; }
-      if (res.status === 429) { toast.error('Rate limit hit — try again shortly.'); markLastUserFailed(); setSending(false); return; }
-      if (!res.ok || !res.body) { toast.error('Research Lab request failed'); markLastUserFailed(); setSending(false); return; }
+      let attempt: ChatAttempt = await attemptChat();
+      if (!attempt.ok && attempt.retryable) {
+        await new Promise((r) => setTimeout(r, 2000));
+        attempt = await attemptChat();
+      }
+      if (!attempt.ok) {
+        toast.error(attempt.message);
+        markLastUserFailed();
+        setSending(false);
+        return;
+      }
+      const res = attempt.res;
 
       const newConvId = res.headers.get('x-conversation-id');
       const effectiveConvId = newConvId || activeId;
