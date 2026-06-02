@@ -1,5 +1,8 @@
 /* TrendReport2026 — extends HIMSSReport.css design language */
 
+/* Hero eyebrow override */
+.hero-ey{font-size:12px;letter-spacing:3.5px}
+
 /* TL;DR block (AEO-friendly) */
 /* Hero rotating slider (crossfade + Ken Burns) */
 .hero-slider{position:absolute;inset:0;overflow:hidden}
