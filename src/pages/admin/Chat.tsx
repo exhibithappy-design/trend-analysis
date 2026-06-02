@@ -408,16 +408,54 @@ export default function Chat() {
         return { role: m.role, content: m.content };
       });
 
-      const { data: { session } } = await supabase.auth.getSession();
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ messages: outboundMessages, conversation_id: activeId }),
-      });
+      const attemptChat = async (): Promise<
+        | { ok: true; res: Response }
+        | { ok: false; retryable: boolean; message: string }
+      > => {
+        const { data: { session } } = await supabase.auth.getSession();
+        let res: Response;
+        try {
+          res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
+            body: JSON.stringify({ messages: outboundMessages, conversation_id: activeId }),
+          });
+        } catch {
+          return { ok: false, retryable: true, message: 'Network error' };
+        }
+        if (res.status === 402) return { ok: false, retryable: false, message: 'AI credits exhausted.' };
+        if (res.status === 429) return { ok: false, retryable: false, message: 'Rate limit hit — try again shortly.' };
+        if (!res.ok || !res.body) {
+          let message = 'Research Lab request failed';
+          let code: string | undefined;
+          try {
+            const j = await res.clone().json();
+            code = j?.code;
+            if (code === 'timeout' || res.status === 504 || res.status === 408) {
+              message = 'This search took too long — try rephrasing or breaking the question into smaller parts.';
+            } else if (typeof j?.error === 'string' && j.error) {
+              message = j.error;
+            }
+          } catch { /* non-JSON body */ }
+          // Retry transient upstream/timeout errors once; never retry timeouts (they'll just time out again).
+          const retryable = code !== 'timeout' && (res.status === 502 || res.status === 503);
+          return { ok: false, retryable, message };
+        }
+        return { ok: true, res };
+      };
 
-      if (res.status === 402) { toast.error('AI credits exhausted.'); markLastUserFailed(); setSending(false); return; }
-      if (res.status === 429) { toast.error('Rate limit hit — try again shortly.'); markLastUserFailed(); setSending(false); return; }
-      if (!res.ok || !res.body) { toast.error('Research Lab request failed'); markLastUserFailed(); setSending(false); return; }
+      let attempt = await attemptChat();
+      if (!attempt.ok && attempt.retryable) {
+        await new Promise((r) => setTimeout(r, 2000));
+        attempt = await attemptChat();
+      }
+      if (!attempt.ok) {
+        toast.error(attempt.message);
+        markLastUserFailed();
+        setSending(false);
+        return;
+      }
+      const res = attempt.res;
 
       const newConvId = res.headers.get('x-conversation-id');
       const effectiveConvId = newConvId || activeId;
