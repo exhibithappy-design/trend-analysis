@@ -22,6 +22,24 @@
   --ad-red: #FF4D4D;
   --ad-gray: #555555;
 
+  /* Theme-aware semantic tokens (defaults = dark) */
+  --ad-accent: #FF0069;
+  --ad-on-accent: #FFFFFF;
+  --ad-hover-1: rgba(255,255,255,0.04);
+  --ad-hover-2: rgba(255,255,255,0.07);
+  --ad-hover-3: rgba(255,255,255,0.10);
+  --ad-border-soft: rgba(255,255,255,0.08);
+  --ad-border-strong: rgba(255,255,255,0.16);
+  --ad-bubble-bg: rgba(255,255,255,0.06);
+  --ad-composer-bg: rgba(20,20,20,0.95);
+  --ad-composer-fade: linear-gradient(180deg, transparent, rgba(0,0,0,0.7) 35%);
+  --ad-topbar-bg: rgba(0,0,0,0.4);
+  --ad-rl-sidebar-bg: linear-gradient(180deg, rgba(20,20,20,0.85), rgba(10,10,10,0.85));
+  --ad-code-bg: rgba(255,255,255,0.06);
+  --ad-pre-bg: rgba(0,0,0,0.5);
+  --ad-send-bg-disabled: rgba(255,255,255,0.18);
+  --ad-scroll-thumb: rgba(255,255,255,0.10);
+
   font-family: 'Poppins', system-ui, -apple-system, sans-serif;
   font-weight: 400;
   background: var(--ad-bg);
