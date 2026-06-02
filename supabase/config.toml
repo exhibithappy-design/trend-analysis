@@ -1,4 +1,1 @@
 project_id = "pvaoaqyizcalbfqkekpf"
-
-[functions.provision-admin-users]
-verify_jwt = false
