@@ -68,7 +68,7 @@ export function AdSelect({ value, onChange, options, className = '', placeholder
         <ChevronDown size={14} className="ad-select-chev" />
       </button>
       {open && pos && createPortal(
-        <div data-admin style={{ position: 'fixed', top: pos.top, left: pos.left, minWidth: pos.width, zIndex: 9999 }}>
+        <div data-admin style={{ position: 'fixed', top: pos.top, left: pos.left, minWidth: pos.width, zIndex: 9999, width: 'fit-content', height: 'fit-content' }}>
           <div
             ref={menuRef}
             className="ad-select-menu ad-select-menu-portal"
