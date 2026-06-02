@@ -450,21 +450,71 @@ const TrendReport2026 = () => {
   useEffect(() => {
     const sects = document.querySelectorAll('section[id], .trend-card[id]');
     const links = document.querySelectorAll('.sidebar .nav-link');
+    let lockedId: string | null = null;
+    let lockUntilScroll = false;
+    let lockScrollY = window.scrollY;
+
+    const setActive = (id: string) => {
+      links.forEach((l) =>
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id),
+      );
+    };
+
+    const onClick = (e: Event) => {
+      const a = e.currentTarget as HTMLAnchorElement;
+      const href = a.getAttribute('href') || '';
+      if (!href.startsWith('#')) return;
+      lockedId = href.slice(1);
+      lockUntilScroll = true;
+      lockScrollY = window.scrollY;
+      setActive(lockedId);
+    };
+    links.forEach((l) => l.addEventListener('click', onClick));
+
+    const onScroll = () => {
+      if (lockUntilScroll && Math.abs(window.scrollY - lockScrollY) > 4) {
+        // user has scrolled away from clicked target — release lock
+        // small delay to let smooth-scroll settle first
+        setTimeout(() => {
+          lockUntilScroll = false;
+          lockedId = null;
+        }, 600);
+        lockUntilScroll = false;
+      }
+    };
+    // arm release after scroll-to completes
+    let scrollTimer: number | undefined;
+    const onUserScroll = () => {
+      if (!lockedId) return;
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(() => {
+        lockedId = null;
+      }, 800);
+    };
+    window.addEventListener('wheel', onUserScroll, { passive: true });
+    window.addEventListener('touchmove', onUserScroll, { passive: true });
+    window.addEventListener('keydown', onUserScroll);
+
     const obs = new IntersectionObserver(
       (entries) => {
+        if (lockedId) return;
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const id = entry.target.getAttribute('id');
-            links.forEach((l) =>
-              l.classList.toggle('active', l.getAttribute('href') === '#' + id),
-            );
+            if (id) setActive(id);
           }
         });
       },
       { rootMargin: '-15% 0px -75% 0px' },
     );
     sects.forEach((s) => obs.observe(s));
-    return () => obs.disconnect();
+    return () => {
+      obs.disconnect();
+      links.forEach((l) => l.removeEventListener('click', onClick));
+      window.removeEventListener('wheel', onUserScroll);
+      window.removeEventListener('touchmove', onUserScroll);
+      window.removeEventListener('keydown', onUserScroll);
+    };
   }, []);
 
   const handleGate = (e: React.FormEvent) => {
@@ -478,17 +528,17 @@ const TrendReport2026 = () => {
 
   const trendShortLabel = (t: Trend) => {
     const map: Record<string, string> = {
-      t1: 'Death of the Product Theater',
-      t2: 'Gamification as Lead-Gen Infrastructure',
-      t3: 'Immersive Storyworld Booths',
+      t1: 'Product Theater',
+      t2: 'Lead-Gen Gamification',
+      t3: 'Storyworld Booths',
       t4: 'AI in the Arena',
-      t5: 'The Modular-First Mandate',
-      t6: 'Dumping Vanity Metrics',
-      t7: 'The Self-Serve Demo Revolution',
-      t8: 'The Booth as Campaign Asset',
-      t9: "LED as the Booth's OS",
-      t10: 'Transparent LED / ClearLED',
-      t11: 'Biophilic Design as Core Strategy',
+      t5: 'Modular-First Mandate',
+      t6: 'Vanity Metrics',
+      t7: 'Self-Serve Demos',
+      t8: 'Campaign Asset',
+      t9: 'LED Architecture',
+      t10: 'ClearLED',
+      t11: 'Biophilic Design',
       t12: 'The One-Idea Booth',
     };
     return map[t.id] ?? t.title;
