@@ -4,6 +4,7 @@ import { Trash2, Plus, Plug, CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
+import { AdSelect } from '@/components/admin/AdSelect';
 
 type Allow = { email: string; role: 'admin' | 'viewer'; invited_at: string };
 type Profile = { id: string; email: string; name: string | null; notification_prefs: Record<string, boolean> };
@@ -209,10 +210,12 @@ function UsersTab() {
       <h3 className="section-title">Authorized users</h3>
       <div className="ad-form-row" style={{ borderBottom: '1px solid #2A2A2A', paddingBottom: 14 }}>
         <input className="ad-input" placeholder="email@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <select className="ad-select" value={role} onChange={(e) => setRole(e.target.value as 'admin' | 'viewer')}>
-          <option value="viewer">Viewer</option>
-          <option value="admin">Admin</option>
-        </select>
+        <AdSelect
+          value={role}
+          onChange={(v) => setRole(v as 'admin' | 'viewer')}
+          options={[{ value: 'viewer', label: 'Viewer' }, { value: 'admin', label: 'Admin' }]}
+          width={140}
+        />
         <button className="ad-btn" onClick={add}><Plus size={13} /> Add</button>
         <span />
       </div>
@@ -222,10 +225,12 @@ function UsersTab() {
       ) : rows.map((r) => (
         <div key={r.email} className="ad-form-row">
           <div style={{ color: '#fff', fontSize: 13 }}>{r.email}</div>
-          <select className="ad-select" value={r.role} onChange={(e) => changeRole(r.email, e.target.value as 'admin' | 'viewer')}>
-            <option value="viewer">Viewer</option>
-            <option value="admin">Admin</option>
-          </select>
+          <AdSelect
+            value={r.role}
+            onChange={(v) => changeRole(r.email, v as 'admin' | 'viewer')}
+            options={[{ value: 'viewer', label: 'Viewer' }, { value: 'admin', label: 'Admin' }]}
+            width={140}
+          />
           <span style={{ fontSize: 11, color: '#555' }}>{new Date(r.invited_at).toLocaleDateString()}</span>
           <button className="ad-icon-btn" onClick={() => remove(r.email)} title="Remove"><Trash2 size={13} /></button>
         </div>
