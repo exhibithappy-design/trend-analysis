@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2 } from 'lucide-react';
+import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil, Check } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { AnimatePresence, motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
@@ -7,7 +7,7 @@ import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
 
 type Msg = { role: 'user' | 'assistant'; content: string; imageUrl?: string };
-type Conversation = { id: string; title: string; updated_at: string };
+type Conversation = { id: string; title: string; updated_at: string; starred: boolean };
 
 const SUGGESTIONS = [
   { title: 'Surface emerging booth formats', sub: 'What experiential formats are gaining traction at major B2B trade shows in 2026?' },
@@ -43,18 +43,23 @@ export default function Chat() {
   const [attached, setAttached] = useState<{ dataUrl: string; name: string } | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [analyzingImage, setAnalyzingImage] = useState(false);
+  const [menuFor, setMenuFor] = useState<string | null>(null);
+  const [renamingId, setRenamingId] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState('');
   const listRef = useRef<HTMLDivElement>(null);
   const taRef = useRef<HTMLTextAreaElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const grouped = useMemo(() => groupByDate(conversations), [conversations]);
+  const starred = useMemo(() => conversations.filter((c) => c.starred), [conversations]);
+  const unstarred = useMemo(() => conversations.filter((c) => !c.starred), [conversations]);
+  const grouped = useMemo(() => groupByDate(unstarred), [unstarred]);
 
   // Load conversations
   async function loadConversations() {
     if (!user) return;
     const { data } = await supabase
       .from('chat_conversations')
-      .select('id, title, updated_at')
+      .select('id, title, updated_at, starred')
       .eq('user_id', user.id)
       .order('updated_at', { ascending: false })
       .limit(200);
@@ -102,6 +107,45 @@ export default function Chat() {
     setConversations((cs) => cs.filter((c) => c.id !== id));
     if (activeId === id) newConversation();
   }
+
+  async function toggleStar(id: string) {
+    const conv = conversations.find((c) => c.id === id);
+    if (!conv) return;
+    const next = !conv.starred;
+    setConversations((cs) => cs.map((c) => (c.id === id ? { ...c, starred: next } : c)));
+    const { error } = await supabase.from('chat_conversations').update({ starred: next }).eq('id', id);
+    if (error) {
+      setConversations((cs) => cs.map((c) => (c.id === id ? { ...c, starred: !next } : c)));
+      toast.error('Could not update star');
+    }
+  }
+
+  function startRename(c: Conversation) {
+    setMenuFor(null);
+    setRenamingId(c.id);
+    setRenameValue(c.title);
+  }
+
+  async function commitRename(id: string) {
+    const value = renameValue.trim();
+    setRenamingId(null);
+    if (!value) return;
+    const prev = conversations.find((c) => c.id === id)?.title;
+    if (value === prev) return;
+    setConversations((cs) => cs.map((c) => (c.id === id ? { ...c, title: value } : c)));
+    const { error } = await supabase.from('chat_conversations').update({ title: value }).eq('id', id);
+    if (error) {
+      if (prev) setConversations((cs) => cs.map((c) => (c.id === id ? { ...c, title: prev } : c)));
+      toast.error('Rename failed');
+    }
+  }
+
+  useEffect(() => {
+    if (!menuFor) return;
+    const onDown = () => setMenuFor(null);
+    window.addEventListener('click', onDown);
+    return () => window.removeEventListener('click', onDown);
+  }, [menuFor]);
 
   async function readFileAsDataUrl(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -259,23 +303,70 @@ export default function Chat() {
     }
   }
 
+  const renderThread = (c: Conversation) => {
+    const isRenaming = renamingId === c.id;
+    return (
+      <div
+        key={c.id}
+        className={'rl-thread' + (activeId === c.id ? ' active' : '') + (c.starred ? ' is-starred' : '')}
+        onClick={() => !isRenaming && setActiveId(c.id)}
+        onContextMenu={(e) => { e.preventDefault(); startRename(c); }}
+      >
+        <MessageSquare size={13} className="rl-thread-icon" />
+        {isRenaming ? (
+          <input
+            autoFocus
+            className="rl-thread-rename"
+            value={renameValue}
+            onChange={(e) => setRenameValue(e.target.value)}
+            onBlur={() => commitRename(c.id)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') { e.preventDefault(); commitRename(c.id); }
+              if (e.key === 'Escape') { e.preventDefault(); setRenamingId(null); }
+            }}
+            onClick={(e) => e.stopPropagation()}
+          />
+        ) : (
+          <span className="rl-thread-title">{c.title}</span>
+        )}
+        <button
+          className={'rl-thread-star' + (c.starred ? ' on' : '')}
+          onClick={(e) => { e.stopPropagation(); toggleStar(c.id); }}
+          title={c.starred ? 'Unstar' : 'Star'}
+          aria-label={c.starred ? 'Unstar thread' : 'Star thread'}
+        >
+          <Star size={12} fill={c.starred ? 'currentColor' : 'none'} />
+        </button>
+        <button
+          className="rl-thread-menu"
+          onClick={(e) => { e.stopPropagation(); setMenuFor(menuFor === c.id ? null : c.id); }}
+          title="More"
+          aria-label="Thread actions"
+        >
+          <MoreHorizontal size={14} />
+        </button>
+        {menuFor === c.id && (
+          <div className="rl-thread-popover" onClick={(e) => e.stopPropagation()}>
+            <button className="rl-pop-item" onClick={() => startRename(c)}>
+              <Pencil size={12} /> Rename
+            </button>
+            <button className="rl-pop-item" onClick={() => toggleStar(c.id)}>
+              <Star size={12} /> {c.starred ? 'Unstar' : 'Star'}
+            </button>
+            <button className="rl-pop-item danger" onClick={() => { setMenuFor(null); deleteConversation(c.id); }}>
+              <Trash2 size={12} /> Delete
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const groupBlock = (label: string, list: Conversation[]) =>
     list.length === 0 ? null : (
       <div className="rl-group" key={label}>
         <div className="rl-group-label">{label}</div>
-        {list.map((c) => (
-          <button
-            key={c.id}
-            className={'rl-thread' + (activeId === c.id ? ' active' : '')}
-            onClick={() => setActiveId(c.id)}
-          >
-            <MessageSquare size={13} className="rl-thread-icon" />
-            <span className="rl-thread-title">{c.title}</span>
-            <span className="rl-thread-del" onClick={(e) => { e.stopPropagation(); deleteConversation(c.id); }}>
-              <Trash2 size={12} />
-            </span>
-          </button>
-        ))}
+        {list.map(renderThread)}
       </div>
     );
 
@@ -305,6 +396,15 @@ export default function Chat() {
                   <div className="rl-threads-empty">No saved threads yet.</div>
                 ) : (
                   <>
+                    {starred.length > 0 && (
+                      <div className="rl-group" key="starred">
+                        <div className="rl-group-label">
+                          <Star size={10} fill="currentColor" style={{ marginRight: 4, verticalAlign: -1 }} />
+                          Starred
+                        </div>
+                        {starred.map(renderThread)}
+                      </div>
+                    )}
                     {groupBlock('Today', grouped.today)}
                     {groupBlock('Previous 7 days', grouped.week)}
                     {groupBlock('Previous 30 days', grouped.month)}
