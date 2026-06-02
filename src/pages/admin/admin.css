@@ -752,3 +752,63 @@
   text-align: center; margin-top: 8px;
   font-size: 11px; color: var(--ad-text-3);
 }
+
+/* Image upload */
+[data-admin] .rl-msg-image {
+  display: block;
+  max-width: 320px; max-height: 320px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 8px;
+  object-fit: cover;
+}
+[data-admin] .rl-attach-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: none; flex-shrink: 0;
+  color: var(--ad-text-2);
+  transition: background 140ms, color 140ms;
+  align-self: flex-end;
+  margin-bottom: 0;
+}
+[data-admin] .rl-attach-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.06);
+  color: var(--ad-text-strong);
+}
+[data-admin] .rl-attach-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+[data-admin] .rl-attached {
+  position: relative; flex-shrink: 0;
+  align-self: flex-end;
+  margin-bottom: 2px;
+}
+[data-admin] .rl-attached img {
+  width: 44px; height: 44px; border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+[data-admin] .rl-attached-x {
+  position: absolute; top: -5px; right: -5px;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: #FF0069; color: #fff; border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+[data-admin] .rl-drop-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px;
+  background: rgba(255,0,105,0.08);
+  border: 2px dashed rgba(255,0,105,0.5);
+  border-radius: 16px;
+  margin: 8px 16px;
+  color: #FF0069; font-size: 13px; font-weight: 500;
+  pointer-events: none;
+  z-index: 5;
+}
+[data-admin] .rl-spin {
+  animation: rl-spin 0.9s linear infinite;
+}
+@keyframes rl-spin {
+  to { transform: rotate(360deg); }
+}
