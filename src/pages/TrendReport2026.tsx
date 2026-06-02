@@ -555,11 +555,12 @@ const TrendReport2026 = () => {
           <div className="hero-c">
             <div className="hero-ey">2026 Trend Report</div>
             <h1>
-              12 Trends<br />
-              <span className="thin">Reshaping the Show Floor</span>
+              We Attended the Biggest<br />
+              Trade Shows of 2026<br />
+              <span className="thin">So You Don't Have To</span>
             </h1>
             <p className="hero-sub">
-              A field-built analysis across HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more — organized into Functional Component Trends and Design Feature Trends. Each card opens from Compact Mode to Depth Mode.
+              Our team spent the year on the ground at HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more — distilling 12 actionable trends that give busy B2B exhibit marketers a strategic edge. No flights. No badge lines. Just the intelligence that matters.
             </p>
             <div className="hero-meta">
               <div className="hero-meta-item">
