@@ -585,7 +585,7 @@
   display: inline-flex; align-items: center; gap: 8px;
   font-size: 13px; color: var(--ad-text); font-weight: 500;
 }
-[data-admin] .rl-topbar-title svg { color: var(--ad-gold); }
+[data-admin] .rl-topbar-title svg { color: #FF0069; }
 
 [data-admin] .rl-scroll {
   flex: 1; overflow-y: auto;
@@ -608,10 +608,10 @@
 [data-admin] .rl-empty-logo {
   width: 56px; height: 56px; border-radius: 16px;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(145deg, rgba(173,150,117,0.25), rgba(173,150,117,0.06));
-  border: 1px solid rgba(173,150,117,0.3);
-  color: var(--ad-gold);
-  box-shadow: 0 10px 40px -10px rgba(173,150,117,0.35);
+  background: linear-gradient(145deg, rgba(255,0,105,0.25), rgba(255,0,105,0.06));
+  border: 1px solid rgba(255,0,105,0.3);
+  color: #FF0069;
+  box-shadow: 0 10px 40px -10px rgba(255,0,105,0.45);
   margin-bottom: 22px;
 }
 [data-admin] .rl-empty-title {
@@ -653,9 +653,9 @@
 [data-admin] .rl-avatar {
   width: 28px; height: 28px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(145deg, rgba(173,150,117,0.3), rgba(173,150,117,0.08));
-  border: 1px solid rgba(173,150,117,0.25);
-  color: var(--ad-gold); flex-shrink: 0;
+  background: linear-gradient(145deg, rgba(255,0,105,0.3), rgba(255,0,105,0.08));
+  border: 1px solid rgba(255,0,105,0.3);
+  color: #FF0069; flex-shrink: 0;
   margin-top: 4px;
 }
 [data-admin] .rl-bubble {
@@ -688,14 +688,14 @@
 [data-admin] .rl-md strong { color: var(--ad-text-strong); font-weight: 600; }
 [data-admin] .rl-md code {
   background: rgba(255,255,255,0.06); padding: 1px 6px; border-radius: 4px;
-  font-size: 12.5px; color: var(--ad-gold);
+  font-size: 12.5px; color: #FF0069;
 }
 [data-admin] .rl-md pre {
   background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.06);
   padding: 12px 14px; border-radius: 8px; overflow-x: auto;
 }
 [data-admin] .rl-md pre code { background: transparent; padding: 0; color: var(--ad-text); }
-[data-admin] .rl-md a { color: var(--ad-pink); text-decoration: underline; text-underline-offset: 2px; }
+[data-admin] .rl-md a { color: #FF0069; text-decoration: underline; text-underline-offset: 2px; }
 
 /* Composer */
 [data-admin] .rl-composer-wrap {
