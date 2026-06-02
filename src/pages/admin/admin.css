@@ -1275,3 +1275,51 @@
 }
 [data-admin] .rl-pop-item:hover { background: var(--ad-hover-2); color: var(--ad-text-strong); }
 [data-admin] .rl-pop-item.danger:hover { color: var(--ad-red); background: rgba(255,77,77,0.1); }
+
+/* Research Lab — folders */
+[data-admin] .rl-folder { margin-bottom: 2px; border-radius: 7px; transition: background 120ms, box-shadow 120ms; }
+[data-admin] .rl-folder.is-drop-target { background: rgba(255,0,105,0.08); box-shadow: 0 0 0 1px rgba(255,0,105,0.35) inset; }
+[data-admin] .rl-group.is-drop-target { background: rgba(255,0,105,0.05); border-radius: 7px; box-shadow: 0 0 0 1px rgba(255,0,105,0.25) inset; }
+[data-admin] .rl-folder-head {
+  position: relative;
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 8px; border-radius: 6px;
+  cursor: pointer; user-select: none;
+  color: var(--ad-text);
+  font-size: 13px; font-weight: 500;
+  transition: background 120ms, color 120ms;
+}
+[data-admin] .rl-folder-head:hover { background: var(--ad-hover-1); color: var(--ad-text-strong); }
+[data-admin] .rl-folder-chev { color: var(--ad-text-3); transition: transform 160ms ease; flex-shrink: 0; }
+[data-admin] .rl-folder-chev.open { transform: rotate(90deg); }
+[data-admin] .rl-folder-ico { color: var(--ad-text-2); flex-shrink: 0; }
+[data-admin] .rl-folder-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+[data-admin] .rl-folder-count {
+  font-size: 10.5px; color: var(--ad-text-3);
+  background: var(--ad-hover-2); padding: 1px 7px; border-radius: 10px;
+  font-variant-numeric: tabular-nums;
+}
+[data-admin] .rl-folder-head .rl-thread-menu { opacity: 0; }
+[data-admin] .rl-folder-head:hover .rl-thread-menu { opacity: 1; }
+[data-admin] .rl-folder-body { padding: 2px 0 4px 14px; display: flex; flex-direction: column; gap: 1px; }
+[data-admin] .rl-folder-empty {
+  padding: 8px 10px;
+  font-size: 11.5px; color: var(--ad-text-3);
+  border: 1px dashed var(--ad-border-soft); border-radius: 6px;
+  text-align: center;
+}
+
+/* Submenu inside thread popover */
+[data-admin] .rl-pop-submenu {
+  margin: 2px 0;
+  padding: 4px;
+  border-radius: 6px;
+  background: var(--ad-hover-1);
+  border: 1px solid var(--ad-border-soft);
+  display: flex; flex-direction: column; gap: 1px;
+  max-height: 220px; overflow-y: auto;
+}
+[data-admin] .rl-pop-empty { padding: 7px 8px; font-size: 11.5px; color: var(--ad-text-3); text-align: center; }
+[data-admin] .rl-pop-sep { height: 1px; background: var(--ad-border-soft); margin: 4px 0; }
+[data-admin] .rl-pop-item.is-current { color: var(--ad-accent); }
+[data-admin] .rl-pop-item:disabled { opacity: 0.6; cursor: default; }
