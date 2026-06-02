@@ -66,8 +66,8 @@ export default function AdminLayout() {
           <div className="ad-sidebar-footer">
             <div className="ad-user-chip">{role === 'admin' ? 'Admin' : 'Viewer'}</div>
             <div className="ad-user-email">{user.email}</div>
-            <button className="ad-nav-item" onClick={signOut} style={{ textAlign: 'left' }}>
-              <LogOut size={15} />
+            <button className="ad-signout" onClick={signOut}>
+              <LogOut size={14} />
               <span>Sign out</span>
             </button>
           </div>
