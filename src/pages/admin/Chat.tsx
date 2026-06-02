@@ -444,17 +444,31 @@ export default function Chat() {
         return { ok: true, res };
       };
 
-      const first = await attemptChat();
-      const final = first.ok || !first.retryable
-        ? first
-        : (await new Promise<void>((r) => setTimeout(r, 2000)), await attemptChat());
-      if (!final.ok) {
-        toast.error(final.message);
-        markLastUserFailed();
-        setSending(false);
-        return;
+      let res: Response;
+      {
+        const first = await attemptChat();
+        if (first.ok) {
+          res = first.res;
+        } else {
+          if (first.retryable) {
+            await new Promise((r) => setTimeout(r, 2000));
+            const second = await attemptChat();
+            if (second.ok) {
+              res = second.res;
+            } else {
+              toast.error(second.message);
+              markLastUserFailed();
+              setSending(false);
+              return;
+            }
+          } else {
+            toast.error(first.message);
+            markLastUserFailed();
+            setSending(false);
+            return;
+          }
+        }
       }
-      const res = final.res;
 
       const newConvId = res.headers.get('x-conversation-id');
       const effectiveConvId = newConvId || activeId;
