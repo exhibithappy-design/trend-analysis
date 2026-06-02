@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil, Folder, FolderPlus, ChevronRight, FolderOpen, FolderInput } from 'lucide-react';
+import { ArrowUp, Plus, Sparkles, Trash2, PanelLeftClose, PanelLeft, MessageSquare, Beaker, Paperclip, X, ImageIcon, Loader2, Star, MoreHorizontal, Pencil, Folder, FolderPlus, ChevronRight, FolderOpen, FolderInput, RotateCcw, AlertTriangle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
 
-type Msg = { role: 'user' | 'assistant'; content: string; imageUrl?: string };
+type Msg = { id?: string; role: 'user' | 'assistant'; content: string; imageUrl?: string; failed?: boolean };
 type Conversation = { id: string; title: string; updated_at: string; starred: boolean; folder_id: string | null };
 type ChatFolder = { id: string; name: string; display_order: number };
 
