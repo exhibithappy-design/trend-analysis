@@ -41,7 +41,7 @@
 /* Trend card (Compact/Depth) */
 .trend-card{background:var(--white);border:1px solid var(--light-card);border-radius:14px;overflow:hidden;margin-bottom:28px;transition:box-shadow .25s,border-color .25s;display:flex;flex-direction:column}
 .trend-card:hover{border-color:rgba(255,0,105,.25);box-shadow:0 8px 32px var(--pink-soft)}
-.trend-card .tc-media{position:relative;background:var(--light-card);overflow:hidden;width:100%;aspect-ratio:16/9}
+.trend-card .tc-media{position:relative;background:var(--light-card);overflow:hidden;width:100%;aspect-ratio:16/6;max-height:260px}
 .trend-card .tc-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .trend-card:hover .tc-media img{transform:scale(1.02)}
 .trend-card .tc-body{padding:28px 32px}
@@ -59,7 +59,7 @@
 .tc-depth .tc-prose p{font-size:14.5px;color:var(--gray-body);line-height:1.8;margin-bottom:14px}
 .tc-depth .tc-prose p:last-child{margin-bottom:0}
 .tc-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
-.tc-gallery-item{margin:0;border-radius:8px;overflow:hidden;background:var(--light-card);aspect-ratio:4/3;cursor:pointer;transition:transform .25s}
+.tc-gallery-item{margin:0;border-radius:8px;overflow:hidden;background:var(--light-card);aspect-ratio:16/9;cursor:pointer;transition:transform .25s}
 .tc-gallery-item:hover{transform:translateY(-2px)}
 .tc-gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
 .tc-gallery-item:hover img{transform:scale(1.04)}
