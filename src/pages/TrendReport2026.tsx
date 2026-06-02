@@ -448,7 +448,7 @@ const TrendReport2026 = () => {
   }, []);
 
   useEffect(() => {
-    const sects = document.querySelectorAll('section[id]');
+    const sects = document.querySelectorAll('section[id], .trend-card[id]');
     const links = document.querySelectorAll('.sidebar .nav-link');
     const obs = new IntersectionObserver(
       (entries) => {
@@ -478,18 +478,18 @@ const TrendReport2026 = () => {
 
   const trendShortLabel = (t: Trend) => {
     const map: Record<string, string> = {
-      t1: 'Product Theater',
-      t2: 'Gamification',
-      t3: 'Invite-Only',
-      t4: 'AI Booth Staff',
-      t5: 'Modular Builds',
-      t6: 'Pipeline Metrics',
-      t7: 'Dark Finishes',
-      t8: 'Double Deckers',
-      t9: 'Workspitality',
-      t10: 'F&B Retention',
-      t11: 'Curved Forms',
-      t12: 'Color Zig-Zag',
+      t1: 'Death of the Product Theater',
+      t2: 'Gamification as Lead-Gen Infrastructure',
+      t3: 'Immersive Storyworld Booths',
+      t4: 'AI in the Arena',
+      t5: 'The Modular-First Mandate',
+      t6: 'Dumping Vanity Metrics',
+      t7: 'The Self-Serve Demo Revolution',
+      t8: 'The Booth as Campaign Asset',
+      t9: "LED as the Booth's OS",
+      t10: 'Transparent LED / ClearLED',
+      t11: 'Biophilic Design as Core Strategy',
+      t12: 'The One-Idea Booth',
     };
     return map[t.id] ?? t.title;
   };
