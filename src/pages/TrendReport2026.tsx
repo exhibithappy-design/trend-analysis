@@ -552,6 +552,7 @@ const TrendReport2026 = () => {
             ))}
           </div>
           <div className="hero-ov"></div>
+          <div className="hero-grad-bl" aria-hidden="true"></div>
           <div className="hero-c">
             <div className="hero-ey">2026 Trend Report</div>
             <h1>
