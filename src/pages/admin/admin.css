@@ -1223,3 +1223,55 @@
   .detail-strip h1 { font-size: 20px; }
   .ad-form-row { grid-template-columns: 1fr; }
 }
+
+/* Research Lab — thread controls (star, menu, rename) */
+[data-admin] .rl-thread { cursor: pointer; user-select: none; }
+[data-admin] .rl-thread.is-starred .rl-thread-icon { color: var(--ad-accent); }
+[data-admin] .rl-thread-rename {
+  flex: 1; min-width: 0;
+  background: var(--ad-hover-2);
+  border: 1px solid var(--ad-border-strong);
+  border-radius: 5px;
+  color: var(--ad-text-strong);
+  font-family: inherit; font-size: 13px;
+  padding: 3px 7px; outline: none;
+}
+[data-admin] .rl-thread-rename:focus { border-color: var(--ad-accent); }
+[data-admin] .rl-thread-star,
+[data-admin] .rl-thread-menu {
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px; background: transparent; border: none;
+  color: var(--ad-text-3);
+  opacity: 0;
+  transition: opacity 120ms, color 120ms, background 120ms;
+  flex-shrink: 0;
+}
+[data-admin] .rl-thread:hover .rl-thread-star,
+[data-admin] .rl-thread:hover .rl-thread-menu { opacity: 1; }
+[data-admin] .rl-thread-star.on { opacity: 1; color: var(--ad-accent); }
+[data-admin] .rl-thread-star:hover { color: var(--ad-accent); background: var(--ad-hover-2); }
+[data-admin] .rl-thread-menu:hover { color: var(--ad-text-strong); background: var(--ad-hover-2); }
+[data-admin] .rl-thread-popover {
+  position: absolute; top: 100%; right: 6px; z-index: 20;
+  margin-top: 4px;
+  min-width: 150px;
+  background: var(--ad-composer-bg);
+  border: 1px solid var(--ad-border-strong);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 16px 36px -16px rgba(0,0,0,0.5);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  display: flex; flex-direction: column; gap: 1px;
+}
+[data-admin] .rl-pop-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border-radius: 5px;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--ad-text); font-size: 12.5px; font-family: inherit;
+  text-align: left;
+  transition: background 100ms, color 100ms;
+}
+[data-admin] .rl-pop-item:hover { background: var(--ad-hover-2); color: var(--ad-text-strong); }
+[data-admin] .rl-pop-item.danger:hover { color: var(--ad-red); background: rgba(255,77,77,0.1); }

@@ -1,0 +1,2 @@
+ALTER TABLE public.chat_conversations ADD COLUMN IF NOT EXISTS starred boolean NOT NULL DEFAULT false;
+CREATE INDEX IF NOT EXISTS chat_conversations_user_starred_idx ON public.chat_conversations (user_id, starred, updated_at DESC);
