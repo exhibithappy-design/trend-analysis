@@ -522,23 +522,6 @@ const TrendReport2026 = () => {
   const functional = TRENDS.filter((t) => t.category === 'Functional Component');
   const design = TRENDS.filter((t) => t.category === 'Design Feature');
 
-  const trendShortLabel = (t: Trend) => {
-    const map: Record<string, string> = {
-      t1: 'Product Theater',
-      t2: 'Lead-Gen Gamification',
-      t3: 'Storyworld Booths',
-      t4: 'AI in the Arena',
-      t5: 'Modular-First Mandate',
-      t6: 'Vanity Metrics',
-      t7: 'Self-Serve Demos',
-      t8: 'Campaign Asset',
-      t9: 'LED Architecture',
-      t10: 'ClearLED',
-      t11: 'Biophilic Design',
-      t12: 'The One-Idea Booth',
-    };
-    return map[t.id] ?? t.title;
-  };
 
   return (
     <>
