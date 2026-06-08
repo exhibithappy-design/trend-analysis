@@ -705,6 +705,21 @@ const TrendReport2026 = () => {
           </div>
         </section>
 
+        {/* Creative Strategy Trends */}
+        <section id="cat-creative">
+          <div className="ch">
+            <div className="cn">03</div>
+            <div className="cname">Creative Strategy Trends</div>
+          </div>
+          <div className="section section--w" style={{ paddingTop: 40 }}>
+            {creativeStrategy.map((t) => (
+              <FadeIn key={t.id}>
+                <TrendCard trend={t} onImage={setLightboxSrc} />
+              </FadeIn>
+            ))}
+          </div>
+        </section>
+
         {/* Soft gate CTA */}
         <section className="section section--b" id="gate">
           <div className="pr"></div>
