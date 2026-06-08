@@ -411,7 +411,6 @@ const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: 
       <div className="tc-body">
         <div className="tc-meta">
           <span className="tc-num">Trend #{trend.num}</span>
-          <span className="tc-cat">{trend.category} Trend</span>
         </div>
         <h3 className="tc-title">{trend.title}</h3>
         {!open && (
