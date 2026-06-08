@@ -474,13 +474,53 @@ const makeHeroSlides = (): string[] => [
 const TrendReport2026 = () => {
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const [heroIdx, setHeroIdx] = useState(0);
+  const [signedVersion, setSignedVersion] = useState(0);
+
+  // Fetch signed URLs for all bucket files on mount and store them in the
+  // module-level signedUrlMap. Bumping signedVersion re-runs the useMemo
+  // calls below so the rendered URLs swap from Unsplash to signed storage.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const results = await Promise.all(
+        BUCKET_FILES.map(async (file) => {
+          try {
+            const { data, error } = await supabase.storage
+              .from(BUCKET_NAME)
+              .createSignedUrl(file, SIGNED_URL_TTL_SECONDS);
+            if (error || !data?.signedUrl) return null;
+            return [file, data.signedUrl] as const;
+          } catch {
+            return null;
+          }
+        }),
+      );
+      if (cancelled) return;
+      let added = 0;
+      for (const entry of results) {
+        if (entry) {
+          signedUrlMap[entry[0]] = entry[1];
+          added++;
+        }
+      }
+      if (added > 0) setSignedVersion((v) => v + 1);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const TRENDS = useMemo(() => makeTrends(), [signedVersion]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const HERO_SLIDES = useMemo(() => makeHeroSlides(), [signedVersion]);
 
   useEffect(() => {
     const id = setInterval(() => {
       setHeroIdx((i) => (i + 1) % HERO_SLIDES.length);
     }, 6000);
     return () => clearInterval(id);
-  }, []);
+  }, [HERO_SLIDES.length]);
 
   const toggleNav = useCallback(() => {
     document.getElementById('sidebar2')?.classList.toggle('open');
