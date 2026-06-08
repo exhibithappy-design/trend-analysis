@@ -463,12 +463,71 @@ const makeHeroSlides = (): string[] => [
 ];
 
 const TrendReport2026 = () => {
+  const { isAdmin } = useAdminAuth();
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const [heroIdx, setHeroIdx] = useState(0);
   const [signedVersion, setSignedVersion] = useState(0);
   const [heroPositions, setHeroPositions] = useState<Record<number, number>>({});
   const [repositionIdx, setRepositionIdx] = useState<number | null>(null);
   const dragStateRef = useRef<{ startY: number; startPos: number; height: number } | null>(null);
+
+  // Force-exit reposition mode if admin status is lost
+  useEffect(() => {
+    if (!isAdmin && repositionIdx !== null) setRepositionIdx(null);
+  }, [isAdmin, repositionIdx]);
+
+  const savePosition = useCallback((idx: number, pos: number) => {
+    const clamped = Math.max(0, Math.min(100, pos));
+    setHeroPositions((prev) => ({ ...prev, [idx]: clamped }));
+    try {
+      localStorage.setItem(`tr2026:heroPos:${idx}`, String(clamped));
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const handleRepositionPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>, idx: number) => {
+      if (repositionIdx !== idx) return;
+      const el = e.currentTarget;
+      el.setPointerCapture(e.pointerId);
+      dragStateRef.current = {
+        startY: e.clientY,
+        startPos: heroPositions[idx] ?? 50,
+        height: el.clientHeight || 1,
+      };
+    },
+    [repositionIdx, heroPositions],
+  );
+
+  const handleRepositionPointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>, idx: number) => {
+      const drag = dragStateRef.current;
+      if (!drag || repositionIdx !== idx) return;
+      const deltaY = e.clientY - drag.startY;
+      // Drag up shifts the focal point down (reveals more of bottom); invert
+      const deltaPct = (deltaY / drag.height) * 100;
+      const nextPos = Math.max(0, Math.min(100, drag.startPos - deltaPct));
+      setHeroPositions((prev) => ({ ...prev, [idx]: nextPos }));
+    },
+    [repositionIdx],
+  );
+
+  const handleRepositionPointerUp = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>, idx: number) => {
+      const drag = dragStateRef.current;
+      if (!drag) return;
+      dragStateRef.current = null;
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch {
+        /* ignore */
+      }
+      const current = heroPositions[idx] ?? 50;
+      savePosition(idx, current);
+    },
+    [heroPositions, savePosition],
+  );
 
   // Load saved hero positions from localStorage on mount
   useEffect(() => {
