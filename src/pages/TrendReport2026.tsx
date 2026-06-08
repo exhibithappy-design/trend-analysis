@@ -522,6 +522,7 @@ const TrendReport2026 = () => {
 
   const functional = TRENDS.filter((t) => t.category === 'Functional Component');
   const design = TRENDS.filter((t) => t.category === 'Design Feature');
+  const creativeStrategy = TRENDS.filter((t) => t.category === 'Creative Strategy');
 
 
   return (
@@ -555,6 +556,12 @@ const TrendReport2026 = () => {
           ))}
           <div className="nav-group-label">Design</div>
           {design.map((t) => (
+            <a key={t.id} href={`#${t.id}`} className="nav-link" onClick={closeMobile}>
+              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {t.shortTitle}
+            </a>
+          ))}
+          <div className="nav-group-label">Creative Strategy</div>
+          {creativeStrategy.map((t) => (
             <a key={t.id} href={`#${t.id}`} className="nav-link" onClick={closeMobile}>
               <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {t.shortTitle}
             </a>
@@ -662,7 +669,6 @@ const TrendReport2026 = () => {
                 <a className="pp-link" href="#t1">Trend 1</a>
                 <a className="pp-link" href="#t2">Trend 2</a>
                 <a className="pp-link" href="#t7">Trend 7</a>
-                <a className="pp-link" href="#t11">Trend 11</a>
                 <a className="pp-link" href="#t12">Trend 12</a>
               </div>
             </div>
