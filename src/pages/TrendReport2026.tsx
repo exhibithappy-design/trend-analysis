@@ -7,6 +7,34 @@ import './HIMSSReport.css';
 import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
+const STORAGE_BASE = 'https://pvaoaqyizcalbfqkekpf.supabase.co/storage/v1/object/public/trend-images/';
+
+const BUCKET_FILES = new Set([
+  'hero-1.jpg',
+  'hero-3.jpg',
+  'trend-02-header.jpg',
+  'trend-02-detail-b.jpg',
+  'trend-03-detail-b.jpg',
+  'trend-04-header.jpg',
+  'trend-04-detail-a.jpg',
+  'trend-04-detail-b.jpg',
+  'trend-05-detail-a.jpg',
+  'trend-05-detail-b.jpg',
+  'trend-06-header.jpg',
+  'trend-06-detail-a.jpg',
+  'trend-07-header.jpg',
+  'trend-08-detail-a.jpg',
+  'trend-08-detail-b.jpg',
+  'trend-09-detail-a.jpg',
+  'trend-10-header.jpg',
+  'trend-10-detail-b.jpg',
+  'trend-12-header.jpg',
+]);
+
+function bucketUrl(filename: string, fallback: string): string {
+  return BUCKET_FILES.has(filename) ? `${STORAGE_BASE}${filename}` : fallback;
+}
+
 // NOTE: Images flagged "confirm license" pull from Unsplash via source.unsplash.com
 // using descriptive queries. These should be replaced with licensed assets before
 // going live on a public domain. Direct Unsplash photo IDs (BKpOVik79lA,
