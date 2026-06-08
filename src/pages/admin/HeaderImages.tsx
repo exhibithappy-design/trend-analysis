@@ -99,9 +99,9 @@ export default function HeaderImages() {
       </header>
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
-          gap: 20,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 24,
         }}
       >
         {TRENDS.map((n) => {
@@ -122,6 +122,7 @@ export default function HeaderImages() {
                   position: 'relative',
                   width: '100%',
                   aspectRatio: '16 / 6',
+                  maxHeight: 260,
                   background: '#000',
                   overflow: 'hidden',
                 }}
