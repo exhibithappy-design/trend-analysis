@@ -567,8 +567,8 @@ const TrendReport2026 = () => {
             </a>
           ))}
           <div className="nav-group-label">Next</div>
-          <a href="#gate" className="nav-link" onClick={closeMobile}>
-            <Download size={13} className="nav-icon" /> Get Full Report
+          <a href="#contact" className="nav-link" onClick={closeMobile}>
+            <Mail size={13} className="nav-icon" /> Get in Touch
           </a>
         </div>
         <div className="sidebar-footer">
