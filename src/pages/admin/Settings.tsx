@@ -5,7 +5,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
 import { AdSelect } from '@/components/admin/AdSelect';
-import { Slider } from '@/components/ui/slider';
 
 type Allow = { email: string; role: 'admin' | 'viewer'; invited_at: string };
 type Profile = { id: string; email: string; name: string | null; notification_prefs: Record<string, boolean> };
