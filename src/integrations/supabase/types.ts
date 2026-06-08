@@ -694,6 +694,24 @@ export type Database = {
           },
         ]
       }
+      trend_image_positions: {
+        Row: {
+          position: number
+          trend_num: number
+          updated_at: string
+        }
+        Insert: {
+          position?: number
+          trend_num: number
+          updated_at?: string
+        }
+        Update: {
+          position?: number
+          trend_num?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
