@@ -44,7 +44,7 @@ function bucketUrl(filename: string, fallback: string): string {
 type Trend = {
   id: string;
   num: number;
-  category: 'Functional Component' | 'Design Feature' | 'Creative Strategy';
+  category: 'Functional Component' | 'Design Feature';
   title: string;
   shortTitle: string;
   bullets: string[];
