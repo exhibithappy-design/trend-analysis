@@ -18,6 +18,7 @@ type Trend = {
   num: number;
   category: 'Functional Component' | 'Design Feature';
   title: string;
+  shortTitle: string;
   bullets: string[];
   depth: string[];
   gallery: { src: string; alt: string }[];
@@ -35,6 +36,7 @@ const TRENDS: Trend[] = [
     num: 1,
     category: 'Functional Component',
     title: 'Death of the Product Theater',
+    shortTitle: 'Product Theater',
     bullets: [
       'The scripted, rep-led feature walkthrough is dying — buyers want proof, not presentations',
       'Booths built around outcomes and live problem-solving are replacing product demos as theater',
@@ -61,6 +63,7 @@ const TRENDS: Trend[] = [
     num: 2,
     category: 'Functional Component',
     title: 'Gamification as Lead-Gen Infrastructure',
+    shortTitle: 'Lead-Gen Gamification',
     bullets: [
       'Game mechanics aren\'t a crowd trick anymore — they\'re the lead capture engine',
       'Challenges, leaderboards, and QR-gated registration are replacing badge scans as the primary data layer',
@@ -87,6 +90,7 @@ const TRENDS: Trend[] = [
     num: 3,
     category: 'Functional Component',
     title: 'Immersive Storyworld Booths',
+    shortTitle: 'Storyworld Booths',
     bullets: [
       'Award-winning brands are building entire themed environments — one strong premise, committed all the way',
       'Verkada\'s Louvre heist at ISC West 2026 is the benchmark: the theme IS the demo',
@@ -113,6 +117,7 @@ const TRENDS: Trend[] = [
     num: 4,
     category: 'Functional Component',
     title: 'AI in the Arena: Engagement That Demonstrates AND Delights',
+    shortTitle: 'AI in the Arena',
     bullets: [
       'The smartest exhibitors aren\'t showing AI in a keynote — they\'re putting it inside the booth game',
       'Challenges adapt to your skill level, quizzes branch by role, scenarios make the AI\'s capability the thing being experienced',
@@ -139,6 +144,7 @@ const TRENDS: Trend[] = [
     num: 5,
     category: 'Functional Component',
     title: 'The Modular-First Mandate',
+    shortTitle: 'Modular-First Mandate',
     bullets: [
       'Single-use custom builds are being phased out as the default approach to exhibit design',
       'The new standard is a modular system designed across 3–5 shows, scalable from 10x10 to island, reconfigurable by market',
@@ -166,6 +172,7 @@ const TRENDS: Trend[] = [
     category: 'Functional Component',
     cluster: 'Design',
     title: 'Orchestrated Journey Over Spectacle',
+    shortTitle: 'Orchestrated Journey',
     bullets: [
       "Award-winning booths aren't louder — they're sequenced. Entry, discovery, proof, exit",
       'Visitors are moved through defined modes, not left to roam a sea of stimuli',
@@ -190,6 +197,7 @@ const TRENDS: Trend[] = [
     num: 7,
     category: 'Functional Component',
     title: 'The Self-Serve Demo Revolution',
+    shortTitle: 'Self-Serve Demos',
     bullets: [
       'Buyers want to explore on their own terms, not wait for a scheduled walkthrough',
       'Interactive, role-adaptive demo stations give attendees control of pace, path, and relevance',
@@ -216,6 +224,7 @@ const TRENDS: Trend[] = [
     num: 8,
     category: 'Functional Component',
     title: 'The Booth as Campaign Asset',
+    shortTitle: 'Campaign Asset',
     bullets: [
       'The booth is no longer the event — it\'s the content hub for a 6-week campaign',
       'Pre-show teasers, live social capture, post-show video clips, and email sequences are planned before the build begins',
@@ -242,6 +251,7 @@ const TRENDS: Trend[] = [
     num: 9,
     category: 'Design Feature',
     title: 'LED as the Booth\'s Operating System',
+    shortTitle: 'LED Architecture',
     bullets: [
       'LED is no longer a display — it\'s the architecture itself',
       'Floor-to-ceiling walls, ceiling canopies, and dynamic content zones change by session, audience, or time of day',
@@ -268,6 +278,7 @@ const TRENDS: Trend[] = [
     num: 10,
     category: 'Design Feature',
     title: 'Transparent LED / ClearLED as Architecture',
+    shortTitle: 'ClearLED',
     bullets: [
       'ClearLED is moving from novelty to structural material',
       'Brands are using it as entry portals, hanging planes, and semi-open facades',
@@ -294,6 +305,7 @@ const TRENDS: Trend[] = [
     num: 11,
     category: 'Design Feature',
     title: 'Biophilic Design as Core Strategy',
+    shortTitle: 'Biophilic Design',
     bullets: [
       'Living green walls, light woods, natural textures, and soft lounge zones are replacing hard, tech-heavy builds',
       'Multiple 2026 exhibit trend sources name biophilic design one of the most significant aesthetic shifts of the year',
@@ -320,6 +332,7 @@ const TRENDS: Trend[] = [
     num: 12,
     category: 'Design Feature',
     title: 'The One-Idea Booth: Sharp Concept Over Scenic Complexity',
+    shortTitle: 'The One-Idea Booth',
     bullets: [
       'EXHIBITOR\'s 2025 award analysis found one universal trait across winners: a single organizing idea executed completely',
       'Not a collage of product messages — one sentence, committed all the way through layout, graphics, and staff scripting',
@@ -509,23 +522,6 @@ const TrendReport2026 = () => {
   const functional = TRENDS.filter((t) => t.category === 'Functional Component');
   const design = TRENDS.filter((t) => t.category === 'Design Feature');
 
-  const trendShortLabel = (t: Trend) => {
-    const map: Record<string, string> = {
-      t1: 'Product Theater',
-      t2: 'Lead-Gen Gamification',
-      t3: 'Storyworld Booths',
-      t4: 'AI in the Arena',
-      t5: 'Modular-First Mandate',
-      t6: 'Vanity Metrics',
-      t7: 'Self-Serve Demos',
-      t8: 'Campaign Asset',
-      t9: 'LED Architecture',
-      t10: 'ClearLED',
-      t11: 'Biophilic Design',
-      t12: 'The One-Idea Booth',
-    };
-    return map[t.id] ?? t.title;
-  };
 
   return (
     <>
@@ -553,13 +549,13 @@ const TrendReport2026 = () => {
           <div className="nav-group-label">Functional</div>
           {functional.map((t) => (
             <a key={t.id} href={`#${t.id}`} className="nav-link" onClick={closeMobile}>
-              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {trendShortLabel(t)}
+              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {t.shortTitle}
             </a>
           ))}
           <div className="nav-group-label">Design</div>
           {design.map((t) => (
             <a key={t.id} href={`#${t.id}`} className="nav-link" onClick={closeMobile}>
-              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {trendShortLabel(t)}
+              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {t.shortTitle}
             </a>
           ))}
           <div className="nav-group-label">Next</div>
