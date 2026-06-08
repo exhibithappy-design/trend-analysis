@@ -1,15 +1,17 @@
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, AlertTriangle, Mail, LayoutGrid, DollarSign, Palette } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 
 import './HIMSSReport.css';
 import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
-const STORAGE_BASE = 'https://pvaoaqyizcalbfqkekpf.supabase.co/storage/v1/object/public/trend-images/';
+const BUCKET_NAME = 'trend-images';
+const SIGNED_URL_TTL_SECONDS = 31536000; // 1 year
 
-const BUCKET_FILES = new Set([
+const BUCKET_FILES = [
   'hero-1.jpg',
   'hero-3.jpg',
   'trend-02-header.jpg',
@@ -29,10 +31,14 @@ const BUCKET_FILES = new Set([
   'trend-10-header.jpg',
   'trend-10-detail-b.jpg',
   'trend-12-header.jpg',
-]);
+] as const;
+
+// Mutable map populated at runtime with signed URLs from Supabase storage.
+// Until populated, bucketUrl() returns the provided Unsplash fallback.
+const signedUrlMap: Record<string, string> = {};
 
 function bucketUrl(filename: string, fallback: string): string {
-  return BUCKET_FILES.has(filename) ? `${STORAGE_BASE}${filename}` : fallback;
+  return signedUrlMap[filename] ?? fallback;
 }
 
 // NOTE: Images flagged "confirm license" pull from Unsplash via source.unsplash.com
