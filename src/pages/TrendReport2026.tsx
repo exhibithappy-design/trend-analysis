@@ -19,7 +19,7 @@ const BUCKET_FILES = [
   'trend-04-header.jpg', 'trend-04-detail-a.jpg', 'trend-04-detail-b.jpg',
   'trend-05-detail-a.jpg', 'trend-05-detail-b.jpg',
   'trend-06-header.jpg', 'trend-06-detail-a.jpg', 'trend-06-detail-b.jpg',
-  'trend-07-header.jpg',
+  // 'trend-07-header.jpg', // no uploaded header yet — uses Unsplash fallback
   'trend-08-detail-a.jpg', 'trend-08-detail-b.jpg',
   'trend-09-detail-a.jpg',
   'trend-10-header.jpg', 'trend-10-detail-a.jpg', 'trend-10-detail-b.jpg',
