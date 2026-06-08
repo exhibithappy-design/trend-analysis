@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, AlertTriangle, LayoutGrid, DollarSign, Palette } from 'lucide-react';
+import { FileText, AlertTriangle, Mail, LayoutGrid, DollarSign, Palette } from 'lucide-react';
 
 
 import './HIMSSReport.css';
