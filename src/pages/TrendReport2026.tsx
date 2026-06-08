@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, AlertTriangle, Download, LayoutGrid, DollarSign, Palette } from 'lucide-react';
+import { FileText, AlertTriangle, Mail, LayoutGrid, DollarSign, Palette } from 'lucide-react';
 
 
 import './HIMSSReport.css';
@@ -439,8 +439,6 @@ const HERO_SLIDES = [
 
 const TrendReport2026 = () => {
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [email, setEmail] = useState('');
   const [heroIdx, setHeroIdx] = useState(0);
 
   useEffect(() => {
@@ -514,11 +512,6 @@ const TrendReport2026 = () => {
     };
   }, []);
 
-  const handleGate = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
-  };
 
   const functional = TRENDS.filter((t) => t.category === 'Functional Component');
   const design = TRENDS.filter((t) => t.category === 'Design Feature');
@@ -567,8 +560,8 @@ const TrendReport2026 = () => {
             </a>
           ))}
           <div className="nav-group-label">Next</div>
-          <a href="#gate" className="nav-link" onClick={closeMobile}>
-            <Download size={13} className="nav-icon" /> Get Full Report
+          <a href="#contact" className="nav-link" onClick={closeMobile}>
+            <Mail size={13} className="nav-icon" /> Get in Touch
           </a>
         </div>
         <div className="sidebar-footer">
@@ -720,49 +713,27 @@ const TrendReport2026 = () => {
           </div>
         </section>
 
-        {/* Soft gate CTA */}
-        <section className="section section--b" id="gate">
+        {/* Contact CTA */}
+        <section className="section section--b" id="contact">
           <div className="pr"></div>
-          <div className="sl">Get the full report</div>
-          <h2 className="st">Want the full PDF with case studies, source citations, and the 2027 outlook?</h2>
+          <div className="sl">Get in Touch</div>
+          <h2 className="st">Ready to make your next show unforgettable?</h2>
           <FadeIn>
-            <div className="gate">
-              <div className="gate-inner">
-                <div>
-                  <h3>The 2026 Exhibit Trend Report — Full Edition</h3>
+            <div className="contact-cta">
+              <div className="contact-cta-inner">
+                <div className="contact-cta-text">
                   <p>
-                    Everything on this page, plus the supporting case studies, vendor citations, photo references, and our 2027 outlook on where the floor is headed next.
+                    Let's talk about how Exhibit Happy by Steelhead can turn these trends into your competitive advantage on the floor.
                   </p>
-                  <ul>
-                    <li>Full case studies from Samsung, Jack Morton, Freeman, Zenus.ai, and more</li>
-                    <li>2027 outlook: what to plan for next year</li>
-                    <li>Source citations and licensed photography</li>
-                    <li>Printable PDF, formatted for client distribution</li>
-                  </ul>
+                  <div className="contact-person">
+                    <div className="contact-name">Andrew Childers</div>
+                    <div className="contact-title">Director of Business Development, Exhibit Happy by Steelhead</div>
+                  </div>
                 </div>
-                <div className="gate-form">
-                  {submitted ? (
-                    <div className="gate-success">
-                      <strong>Check your inbox.</strong>
-                      The full report is on its way to {email}.
-                    </div>
-                  ) : (
-                    <form onSubmit={handleGate}>
-                      <label htmlFor="gate-email">Work email</label>
-                      <input
-                        id="gate-email"
-                        type="email"
-                        required
-                        placeholder="you@company.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                      <button type="submit">Send me the report</button>
-                      <div className="gate-fine">
-                        No spam. We'll send the PDF once and add you to the trend report list for next year.
-                      </div>
-                    </form>
-                  )}
+                <div className="contact-cta-action">
+                  <a href="#" className="contact-btn">
+                    Book a Time with Andrew
+                  </a>
                 </div>
               </div>
             </div>
