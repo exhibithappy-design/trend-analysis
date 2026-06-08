@@ -1,7 +1,8 @@
-import { useEffect, useCallback, useState, useMemo } from 'react';
+import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, AlertTriangle, Mail, LayoutGrid, DollarSign, Palette } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 
 
 import './HIMSSReport.css';
@@ -462,9 +463,88 @@ const makeHeroSlides = (): string[] => [
 ];
 
 const TrendReport2026 = () => {
+  const { isAdmin } = useAdminAuth();
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const [heroIdx, setHeroIdx] = useState(0);
   const [signedVersion, setSignedVersion] = useState(0);
+  const [heroPositions, setHeroPositions] = useState<Record<number, number>>({});
+  const [repositionIdx, setRepositionIdx] = useState<number | null>(null);
+  const dragStateRef = useRef<{ startY: number; startPos: number; height: number } | null>(null);
+
+  // Force-exit reposition mode if admin status is lost
+  useEffect(() => {
+    if (!isAdmin && repositionIdx !== null) setRepositionIdx(null);
+  }, [isAdmin, repositionIdx]);
+
+  const savePosition = useCallback((idx: number, pos: number) => {
+    const clamped = Math.max(0, Math.min(100, pos));
+    setHeroPositions((prev) => ({ ...prev, [idx]: clamped }));
+    try {
+      localStorage.setItem(`tr2026:heroPos:${idx}`, String(clamped));
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const handleRepositionPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>, idx: number) => {
+      if (repositionIdx !== idx) return;
+      const el = e.currentTarget;
+      el.setPointerCapture(e.pointerId);
+      dragStateRef.current = {
+        startY: e.clientY,
+        startPos: heroPositions[idx] ?? 50,
+        height: el.clientHeight || 1,
+      };
+    },
+    [repositionIdx, heroPositions],
+  );
+
+  const handleRepositionPointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>, idx: number) => {
+      const drag = dragStateRef.current;
+      if (!drag || repositionIdx !== idx) return;
+      const deltaY = e.clientY - drag.startY;
+      // Drag up shifts the focal point down (reveals more of bottom); invert
+      const deltaPct = (deltaY / drag.height) * 100;
+      const nextPos = Math.max(0, Math.min(100, drag.startPos - deltaPct));
+      setHeroPositions((prev) => ({ ...prev, [idx]: nextPos }));
+    },
+    [repositionIdx],
+  );
+
+  const handleRepositionPointerUp = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>, idx: number) => {
+      const drag = dragStateRef.current;
+      if (!drag) return;
+      dragStateRef.current = null;
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch {
+        /* ignore */
+      }
+      const current = heroPositions[idx] ?? 50;
+      savePosition(idx, current);
+    },
+    [heroPositions, savePosition],
+  );
+
+  // Load saved hero positions from localStorage on mount
+  useEffect(() => {
+    try {
+      const next: Record<number, number> = {};
+      for (let i = 0; i < 12; i++) {
+        const v = localStorage.getItem(`tr2026:heroPos:${i}`);
+        if (v != null) {
+          const n = parseFloat(v);
+          if (!Number.isNaN(n)) next[i] = Math.max(0, Math.min(100, n));
+        }
+      }
+      setHeroPositions(next);
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   // Fetch signed URLs for all bucket files on mount and store them in the
   // module-level signedUrlMap. Bumping signedVersion re-runs the useMemo
@@ -506,11 +586,12 @@ const TrendReport2026 = () => {
   const HERO_SLIDES = useMemo(() => makeHeroSlides(), [signedVersion]);
 
   useEffect(() => {
+    if (repositionIdx !== null) return; // pause auto-advance while repositioning
     const id = setInterval(() => {
       setHeroIdx((i) => (i + 1) % HERO_SLIDES.length);
     }, 6000);
     return () => clearInterval(id);
-  }, [HERO_SLIDES.length]);
+  }, [HERO_SLIDES.length, repositionIdx]);
 
   const toggleNav = useCallback(() => {
     document.getElementById('sidebar2')?.classList.toggle('open');
@@ -632,12 +713,34 @@ const TrendReport2026 = () => {
             {HERO_SLIDES.map((src, i) => (
               <div
                 key={src}
-                className={`hero-slide ${i === heroIdx ? 'is-active' : ''}`}
+                className={`hero-slide ${i === heroIdx ? 'is-active' : ''} ${
+                  repositionIdx === i ? 'is-repositioning' : ''
+                }`}
+                onPointerDown={(e) => handleRepositionPointerDown(e, i)}
+                onPointerMove={(e) => handleRepositionPointerMove(e, i)}
+                onPointerUp={(e) => handleRepositionPointerUp(e, i)}
+                onPointerCancel={(e) => handleRepositionPointerUp(e, i)}
               >
-                <img src={src} alt="" />
+                <img
+                  src={src}
+                  alt=""
+                  style={{ objectPosition: `center ${heroPositions[i] ?? 50}%` }}
+                  draggable={false}
+                />
               </div>
             ))}
           </div>
+          {isAdmin && (
+            <button
+              type="button"
+              className={`hero-reposition-btn ${repositionIdx === heroIdx ? 'is-active' : ''}`}
+              onClick={() =>
+                setRepositionIdx((cur) => (cur === heroIdx ? null : heroIdx))
+              }
+            >
+              {repositionIdx === heroIdx ? 'Done' : 'Reposition'}
+            </button>
+          )}
           <div className="hero-ov"></div>
           <div className="hero-grad-bl" aria-hidden="true"></div>
           <div className="hero-c">
