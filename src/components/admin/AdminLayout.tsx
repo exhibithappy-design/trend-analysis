@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { NavLink, Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Send, Settings, LogOut, MessageSquare, LayoutDashboard, Sun, Moon, Menu, X } from 'lucide-react';
+import { Send, Settings, LogOut, MessageSquare, LayoutDashboard, Sun, Moon, Menu, X, Image as ImageIcon } from 'lucide-react';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import '@/pages/admin/admin.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
@@ -85,6 +85,7 @@ export default function AdminLayout() {
           <NavRow to="/admin" end icon={<LayoutDashboard size={15} />} label="Dashboard" onNavigate={() => setMobileOpen(false)} />
           <NavRow to="/admin/chat" icon={<MessageSquare size={15} />} label="Research Lab" onNavigate={() => setMobileOpen(false)} />
           <NavRow to="/admin/distribution" icon={<Send size={15} />} label="Distribution" onNavigate={() => setMobileOpen(false)} />
+          <NavRow to="/admin/header-images" icon={<ImageIcon size={15} />} label="Header Images" onNavigate={() => setMobileOpen(false)} />
           <NavRow to="/admin/settings" icon={<Settings size={15} />} label="Settings" onNavigate={() => setMobileOpen(false)} />
 
           <div className="ad-sidebar-footer">
