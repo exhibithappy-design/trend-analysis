@@ -36,6 +36,7 @@ const TRENDS: Trend[] = [
     num: 1,
     category: 'Functional Component',
     title: 'Death of the Product Theater',
+    shortTitle: 'Product Theater',
     bullets: [
       'The scripted, rep-led feature walkthrough is dying — buyers want proof, not presentations',
       'Booths built around outcomes and live problem-solving are replacing product demos as theater',
@@ -62,6 +63,7 @@ const TRENDS: Trend[] = [
     num: 2,
     category: 'Functional Component',
     title: 'Gamification as Lead-Gen Infrastructure',
+    shortTitle: 'Lead-Gen Gamification',
     bullets: [
       'Game mechanics aren\'t a crowd trick anymore — they\'re the lead capture engine',
       'Challenges, leaderboards, and QR-gated registration are replacing badge scans as the primary data layer',
@@ -88,6 +90,7 @@ const TRENDS: Trend[] = [
     num: 3,
     category: 'Functional Component',
     title: 'Immersive Storyworld Booths',
+    shortTitle: 'Storyworld Booths',
     bullets: [
       'Award-winning brands are building entire themed environments — one strong premise, committed all the way',
       'Verkada\'s Louvre heist at ISC West 2026 is the benchmark: the theme IS the demo',
@@ -114,6 +117,7 @@ const TRENDS: Trend[] = [
     num: 4,
     category: 'Functional Component',
     title: 'AI in the Arena: Engagement That Demonstrates AND Delights',
+    shortTitle: 'AI in the Arena',
     bullets: [
       'The smartest exhibitors aren\'t showing AI in a keynote — they\'re putting it inside the booth game',
       'Challenges adapt to your skill level, quizzes branch by role, scenarios make the AI\'s capability the thing being experienced',
@@ -140,6 +144,7 @@ const TRENDS: Trend[] = [
     num: 5,
     category: 'Functional Component',
     title: 'The Modular-First Mandate',
+    shortTitle: 'Modular-First Mandate',
     bullets: [
       'Single-use custom builds are being phased out as the default approach to exhibit design',
       'The new standard is a modular system designed across 3–5 shows, scalable from 10x10 to island, reconfigurable by market',
@@ -167,6 +172,7 @@ const TRENDS: Trend[] = [
     category: 'Functional Component',
     cluster: 'Design',
     title: 'Orchestrated Journey Over Spectacle',
+    shortTitle: 'Orchestrated Journey',
     bullets: [
       "Award-winning booths aren't louder — they're sequenced. Entry, discovery, proof, exit",
       'Visitors are moved through defined modes, not left to roam a sea of stimuli',
