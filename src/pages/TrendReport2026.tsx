@@ -1,15 +1,17 @@
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, AlertTriangle, Mail, LayoutGrid, DollarSign, Palette } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 
 import './HIMSSReport.css';
 import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
-const STORAGE_BASE = 'https://pvaoaqyizcalbfqkekpf.supabase.co/storage/v1/object/public/trend-images/';
+const BUCKET_NAME = 'trend-images';
+const SIGNED_URL_TTL_SECONDS = 31536000; // 1 year
 
-const BUCKET_FILES = new Set([
+const BUCKET_FILES = [
   'hero-1.jpg',
   'hero-3.jpg',
   'trend-02-header.jpg',
@@ -29,10 +31,14 @@ const BUCKET_FILES = new Set([
   'trend-10-header.jpg',
   'trend-10-detail-b.jpg',
   'trend-12-header.jpg',
-]);
+] as const;
+
+// Mutable map populated at runtime with signed URLs from Supabase storage.
+// Until populated, bucketUrl() returns the provided Unsplash fallback.
+const signedUrlMap: Record<string, string> = {};
 
 function bucketUrl(filename: string, fallback: string): string {
-  return BUCKET_FILES.has(filename) ? `${STORAGE_BASE}${filename}` : fallback;
+  return signedUrlMap[filename] ?? fallback;
 }
 
 // NOTE: Images flagged "confirm license" pull from Unsplash via source.unsplash.com
@@ -58,7 +64,7 @@ type Trend = {
   cluster: 'Flexibility' | 'Budget' | 'Design';
 };
 
-const TRENDS: Trend[] = [
+const makeTrends = (): Trend[] => [
   {
     id: 't1',
     num: 1,
@@ -457,7 +463,7 @@ const TrendCard = ({ trend, onImage }: { trend: Trend; onImage: (s: string) => v
 
 // NOTE: Hero slider uses placeholder Unsplash trade show / exhibition floor
 // images. Confirm license / replace with owned imagery before public launch.
-const HERO_SLIDES = [
+const makeHeroSlides = (): string[] => [
   bucketUrl('hero-1.jpg', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80'),
   'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80',
   bucketUrl('hero-3.jpg', 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1920&auto=format&fit=crop&q=80'),
@@ -468,13 +474,53 @@ const HERO_SLIDES = [
 const TrendReport2026 = () => {
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const [heroIdx, setHeroIdx] = useState(0);
+  const [signedVersion, setSignedVersion] = useState(0);
+
+  // Fetch signed URLs for all bucket files on mount and store them in the
+  // module-level signedUrlMap. Bumping signedVersion re-runs the useMemo
+  // calls below so the rendered URLs swap from Unsplash to signed storage.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const results = await Promise.all(
+        BUCKET_FILES.map(async (file) => {
+          try {
+            const { data, error } = await supabase.storage
+              .from(BUCKET_NAME)
+              .createSignedUrl(file, SIGNED_URL_TTL_SECONDS);
+            if (error || !data?.signedUrl) return null;
+            return [file, data.signedUrl] as const;
+          } catch {
+            return null;
+          }
+        }),
+      );
+      if (cancelled) return;
+      let added = 0;
+      for (const entry of results) {
+        if (entry) {
+          signedUrlMap[entry[0]] = entry[1];
+          added++;
+        }
+      }
+      if (added > 0) setSignedVersion((v) => v + 1);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const TRENDS = useMemo(() => makeTrends(), [signedVersion]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const HERO_SLIDES = useMemo(() => makeHeroSlides(), [signedVersion]);
 
   useEffect(() => {
     const id = setInterval(() => {
       setHeroIdx((i) => (i + 1) % HERO_SLIDES.length);
     }, 6000);
     return () => clearInterval(id);
-  }, []);
+  }, [HERO_SLIDES.length]);
 
   const toggleNav = useCallback(() => {
     document.getElementById('sidebar2')?.classList.toggle('open');
