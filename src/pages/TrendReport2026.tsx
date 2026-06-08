@@ -99,7 +99,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'From passive scanning to active participation that qualifies itself.',
     question: 'Is your booth game generating pipeline data or just foot traffic?',
-    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-02-header.jpg', 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Interactive gaming activation at a trade show',
     licenseNote: true,
     cluster: 'Design',
@@ -110,7 +110,7 @@ const TRENDS: Trend[] = [
     ],
     gallery: [
       { src: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=900&auto=format&fit=crop&q=80', alt: 'Bright interactive game activation at a conference' },
-      { src: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&auto=format&fit=crop&q=80', alt: 'Attendees competing in a branded leaderboard challenge' },
+      { src: bucketUrl('trend-02-detail-b.jpg', 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&auto=format&fit=crop&q=80'), alt: 'Attendees competing in a branded leaderboard challenge' },
     ],
   },
   {
@@ -137,7 +137,7 @@ const TRENDS: Trend[] = [
     ],
     gallery: [
       { src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&auto=format&fit=crop&q=80', alt: 'Private meeting suite within a larger exhibit space' },
-      { src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900&auto=format&fit=crop&q=80', alt: 'Tiered exhibit layout with public and private zones' },
+      { src: bucketUrl('trend-03-detail-b.jpg', 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900&auto=format&fit=crop&q=80'), alt: 'Tiered exhibit layout with public and private zones' },
     ],
   },
   {
@@ -153,7 +153,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: '2024 = game as crowd magnet. 2026 = game as live AI product demo.',
     question: 'Is your booth engagement just entertaining, or is it proof that your AI actually works?',
-    image: 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-04-header.jpg', 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Interactive technology kiosk with digital human screen',
     licenseNote: true,
     cluster: 'Budget',
@@ -163,8 +163,8 @@ const TRENDS: Trend[] = [
       'The arc from 2024 to 2026 is clean: the game used to be the crowd magnet that pulled people toward the real demo. Now the game is the demo. The mechanic and the message have collapsed into the same moment.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80', alt: 'Interactive AI display engaging visitors' },
-      { src: 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=900&auto=format&fit=crop&q=80', alt: 'Touchscreen kiosk with AI-driven interface' },
+      { src: bucketUrl('trend-04-detail-a.jpg', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80'), alt: 'Interactive AI display engaging visitors' },
+      { src: bucketUrl('trend-04-detail-b.jpg', 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=900&auto=format&fit=crop&q=80'), alt: 'Touchscreen kiosk with AI-driven interface' },
     ],
   },
   {
@@ -190,8 +190,8 @@ const TRENDS: Trend[] = [
       'The strategic reframe is "build for the circuit," not "build for the show." Booth assets become a managed inventory with a multi-year ROI, not a one-time spend that ends in a dumpster after teardown.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=900&auto=format&fit=crop&q=80', alt: 'Modular exhibition structure being assembled' },
-      { src: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&auto=format&fit=crop&q=80', alt: 'Reconfigurable trade show stand components' },
+      { src: bucketUrl('trend-05-detail-a.jpg', 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=900&auto=format&fit=crop&q=80'), alt: 'Modular exhibition structure being assembled' },
+      { src: bucketUrl('trend-05-detail-b.jpg', 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&auto=format&fit=crop&q=80'), alt: 'Reconfigurable trade show stand components' },
     ],
   },
   {
@@ -208,7 +208,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'From "how do we wow them?" to "how do we move them through our world?"',
     question: 'Does your booth have a journey, or just a footprint?',
-    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-06-header.jpg', 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Visitors moving through a curated branded exhibition environment with designed experiential zones',
     depth: [
       'The "immersive" bar has moved. Judges and attendees have stopped rewarding sensory density — more screens, more activations, more noise — and started rewarding booths that guide you somewhere. The best floors in 2025–26 read like attractions: you know exactly where you are in the narrative at every step.',
@@ -216,7 +216,7 @@ const TRENDS: Trend[] = [
       "The implication for exhibitors: stop designing square footage and start designing a visitor arc. A booth without a journey is just a room. The orchestration is the differentiator — not the LED wall, not the hanging sign, not the headcount.",
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1478147427649-052d98135194?w=900&auto=format&fit=crop&q=80', alt: 'Architectural exhibition space with dramatic lighting guiding visitor flow' },
+      { src: bucketUrl('trend-06-detail-a.jpg', 'https://images.unsplash.com/photo-1478147427649-052d98135194?w=900&auto=format&fit=crop&q=80'), alt: 'Architectural exhibition space with dramatic lighting guiding visitor flow' },
       { src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&auto=format&fit=crop&q=80', alt: 'People moving through a designed experiential environment' },
     ],
   },
@@ -234,7 +234,7 @@ const TRENDS: Trend[] = [
     yoy: 'From rep-led walkthroughs to buyer-directed self-discovery.',
     question: 'Can a prospect fully understand your value proposition without talking to a single staff member?',
     // Unsplash photo tI-Gx5FanJI — free to use
-    image: 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-07-header.jpg', 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Self-serve interactive demo station at a trade show',
     cluster: 'Design',
     depth: [
@@ -270,8 +270,8 @@ const TRENDS: Trend[] = [
       'This reframes every design decision. The booth has to serve two audiences simultaneously — the visitor walking through it, and the much larger remote audience watching the campaign that the booth feeds.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&auto=format&fit=crop&q=80', alt: 'Mezzanine level above an active exhibit floor' },
-      { src: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?w=900&auto=format&fit=crop&q=80', alt: 'Two-story architectural structure with upper deck meeting area' },
+      { src: bucketUrl('trend-08-detail-a.jpg', 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&auto=format&fit=crop&q=80'), alt: 'Mezzanine level above an active exhibit floor' },
+      { src: bucketUrl('trend-08-detail-b.jpg', 'https://images.unsplash.com/photo-1486718448742-163732cd1544?w=900&auto=format&fit=crop&q=80'), alt: 'Two-story architectural structure with upper deck meeting area' },
     ],
   },
   {
@@ -297,7 +297,7 @@ const TRENDS: Trend[] = [
       'The shift turns the booth into a programmable operating system. Content schedules replace graphic packages, and the cost of pivoting messaging mid-show drops to a file swap instead of a reprint.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&auto=format&fit=crop&q=80', alt: 'Upscale hospitality lounge with workspace amenities' },
+      { src: bucketUrl('trend-09-detail-a.jpg', 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&auto=format&fit=crop&q=80'), alt: 'Upscale hospitality lounge with workspace amenities' },
       { src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&auto=format&fit=crop&q=80', alt: 'Collaborative lounge with seating and laptops' },
     ],
   },
@@ -314,7 +314,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'From "giant screen" to "breathable media architecture."',
     question: 'Does your display technology open your booth or wall it off?',
-    image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-10-header.jpg', 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Transparent LED panel forming an entry portal',
     licenseNote: true,
     cluster: 'Flexibility',
@@ -325,7 +325,7 @@ const TRENDS: Trend[] = [
     ],
     gallery: [
       { src: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&auto=format&fit=crop&q=80', alt: 'Branded coffee bar at an event activation' },
-      { src: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=900&auto=format&fit=crop&q=80', alt: 'Specialty coffee preparation in a booth setting' },
+      { src: bucketUrl('trend-10-detail-b.jpg', 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=900&auto=format&fit=crop&q=80'), alt: 'Specialty coffee preparation in a booth setting' },
     ],
   },
   {
@@ -369,7 +369,7 @@ const TRENDS: Trend[] = [
     ],
     yoy: 'From "impressive build" to "unforgettable premise."',
     question: 'What\'s the one idea your booth communicates, and does every element serve it?',
-    image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-12-header.jpg', 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Booth design unified by a single bold creative concept',
     licenseNote: true,
     cluster: 'Design',
@@ -458,9 +458,9 @@ const TrendCard = ({ trend, onImage }: { trend: Trend; onImage: (s: string) => v
 // NOTE: Hero slider uses placeholder Unsplash trade show / exhibition floor
 // images. Confirm license / replace with owned imagery before public launch.
 const HERO_SLIDES = [
-  'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80',
+  bucketUrl('hero-1.jpg', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80'),
   'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1920&auto=format&fit=crop&q=80',
+  bucketUrl('hero-3.jpg', 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1920&auto=format&fit=crop&q=80'),
   'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&auto=format&fit=crop&q=80',
   'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1920&auto=format&fit=crop&q=80',
 ];
