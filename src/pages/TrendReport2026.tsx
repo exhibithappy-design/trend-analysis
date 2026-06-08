@@ -197,6 +197,7 @@ const TRENDS: Trend[] = [
     num: 7,
     category: 'Functional Component',
     title: 'The Self-Serve Demo Revolution',
+    shortTitle: 'Self-Serve Demos',
     bullets: [
       'Buyers want to explore on their own terms, not wait for a scheduled walkthrough',
       'Interactive, role-adaptive demo stations give attendees control of pace, path, and relevance',
@@ -223,6 +224,7 @@ const TRENDS: Trend[] = [
     num: 8,
     category: 'Functional Component',
     title: 'The Booth as Campaign Asset',
+    shortTitle: 'Campaign Asset',
     bullets: [
       'The booth is no longer the event — it\'s the content hub for a 6-week campaign',
       'Pre-show teasers, live social capture, post-show video clips, and email sequences are planned before the build begins',
@@ -249,6 +251,7 @@ const TRENDS: Trend[] = [
     num: 9,
     category: 'Design Feature',
     title: 'LED as the Booth\'s Operating System',
+    shortTitle: 'LED Architecture',
     bullets: [
       'LED is no longer a display — it\'s the architecture itself',
       'Floor-to-ceiling walls, ceiling canopies, and dynamic content zones change by session, audience, or time of day',
@@ -275,6 +278,7 @@ const TRENDS: Trend[] = [
     num: 10,
     category: 'Design Feature',
     title: 'Transparent LED / ClearLED as Architecture',
+    shortTitle: 'ClearLED',
     bullets: [
       'ClearLED is moving from novelty to structural material',
       'Brands are using it as entry portals, hanging planes, and semi-open facades',
@@ -301,6 +305,7 @@ const TRENDS: Trend[] = [
     num: 11,
     category: 'Design Feature',
     title: 'Biophilic Design as Core Strategy',
+    shortTitle: 'Biophilic Design',
     bullets: [
       'Living green walls, light woods, natural textures, and soft lounge zones are replacing hard, tech-heavy builds',
       'Multiple 2026 exhibit trend sources name biophilic design one of the most significant aesthetic shifts of the year',
@@ -327,6 +332,7 @@ const TRENDS: Trend[] = [
     num: 12,
     category: 'Design Feature',
     title: 'The One-Idea Booth: Sharp Concept Over Scenic Complexity',
+    shortTitle: 'The One-Idea Booth',
     bullets: [
       'EXHIBITOR\'s 2025 award analysis found one universal trait across winners: a single organizing idea executed completely',
       'Not a collage of product messages — one sentence, committed all the way through layout, graphics, and staff scripting',
