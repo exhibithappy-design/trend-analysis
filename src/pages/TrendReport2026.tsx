@@ -713,12 +713,34 @@ const TrendReport2026 = () => {
             {HERO_SLIDES.map((src, i) => (
               <div
                 key={src}
-                className={`hero-slide ${i === heroIdx ? 'is-active' : ''}`}
+                className={`hero-slide ${i === heroIdx ? 'is-active' : ''} ${
+                  repositionIdx === i ? 'is-repositioning' : ''
+                }`}
+                onPointerDown={(e) => handleRepositionPointerDown(e, i)}
+                onPointerMove={(e) => handleRepositionPointerMove(e, i)}
+                onPointerUp={(e) => handleRepositionPointerUp(e, i)}
+                onPointerCancel={(e) => handleRepositionPointerUp(e, i)}
               >
-                <img src={src} alt="" />
+                <img
+                  src={src}
+                  alt=""
+                  style={{ objectPosition: `center ${heroPositions[i] ?? 50}%` }}
+                  draggable={false}
+                />
               </div>
             ))}
           </div>
+          {isAdmin && (
+            <button
+              type="button"
+              className={`hero-reposition-btn ${repositionIdx === heroIdx ? 'is-active' : ''}`}
+              onClick={() =>
+                setRepositionIdx((cur) => (cur === heroIdx ? null : heroIdx))
+              }
+            >
+              {repositionIdx === heroIdx ? 'Done' : 'Reposition'}
+            </button>
+          )}
           <div className="hero-ov"></div>
           <div className="hero-grad-bl" aria-hidden="true"></div>
           <div className="hero-c">
