@@ -1,7 +1,8 @@
-import { useEffect, useCallback, useState, useMemo } from 'react';
+import { useEffect, useCallback, useState, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, AlertTriangle, Mail, LayoutGrid, DollarSign, Palette } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 
 
 import './HIMSSReport.css';
