@@ -25,6 +25,7 @@ const BUCKET_FILES = [
   'trend-10-header.jpg', 'trend-10-detail-a.jpg', 'trend-10-detail-b.jpg',
   'trend-11-header.jpg', 'trend-11-detail-a.jpg', 'trend-11-detail-b.jpg',
   'trend-12-header.jpg',
+  'Andrew Childers.png',
 ] as const;
 
 // Mutable map populated at runtime with signed URLs from Supabase storage.
@@ -785,6 +786,13 @@ const TrendReport2026 = () => {
           <FadeIn>
             <div className="contact-cta">
               <div className="contact-cta-inner">
+                <div className="contact-cta-photo">
+                  <img
+                    src={bucketUrl('Andrew Childers.png', '')}
+                    alt="Andrew Childers"
+                  />
+                </div>
+                <div className="contact-cta-body">
                 <div className="contact-cta-text">
                   <p>
                     Let's talk about how Exhibit Happy by Steelhead can turn these trends into your competitive advantage on the floor.
@@ -798,6 +806,7 @@ const TrendReport2026 = () => {
                   <a href="#" className="contact-btn">
                     Book a Time with Andrew
                   </a>
+                </div>
                 </div>
               </div>
             </div>
