@@ -455,14 +455,10 @@ const TrendCard = ({ trend, onImage }: { trend: Trend; onImage: (s: string) => v
   );
 };
 
-// NOTE: Hero slider uses placeholder Unsplash trade show / exhibition floor
-// images. Confirm license / replace with owned imagery before public launch.
 const makeHeroSlides = (): string[] => [
   bucketUrl('hero-1.jpg', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80'),
   bucketUrl('hero-2.jpg', 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80'),
   bucketUrl('hero-3.jpg', 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1920&auto=format&fit=crop&q=80'),
-  'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1920&auto=format&fit=crop&q=80',
 ];
 
 const TrendReport2026 = () => {
