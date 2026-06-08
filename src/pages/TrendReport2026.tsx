@@ -25,6 +25,7 @@ const BUCKET_FILES = [
   'trend-10-header.jpg', 'trend-10-detail-a.jpg', 'trend-10-detail-b.jpg',
   'trend-11-header.jpg', 'trend-11-detail-a.jpg', 'trend-11-detail-b.jpg',
   'trend-12-header.jpg',
+  'Andrew Childers.png',
 ] as const;
 
 // Mutable map populated at runtime with signed URLs from Supabase storage.
