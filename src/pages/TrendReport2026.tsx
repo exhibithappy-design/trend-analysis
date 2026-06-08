@@ -549,13 +549,13 @@ const TrendReport2026 = () => {
           <div className="nav-group-label">Functional</div>
           {functional.map((t) => (
             <a key={t.id} href={`#${t.id}`} className="nav-link" onClick={closeMobile}>
-              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {trendShortLabel(t)}
+              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {t.shortTitle}
             </a>
           ))}
           <div className="nav-group-label">Design</div>
           {design.map((t) => (
             <a key={t.id} href={`#${t.id}`} className="nav-link" onClick={closeMobile}>
-              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {trendShortLabel(t)}
+              <span className="nav-num">{String(t.num).padStart(2, '0')}</span> {t.shortTitle}
             </a>
           ))}
           <div className="nav-group-label">Next</div>
