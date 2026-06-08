@@ -465,6 +465,26 @@ const TrendReport2026 = () => {
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const [heroIdx, setHeroIdx] = useState(0);
   const [signedVersion, setSignedVersion] = useState(0);
+  const [heroPositions, setHeroPositions] = useState<Record<number, number>>({});
+  const [repositionIdx, setRepositionIdx] = useState<number | null>(null);
+  const dragStateRef = useRef<{ startY: number; startPos: number; height: number } | null>(null);
+
+  // Load saved hero positions from localStorage on mount
+  useEffect(() => {
+    try {
+      const next: Record<number, number> = {};
+      for (let i = 0; i < 12; i++) {
+        const v = localStorage.getItem(`tr2026:heroPos:${i}`);
+        if (v != null) {
+          const n = parseFloat(v);
+          if (!Number.isNaN(n)) next[i] = Math.max(0, Math.min(100, n));
+        }
+      }
+      setHeroPositions(next);
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   // Fetch signed URLs for all bucket files on mount and store them in the
   // module-level signedUrlMap. Bumping signedVersion re-runs the useMemo
@@ -506,11 +526,12 @@ const TrendReport2026 = () => {
   const HERO_SLIDES = useMemo(() => makeHeroSlides(), [signedVersion]);
 
   useEffect(() => {
+    if (repositionIdx !== null) return; // pause auto-advance while repositioning
     const id = setInterval(() => {
       setHeroIdx((i) => (i + 1) % HERO_SLIDES.length);
     }, 6000);
     return () => clearInterval(id);
-  }, [HERO_SLIDES.length]);
+  }, [HERO_SLIDES.length, repositionIdx]);
 
   const toggleNav = useCallback(() => {
     document.getElementById('sidebar2')?.classList.toggle('open');
