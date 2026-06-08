@@ -13,6 +13,7 @@ import AdminLogin from "@/pages/admin/Login";
 import Dashboard from "@/pages/admin/Dashboard";
 import Distribution from "@/pages/admin/Distribution";
 import AdminSettings from "@/pages/admin/Settings";
+import HeaderImages from "@/pages/admin/HeaderImages";
 import Chat from "@/pages/admin/Chat";
 import { Navigate } from "react-router-dom";
 
@@ -34,6 +35,7 @@ const App = () => (
               <Route path="dashboard" element={<Navigate to="/admin" replace />} />
               <Route path="distribution" element={<Distribution />} />
               <Route path="chat" element={<Chat />} />
+              <Route path="header-images" element={<HeaderImages />} />
               <Route path="editions" element={<Navigate to="/admin" replace />} />
               <Route path="editions/:id" element={<Navigate to="/admin" replace />} />
               <Route path="content" element={<Navigate to="/admin" replace />} />
