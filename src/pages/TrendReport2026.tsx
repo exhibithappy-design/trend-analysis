@@ -16,7 +16,7 @@ import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 type Trend = {
   id: string;
   num: number;
-  category: 'Functional Component' | 'Design Feature';
+  category: 'Functional Component' | 'Design Feature' | 'Creative Strategy';
   title: string;
   shortTitle: string;
   bullets: string[];
