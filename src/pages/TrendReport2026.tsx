@@ -439,8 +439,6 @@ const HERO_SLIDES = [
 
 const TrendReport2026 = () => {
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [email, setEmail] = useState('');
   const [heroIdx, setHeroIdx] = useState(0);
 
   useEffect(() => {
@@ -514,11 +512,6 @@ const TrendReport2026 = () => {
     };
   }, []);
 
-  const handleGate = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
-  };
 
   const functional = TRENDS.filter((t) => t.category === 'Functional Component');
   const design = TRENDS.filter((t) => t.category === 'Design Feature');
