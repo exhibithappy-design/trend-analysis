@@ -12,24 +12,18 @@ const BUCKET_NAME = 'trend-images';
 const SIGNED_URL_TTL_SECONDS = 31536000; // 1 year
 
 const BUCKET_FILES = [
-  'hero-1.jpg',
-  'hero-3.jpg',
-  'trend-02-header.jpg',
-  'trend-02-detail-b.jpg',
-  'trend-03-detail-b.jpg',
-  'trend-04-header.jpg',
-  'trend-04-detail-a.jpg',
-  'trend-04-detail-b.jpg',
-  'trend-05-detail-a.jpg',
-  'trend-05-detail-b.jpg',
-  'trend-06-header.jpg',
-  'trend-06-detail-a.jpg',
+  'hero-1.jpg', 'hero-2.jpg', 'hero-3.jpg',
+  'trend-01-header.jpg', 'trend-01-detail-a.jpg', 'trend-01-detail-b.jpg',
+  'trend-02-header.jpg', 'trend-02-detail-a.jpg', 'trend-02-detail-b.jpg',
+  'trend-03-header.jpg', 'trend-03-detail-a.jpg', 'trend-03-detail-b.jpg',
+  'trend-04-header.jpg', 'trend-04-detail-a.jpg', 'trend-04-detail-b.jpg',
+  'trend-05-detail-a.jpg', 'trend-05-detail-b.jpg',
+  'trend-06-header.jpg', 'trend-06-detail-a.jpg', 'trend-06-detail-b.jpg',
   'trend-07-header.jpg',
-  'trend-08-detail-a.jpg',
-  'trend-08-detail-b.jpg',
+  'trend-08-detail-a.jpg', 'trend-08-detail-b.jpg',
   'trend-09-detail-a.jpg',
-  'trend-10-header.jpg',
-  'trend-10-detail-b.jpg',
+  'trend-10-header.jpg', 'trend-10-detail-a.jpg', 'trend-10-detail-b.jpg',
+  'trend-11-header.jpg', 'trend-11-detail-a.jpg', 'trend-11-detail-b.jpg',
   'trend-12-header.jpg',
 ] as const;
 
@@ -79,7 +73,7 @@ const makeTrends = (): Trend[] => [
     yoy: 'From "here\'s what it does" to "watch it solve your problem."',
     question: 'Is your booth designed to present, or to prove?',
     // Unsplash photo BKpOVik79lA — free to use
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-01-header.jpg', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'People at a business exhibition interacting with a booth',
     cluster: 'Design',
     depth: [
@@ -88,8 +82,8 @@ const makeTrends = (): Trend[] => [
       'The shift reframes the booth as a working environment instead of a stage. Square footage moves out of seating banks and into solution stations where staff can actually demonstrate value against a buyer\'s real scenario.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=900&auto=format&fit=crop&q=80', alt: 'Attendees engaging hands-on with a product demo station' },
-      { src: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?w=900&auto=format&fit=crop&q=80', alt: 'Modern interactive product experience zone' },
+      { src: bucketUrl('trend-01-detail-a.jpg', 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=900&auto=format&fit=crop&q=80'), alt: 'Attendees engaging hands-on with a product demo station' },
+      { src: bucketUrl('trend-01-detail-b.jpg', 'https://images.unsplash.com/photo-1531058020387-3be344556be6?w=900&auto=format&fit=crop&q=80'), alt: 'Modern interactive product experience zone' },
     ],
   },
   {
@@ -115,7 +109,7 @@ const makeTrends = (): Trend[] => [
       'The exhibitors winning with this are treating the game as infrastructure, not entertainment. It\'s designed alongside the CRM hand-off, the staff scripting, and the post-show sequence, not bolted on after the booth is built.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=900&auto=format&fit=crop&q=80', alt: 'Bright interactive game activation at a conference' },
+      { src: bucketUrl('trend-02-detail-a.jpg', 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=900&auto=format&fit=crop&q=80'), alt: 'Bright interactive game activation at a conference' },
       { src: bucketUrl('trend-02-detail-b.jpg', 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&auto=format&fit=crop&q=80'), alt: 'Attendees competing in a branded leaderboard challenge' },
     ],
   },
@@ -133,7 +127,7 @@ const makeTrends = (): Trend[] => [
     yoy: 'From branded walls to narrative worlds visitors move through.',
     question: 'Can you describe your booth concept in one sentence?',
     // Unsplash photo PwlsQn-RyRU — free to use
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-03-header.jpg', 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Immersive themed brand environment at a trade show',
     cluster: 'Flexibility',
     depth: [
@@ -142,7 +136,7 @@ const makeTrends = (): Trend[] => [
       'The discipline this requires is editorial more than architectural. The brands that win have a one-sentence concept they\'ll defend against every "could we also add…" — and the design holds together because of what was left out.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&auto=format&fit=crop&q=80', alt: 'Private meeting suite within a larger exhibit space' },
+      { src: bucketUrl('trend-03-detail-a.jpg', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&auto=format&fit=crop&q=80'), alt: 'Private meeting suite within a larger exhibit space' },
       { src: bucketUrl('trend-03-detail-b.jpg', 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900&auto=format&fit=crop&q=80'), alt: 'Tiered exhibit layout with public and private zones' },
     ],
   },
@@ -223,7 +217,7 @@ const makeTrends = (): Trend[] => [
     ],
     gallery: [
       { src: bucketUrl('trend-06-detail-a.jpg', 'https://images.unsplash.com/photo-1478147427649-052d98135194?w=900&auto=format&fit=crop&q=80'), alt: 'Architectural exhibition space with dramatic lighting guiding visitor flow' },
-      { src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&auto=format&fit=crop&q=80', alt: 'People moving through a designed experiential environment' },
+      { src: bucketUrl('trend-06-detail-b.jpg', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&auto=format&fit=crop&q=80'), alt: 'People moving through a designed experiential environment' },
     ],
   },
   {
@@ -330,7 +324,7 @@ const makeTrends = (): Trend[] => [
       'The reframe is from "giant screen" to "breathable media architecture." The display becomes part of the booth\'s skeleton rather than a slab parked in front of it — closer to stage scenery than to a TV.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&auto=format&fit=crop&q=80', alt: 'Branded coffee bar at an event activation' },
+      { src: bucketUrl('trend-10-detail-a.jpg', 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&auto=format&fit=crop&q=80'), alt: 'Branded coffee bar at an event activation' },
       { src: bucketUrl('trend-10-detail-b.jpg', 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=900&auto=format&fit=crop&q=80'), alt: 'Specialty coffee preparation in a booth setting' },
     ],
   },
@@ -347,7 +341,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From "how do we express our brand?" to "what world would make people stop walking and want to stay?"',
     question: 'Does your booth make people forget they\'re on a show floor?',
-    image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-11-header.jpg', 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Warm atmospheric interior of a bar or lodge with dramatic ambient lighting',
     cluster: 'Design',
     depth: [
@@ -358,8 +352,8 @@ const makeTrends = (): Trend[] => [
       "The 2026 signal: This isn't about theme for theme's sake. The brands winning with this approach understand that memorability is the metric — and an environment that displaces you spatially is the most reliable way to earn it.",
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=900&auto=format&fit=crop&q=80', alt: 'Cozy warm lodge interior with dramatic lighting' },
-      { src: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=900&auto=format&fit=crop&q=80', alt: 'Atmospheric bar interior with ambient lighting' },
+      { src: bucketUrl('trend-11-detail-a.jpg', 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=900&auto=format&fit=crop&q=80'), alt: 'Cozy warm lodge interior with dramatic lighting' },
+      { src: bucketUrl('trend-11-detail-b.jpg', 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=900&auto=format&fit=crop&q=80'), alt: 'Atmospheric bar interior with ambient lighting' },
     ],
   },
   {
@@ -465,7 +459,7 @@ const TrendCard = ({ trend, onImage }: { trend: Trend; onImage: (s: string) => v
 // images. Confirm license / replace with owned imagery before public launch.
 const makeHeroSlides = (): string[] => [
   bucketUrl('hero-1.jpg', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80'),
-  'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80',
+  bucketUrl('hero-2.jpg', 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80'),
   bucketUrl('hero-3.jpg', 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1920&auto=format&fit=crop&q=80'),
   'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&auto=format&fit=crop&q=80',
   'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1920&auto=format&fit=crop&q=80',
