@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Slider } from '@/components/ui/slider';
+
 
 export default function HeaderImages() {
   const TRENDS = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -57,6 +57,37 @@ export default function HeaderImages() {
 
   return (
     <>
+      <style>{`
+        .header-img-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #FF0069;
+          cursor: pointer;
+          border: 2px solid #111;
+          margin-top: -5px;
+        }
+        .header-img-slider::-moz-range-thumb {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: #FF0069;
+          cursor: pointer;
+          border: 2px solid #111;
+        }
+        .header-img-slider::-moz-range-track {
+          height: 6px;
+          border-radius: 3px;
+          background: #333;
+        }
+        .header-img-slider::-moz-range-progress {
+          height: 6px;
+          border-radius: 3px;
+          background: #FF0069;
+        }
+      `}</style>
       <header className="ad-page-header">
         <div>
           <h1 className="ad-page-title">Header Images</h1>
@@ -139,12 +170,24 @@ export default function HeaderImages() {
                     {Math.round(pos)}%
                   </span>
                 </div>
-                <Slider
-                  value={[pos]}
+                <input
+                  type="range"
                   min={0}
                   max={100}
                   step={1}
-                  onValueChange={(v) => setPositions((prev) => ({ ...prev, [n]: v[0] }))}
+                  value={pos}
+                  onChange={(e) => setPositions((prev) => ({ ...prev, [n]: Number(e.target.value) }))}
+                  className="header-img-slider"
+                  style={{
+                    width: '100%',
+                    height: 6,
+                    WebkitAppearance: 'none',
+                    appearance: 'none',
+                    background: `linear-gradient(to right, #FF0069 0%, #FF0069 ${pos}%, #333 ${pos}%, #333 100%)`,
+                    borderRadius: 3,
+                    outline: 'none',
+                    cursor: 'pointer',
+                  }}
                 />
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
                   <span style={{ color: '#555', fontSize: 10 }}>Top</span>
