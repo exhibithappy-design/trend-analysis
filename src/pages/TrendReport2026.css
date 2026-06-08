@@ -10,13 +10,6 @@
 .hero-slide.is-active{opacity:1}
 .hero-slide img{width:100%;height:100%;object-fit:cover;opacity:.55;transform:scale(1.15) translate3d(-1.2%,-0.8%,0);transform-origin:center center;will-change:transform}
 .hero-slide.is-active img{animation:kenBurns 6s ease-out forwards}
-.hero-slide.is-repositioning img{animation:none!important;transform:none!important;transition:none}
-.hero-reposition-btn{position:absolute;top:14px;right:14px;z-index:6;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(8px);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;border-radius:999px;cursor:pointer;opacity:0;transition:opacity .25s ease,background .2s ease;font-weight:600}
-.hero-reposition-btn:hover{background:rgba(0,0,0,.75)}
-.hero:hover .hero-reposition-btn,.hero-reposition-btn.is-active{opacity:1}
-.hero-reposition-btn.is-active{background:var(--pink,#e91e63);border-color:transparent}
-.hero-slide.is-repositioning{cursor:ns-resize;z-index:4}
-.hero-slide.is-repositioning::after{content:'Drag up or down to reposition';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.6);color:#fff;padding:10px 18px;border-radius:999px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;pointer-events:none;backdrop-filter:blur(6px)}
 @keyframes kenBurns{
   from{transform:scale(1.05) translate3d(0,0,0)}
   to{transform:scale(1.15) translate3d(-1.2%,-0.8%,0)}
