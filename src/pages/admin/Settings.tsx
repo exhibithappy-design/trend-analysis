@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAdminAuth } from '@/hooks/admin/useAdminAuth';
 import { toast } from 'sonner';
 import { AdSelect } from '@/components/admin/AdSelect';
+import { Slider } from '@/components/ui/slider';
 
 type Allow = { email: string; role: 'admin' | 'viewer'; invited_at: string };
 type Profile = { id: string; email: string; name: string | null; notification_prefs: Record<string, boolean> };
@@ -14,7 +15,7 @@ export default function Settings() {
   const { isAdmin, user } = useAdminAuth();
   const [params, setParams] = useSearchParams();
   const initial = (params.get('tab') as any) || 'profile';
-  const [tab, setTab] = useState<'profile' | 'users' | 'channels' | 'integrations'>(initial);
+  const [tab, setTab] = useState<'profile' | 'users' | 'channels' | 'integrations' | 'images'>(initial);
 
   function pick(t: typeof tab) {
     setTab(t);
@@ -34,12 +35,168 @@ export default function Settings() {
         {isAdmin && <button className={'ad-tab' + (tab === 'users' ? ' active' : '')} onClick={() => pick('users')}>Users</button>}
         {isAdmin && <button className={'ad-tab' + (tab === 'channels' ? ' active' : '')} onClick={() => pick('channels')}>Channels</button>}
         {isAdmin && <button className={'ad-tab' + (tab === 'integrations' ? ' active' : '')} onClick={() => pick('integrations')}>Integrations</button>}
+        {isAdmin && <button className={'ad-tab' + (tab === 'images' ? ' active' : '')} onClick={() => pick('images')}>Header Images</button>}
       </div>
       {tab === 'profile' && <ProfileTab />}
       {tab === 'users' && isAdmin && <UsersTab />}
       {tab === 'channels' && isAdmin && <ChannelsTab />}
       {tab === 'integrations' && isAdmin && <IntegrationsTab />}
+      {tab === 'images' && isAdmin && <HeaderImagesTab />}
     </>
+  );
+}
+
+function HeaderImagesTab() {
+  const TRENDS = Array.from({ length: 12 }, (_, i) => i + 1);
+  const [urls, setUrls] = useState<Record<number, string>>({});
+  const [positions, setPositions] = useState<Record<number, number>>({});
+  const [initial, setInitial] = useState<Record<number, number>>({});
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      // Signed URLs for each header image
+      const u: Record<number, string> = {};
+      await Promise.all(
+        TRENDS.map(async (n) => {
+          const file = `trend-${String(n).padStart(2, '0')}-header.jpg`;
+          const { data } = await supabase.storage
+            .from('trend-images')
+            .createSignedUrl(file, 31536000);
+          if (data?.signedUrl) u[n] = data.signedUrl;
+        }),
+      );
+      setUrls(u);
+
+      const { data } = await supabase
+        .from('trend_image_positions')
+        .select('trend_num, position');
+      const p: Record<number, number> = {};
+      for (const n of TRENDS) p[n] = 50;
+      for (const row of (data || []) as { trend_num: number; position: number }[]) {
+        p[row.trend_num] = Number(row.position);
+      }
+      setPositions(p);
+      setInitial(p);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const dirty = TRENDS.some((n) => (positions[n] ?? 50) !== (initial[n] ?? 50));
+
+  async function save() {
+    setSaving(true);
+    const rows = TRENDS.map((n) => ({ trend_num: n, position: Math.round(positions[n] ?? 50) }));
+    const { error } = await supabase
+      .from('trend_image_positions')
+      .upsert(rows, { onConflict: 'trend_num' });
+    setSaving(false);
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success('Header positions saved');
+      setInitial({ ...positions });
+    }
+  }
+
+  return (
+    <div className="ad-card" style={{ maxWidth: 1100 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+        <div>
+          <h3 className="section-title" style={{ margin: 0 }}>Header image positions</h3>
+          <p style={{ fontSize: 12, color: '#888', margin: '4px 0 0' }}>
+            Drag each slider to set the vertical crop focal point of the trend header image. 0% shows the top of the image, 100% shows the bottom. Default is 50% (center).
+          </p>
+        </div>
+        <button className="ad-btn" onClick={save} disabled={saving || !dirty}>
+          {saving ? 'Saving…' : 'Save changes'}
+        </button>
+      </div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          gap: 18,
+        }}
+      >
+        {TRENDS.map((n) => {
+          const pos = positions[n] ?? 50;
+          const url = urls[n];
+          return (
+            <div
+              key={n}
+              style={{
+                border: '1px solid #2A2A2A',
+                borderRadius: 8,
+                overflow: 'hidden',
+                background: '#111',
+              }}
+            >
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  paddingTop: '60%',
+                  background: '#000',
+                  overflow: 'hidden',
+                }}
+              >
+                {url ? (
+                  <img
+                    src={url}
+                    alt={`Trend ${n} header`}
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: `center ${pos}%`,
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#555',
+                      fontSize: 12,
+                    }}
+                  >
+                    No image
+                  </div>
+                )}
+              </div>
+              <div style={{ padding: '12px 14px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
+                    marginBottom: 8,
+                  }}
+                >
+                  <span style={{ color: '#fff', fontSize: 13, fontWeight: 600 }}>
+                    Trend {String(n).padStart(2, '0')}
+                  </span>
+                  <span style={{ color: '#888', fontSize: 11 }}>{Math.round(pos)}%</span>
+                </div>
+                <Slider
+                  value={[pos]}
+                  min={0}
+                  max={100}
+                  step={1}
+                  onValueChange={(v) => setPositions((prev) => ({ ...prev, [n]: v[0] }))}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
