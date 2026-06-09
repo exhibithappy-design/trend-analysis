@@ -38,25 +38,21 @@ async function loadSignedUrls(files: readonly string[]) {
   const toFetch = files.filter((f) => f && !signedUrlMap[f] && !inflightSigned.has(f));
   if (!toFetch.length) return;
   toFetch.forEach((f) => inflightSigned.add(f));
-  const results = await Promise.all(
-    toFetch.map(async (file) => {
-      try {
-        const { data, error } = await supabase.storage
-          .from(BUCKET_NAME)
-          .createSignedUrl(file, SIGNED_URL_TTL_SECONDS);
-        if (error || !data?.signedUrl) return null;
-        return [file, data.signedUrl] as const;
-      } catch {
-        return null;
-      }
-    }),
-  );
   let added = 0;
-  for (const entry of results) {
-    if (entry) {
-      signedUrlMap[entry[0]] = entry[1];
-      added++;
+  try {
+    const { data, error } = await supabase.storage
+      .from(BUCKET_NAME)
+      .createSignedUrls(toFetch as string[], SIGNED_URL_TTL_SECONDS);
+    if (!error && Array.isArray(data)) {
+      for (const row of data) {
+        if (row?.path && row.signedUrl) {
+          signedUrlMap[row.path] = row.signedUrl;
+          added++;
+        }
+      }
     }
+  } catch {
+    // swallow — fallbacks remain in place
   }
   toFetch.forEach((f) => inflightSigned.delete(f));
   if (added > 0) onSignedUrlsLoaded?.();
