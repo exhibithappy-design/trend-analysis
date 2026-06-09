@@ -259,7 +259,7 @@
 .as-field input:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-soft)}
 .as-field input[aria-invalid="true"]{border-color:#d6005a}
 .as-err{color:#d6005a;font-size:12px;font-weight:600;margin-top:6px}
-.as-gate-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.as-gate-actions{display:flex;flex-direction:column;align-items:center;gap:14px;flex-wrap:wrap}
 .as-success{margin-top:32px;background:var(--pink-soft);border:1px solid rgba(255,0,105,.22);border-left:5px solid var(--pink);border-radius:14px;padding:28px 32px;text-align:left}
 .as-success-icon{width:44px;height:44px;border-radius:50%;background:var(--pink);color:var(--white);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
 .as-success-icon svg{width:24px;height:24px}
