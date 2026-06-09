@@ -425,16 +425,6 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: (s: string) => void; headerPosition: number }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '400px 0px' });
-  useEffect(() => {
-    if (!inView) return;
-    const num = String(trend.num).padStart(2, '0');
-    loadSignedUrls([
-      `trend-${num}-header.jpg`,
-      `trend-${num}-detail-a.jpg`,
-      `trend-${num}-detail-b.jpg`,
-    ]);
-  }, [inView, trend.num]);
   return (
     <div className="trend-card" id={trend.id} ref={ref}>
       <div className="tc-media" onClick={() => onImage(trend.image)} style={{ cursor: 'pointer' }}>
