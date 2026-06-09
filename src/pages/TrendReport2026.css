@@ -126,6 +126,17 @@
   .contact-btn{padding:14px 24px;font-size:12px;min-height:48px}
   .hero-ey{font-size:11px;letter-spacing:2.5px}
 }
+/* Mobile menu: full-screen takeover */
+@media(max-width:1024px){
+  .sidebar{width:100vw;max-width:none;height:100vh;top:0;z-index:1050}
+  .sidebar-overlay{display:none !important}
+  .sidebar-nav{padding:96px 12px 32px}
+  .sidebar .nav-group-label{padding:18px 22px 8px;font-size:11px;letter-spacing:2.5px}
+  .sidebar .nav-link{font-size:19px;padding:14px 22px;min-height:52px;gap:12px;margin-bottom:2px}
+  .sidebar .nav-num{font-size:13px}
+  .sidebar-brand{padding:20px 22px}
+  .sidebar-footer{padding:14px 22px}
+}
 /* Textured background for dark sections (matches admin login texture) */
 .section--b,.ch{position:relative;background-color:#000;background-image:url('/__l5e/assets-v1/54ddde45-55f0-40b9-ac3d-0d68a7856eb7/black-background.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;isolation:isolate}
 .section--b::before,.ch::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.45);pointer-events:none;z-index:0}
