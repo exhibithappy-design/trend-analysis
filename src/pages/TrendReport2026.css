@@ -274,34 +274,34 @@
 .as-save-confirm{font-size:14px;color:var(--dark-gray);background:var(--pink-soft);border:1px solid rgba(255,0,105,.18);border-radius:8px;padding:14px 18px;display:inline-block}
 
 /* Locked teaser — dark glassmorphic card */
-.as-teaser{position:relative;margin-top:8px;background:rgba(20,20,20,0.55);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,.10);border-radius:18px;padding:0;overflow:hidden;isolation:isolate;box-shadow:0 18px 50px -20px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06)}
-.as-teaser::before{content:'';position:absolute;top:-25%;right:-10%;width:65%;height:140%;background:radial-gradient(ellipse at center, rgba(255,0,105,0.28) 0%, rgba(255,0,105,0.10) 38%, transparent 70%);pointer-events:none;z-index:0;filter:blur(28px)}
+.as-teaser{position:relative;margin-top:8px;background:rgba(255,255,255,0.62);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(255,255,255,0.85);border-radius:18px;padding:0;overflow:hidden;isolation:isolate;box-shadow:0 18px 50px -20px rgba(15,23,42,0.18), inset 0 1px 0 rgba(255,255,255,0.9)}
+.as-teaser::before{content:'';position:absolute;top:-25%;right:-10%;width:65%;height:140%;background:radial-gradient(ellipse at center, rgba(255,0,105,0.22) 0%, rgba(255,0,105,0.08) 38%, transparent 70%);pointer-events:none;z-index:0;filter:blur(28px)}
 .as-teaser-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center;padding:52px 56px}
 .as-teaser-left{min-width:0}
 .as-teaser-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--pink);margin-bottom:16px}
-.as-teaser-headline{font-family:'Natom Pro',sans-serif;font-size:30px;font-weight:700;color:#fff;line-height:1.2;margin:0 0 18px;letter-spacing:-0.01em}
-.as-teaser-desc{font-size:16px;color:rgba(255,255,255,0.78);line-height:1.75;margin:0 0 24px}
+.as-teaser-headline{font-family:'Natom Pro',sans-serif;font-size:30px;font-weight:700;color:var(--dark-gray);line-height:1.2;margin:0 0 18px;letter-spacing:-0.01em}
+.as-teaser-desc{font-size:16px;color:var(--gray-body);line-height:1.75;margin:0 0 24px}
 .as-teaser-meta{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
-.as-teaser-meta li{font-size:13.5px;color:rgba(255,255,255,0.88);font-weight:500;display:flex;align-items:center;gap:12px}
-.as-teaser-meta li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 12px rgba(255,0,105,0.6);flex:0 0 auto}
-.as-teaser-right{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:18px;padding:32px 28px;background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.10);border-radius:14px;text-align:center}
-.as-teaser-invite{font-family:'Natom Pro',sans-serif;font-size:18px;font-weight:600;color:#fff;line-height:1.4;margin:0;letter-spacing:-0.005em}
-.as-teaser-sub{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;margin:0}
+.as-teaser-meta li{font-size:13.5px;color:var(--dark-gray);font-weight:500;display:flex;align-items:center;gap:12px}
+.as-teaser-meta li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 12px rgba(255,0,105,0.45);flex:0 0 auto}
+.as-teaser-right{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:18px;padding:32px 28px;background:linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.30));border:1px solid rgba(255,255,255,0.85);border-radius:14px;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,0.9)}
+.as-teaser-invite{font-family:'Natom Pro',sans-serif;font-size:18px;font-weight:600;color:var(--dark-gray);line-height:1.4;margin:0;letter-spacing:-0.005em}
+.as-teaser-sub{font-size:13px;color:var(--gray-body);line-height:1.6;margin:0}
 .as-cta-hero{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--pink);color:#fff;border:none;border-radius:12px;padding:18px 28px;font-family:inherit;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .15s,box-shadow .25s;min-height:56px;box-shadow:0 12px 32px -10px rgba(255,0,105,0.55), 0 0 0 1px rgba(255,255,255,0.08) inset}
 .as-cta-hero:hover:not(:disabled){background:#d6005a;box-shadow:0 18px 44px -12px rgba(255,0,105,0.7), 0 0 0 1px rgba(255,255,255,0.12) inset}
 .as-cta-hero:active:not(:disabled){transform:translateY(1px)}
 .as-cta-hero:disabled{opacity:.55;cursor:not-allowed}
 /* Gate form inside dark teaser */
-.as-teaser .as-gate{margin:0;background:rgba(0,0,0,0.28);border:1px solid rgba(255,255,255,0.10);border-radius:14px;padding:28px 28px}
+.as-teaser .as-gate{margin:0;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.85);border-radius:14px;padding:28px 28px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.9)}
 .as-teaser .as-gate-eyebrow{color:var(--pink)}
-.as-teaser .as-gate-title{color:#fff;font-size:20px}
-.as-teaser .as-gate-sub{color:rgba(255,255,255,0.7)}
-.as-teaser .as-field label{color:rgba(255,255,255,0.85)}
-.as-teaser .as-field input{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);color:#fff}
-.as-teaser .as-field input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,0,105,0.22);background:rgba(255,255,255,0.10)}
+.as-teaser .as-gate-title{color:var(--dark-gray);font-size:20px}
+.as-teaser .as-gate-sub{color:var(--gray-body)}
+.as-teaser .as-field label{color:var(--dark-gray)}
+.as-teaser .as-field input{background:rgba(255,255,255,0.75);border:1px solid rgba(15,23,42,0.12);color:var(--dark-gray)}
+.as-teaser .as-field input:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,0,105,0.18);background:rgba(255,255,255,0.95)}
 .as-teaser .as-gate-grid{grid-template-columns:1fr}
-.as-teaser .as-link{color:rgba(255,255,255,0.7)}
-.as-teaser .as-link:hover{color:#fff}
+.as-teaser .as-link{color:var(--gray-body)}
+.as-teaser .as-link:hover{color:var(--dark-gray)}
 
 /* Sticky bottom bar */
 .as-sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(15,23,42,0.86);backdrop-filter:saturate(160%) blur(14px);-webkit-backdrop-filter:saturate(160%) blur(14px);border-top:1px solid rgba(255,255,255,0.10);color:#fff;padding:12px 24px;display:flex;align-items:center;gap:20px;box-shadow:0 -10px 30px -10px rgba(0,0,0,0.5)}
