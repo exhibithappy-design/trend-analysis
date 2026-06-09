@@ -97,18 +97,18 @@ const makeTrends = (): Trend[] => [
     title: 'Death of the Product Theater',
     shortTitle: 'Product Theater',
     bullets: [
-      'The scripted, rep-led feature walkthrough is dying — buyers want proof, not presentations',
+      'The scripted, rep-led feature walkthrough is dying, buyers want proof, not presentations',
       'Booths built around outcomes and live problem-solving are replacing product demos as theater',
       'The new mandate: stop performing the product, start solving the visitor\'s actual problem in front of them',
     ],
     yoy: 'From "here\'s what it does" to "watch it solve your problem."',
     question: 'Is your booth designed to present, or to prove?',
-    // Unsplash photo BKpOVik79lA — free to use
+    // Unsplash photo BKpOVik79lA, free to use
     image: bucketUrl('trend-01-header.jpg', ''),
     imageAlt: 'People at a business exhibition interacting with a booth',
     cluster: 'Design',
     depth: [
-      'The scripted, rep-led feature walkthrough is dying. Buyers have sat through enough polished decks to know the difference between a rehearsed pitch and a real result — and they\'ve stopped giving credit for the former.',
+      'The scripted, rep-led feature walkthrough is dying. Buyers have sat through enough polished decks to know the difference between a rehearsed pitch and a real result, and they\'ve stopped giving credit for the former.',
       'Booths built around outcomes and live problem-solving are replacing product demos as theater. The hero moment is no longer the reveal of a feature; it\'s the visible solving of a problem the visitor walked in carrying.',
       'The shift reframes the booth as a working environment instead of a stage. Square footage moves out of seating banks and into solution stations where staff can actually demonstrate value against a buyer\'s real scenario.',
     ],
@@ -124,7 +124,7 @@ const makeTrends = (): Trend[] => [
     title: 'Gamification as Lead-Gen Infrastructure',
     shortTitle: 'Lead-Gen Gamification',
     bullets: [
-      'Game mechanics aren\'t a crowd trick anymore — they\'re the lead capture engine',
+      'Game mechanics aren\'t a crowd trick anymore, they\'re the lead capture engine',
       'Challenges, leaderboards, and QR-gated registration are replacing badge scans as the primary data layer',
       'Participation qualifies the visitor: who they are, what they care about, and how engaged they actually were',
     ],
@@ -135,8 +135,8 @@ const makeTrends = (): Trend[] => [
     licenseNote: true,
     cluster: 'Design',
     depth: [
-      'Game mechanics aren\'t a crowd trick anymore — they\'re the lead capture engine. Challenges, leaderboards, and QR-gated registration sit where the badge scanner used to live, turning curiosity into structured first-party data.',
-      'The participation itself does the qualifying work. Who opted in, which scenario they picked, how far they got, what role they self-identified as — every interaction emits signal that a passive scan never could.',
+      'Game mechanics aren\'t a crowd trick anymore, they\'re the lead capture engine. Challenges, leaderboards, and QR-gated registration sit where the badge scanner used to live, turning curiosity into structured first-party data.',
+      'The participation itself does the qualifying work. Who opted in, which scenario they picked, how far they got, what role they self-identified as, every interaction emits signal that a passive scan never could.',
       'The exhibitors winning with this are treating the game as infrastructure, not entertainment. It\'s designed alongside the CRM hand-off, the staff scripting, and the post-show sequence, not bolted on after the booth is built.',
     ],
     gallery: [
@@ -151,20 +151,20 @@ const makeTrends = (): Trend[] => [
     title: 'Immersive Storyworld Booths',
     shortTitle: 'Storyworld Booths',
     bullets: [
-      'Award-winning brands are building entire themed environments — one strong premise, committed all the way',
+      'Award-winning brands are building entire themed environments, one strong premise, committed all the way',
       'Verkada\'s Louvre heist at ISC West 2026 is the benchmark: the theme IS the demo',
       'Visitors don\'t tour the booth, they enter a narrative world that frames every product moment',
     ],
     yoy: 'From branded walls to narrative worlds visitors move through.',
     question: 'Can you describe your booth concept in one sentence?',
-    // Unsplash photo PwlsQn-RyRU — free to use
+    // Unsplash photo PwlsQn-RyRU, free to use
     image: bucketUrl('trend-03-header.jpg', ''),
     imageAlt: 'Immersive themed brand environment at a trade show',
     cluster: 'Flexibility',
     depth: [
-      'Award-winning brands are building entire themed environments around one strong premise, committed all the way. No mixed metaphors, no competing messages — every surface, prop, and staff cue serves the same narrative.',
+      'Award-winning brands are building entire themed environments around one strong premise, committed all the way. No mixed metaphors, no competing messages, every surface, prop, and staff cue serves the same narrative.',
       'Verkada\'s Louvre heist activation at ISC West 2026 is the benchmark: a single creative idea executed at full conviction, where the theme itself functioned as the product demonstration. The story made the technology unforgettable.',
-      'The discipline this requires is editorial more than architectural. The brands that win have a one-sentence concept they\'ll defend against every "could we also add…" — and the design holds together because of what was left out.',
+      'The discipline this requires is editorial more than architectural. The brands that win have a one-sentence concept they\'ll defend against every "could we also add…", and the design holds together because of what was left out.',
     ],
     gallery: [
       { src: bucketUrl('trend-03-detail-a.jpg', ''), alt: 'Private meeting suite within a larger exhibit space' },
@@ -178,9 +178,9 @@ const makeTrends = (): Trend[] => [
     title: 'AI in the Arena: Engagement That Demonstrates AND Delights',
     shortTitle: 'AI in the Arena',
     bullets: [
-      'The smartest exhibitors aren\'t showing AI in a keynote — they\'re putting it inside the booth game',
+      'The smartest exhibitors aren\'t showing AI in a keynote, they\'re putting it inside the booth game',
       'Challenges adapt to your skill level, quizzes branch by role, scenarios make the AI\'s capability the thing being experienced',
-      'The engagement IS the proof of concept — visitors leave knowing the product works because they just used it',
+      'The engagement IS the proof of concept, visitors leave knowing the product works because they just used it',
     ],
     yoy: '2024 = game as crowd magnet. 2026 = game as live AI product demo.',
     question: 'Is your booth engagement just entertaining, or is it proof that your AI actually works?',
@@ -189,8 +189,8 @@ const makeTrends = (): Trend[] => [
     licenseNote: true,
     cluster: 'Budget',
     depth: [
-      'The smartest exhibitors aren\'t showing AI in a keynote — they\'re putting it inside the booth game. Challenges that adapt to skill level, quizzes that branch by role, and scenarios where the AI\'s capability is the thing being experienced rather than narrated.',
-      'The engagement IS the proof of concept. When a visitor finishes a 90-second interactive challenge that adapted to their answers in real time, they don\'t need a follow-up slide explaining "what our AI can do" — they just felt it.',
+      'The smartest exhibitors aren\'t showing AI in a keynote, they\'re putting it inside the booth game. Challenges that adapt to skill level, quizzes that branch by role, and scenarios where the AI\'s capability is the thing being experienced rather than narrated.',
+      'The engagement IS the proof of concept. When a visitor finishes a 90-second interactive challenge that adapted to their answers in real time, they don\'t need a follow-up slide explaining "what our AI can do", they just felt it.',
       'The arc from 2024 to 2026 is clean: the game used to be the crowd magnet that pulled people toward the real demo. Now the game is the demo. The mechanic and the message have collapsed into the same moment.',
     ],
     gallery: [
@@ -217,7 +217,7 @@ const makeTrends = (): Trend[] => [
     cluster: 'Budget',
     depth: [
       'Single-use custom builds are being phased out as the default. The new baseline is a modular system designed across three to five shows, scalable from a 10x10 inline to an island footprint, and reconfigurable to match each market.',
-      'Sustainability pressure is accelerating the shift from every direction at once — finance wants lower per-show cost, procurement wants reusable inventory, and brand teams want to stop defending landfill optics in their annual reports.',
+      'Sustainability pressure is accelerating the shift from every direction at once, finance wants lower per-show cost, procurement wants reusable inventory, and brand teams want to stop defending landfill optics in their annual reports.',
       'The strategic reframe is "build for the circuit," not "build for the show." Booth assets become a managed inventory with a multi-year ROI, not a one-time spend that ends in a dumpster after teardown.',
     ],
     gallery: [
@@ -233,7 +233,7 @@ const makeTrends = (): Trend[] => [
     title: 'Orchestrated Journey Over Spectacle',
     shortTitle: 'Orchestrated Journey',
     bullets: [
-      "Award-winning booths aren't louder — they're sequenced. Entry, discovery, proof, exit",
+      "Award-winning booths aren't louder, they're sequenced. Entry, discovery, proof, exit",
       'Visitors are moved through defined modes, not left to roam a sea of stimuli',
       "The booth is a screenplay now: every zone has a role in the story",
     ],
@@ -242,9 +242,9 @@ const makeTrends = (): Trend[] => [
     image: bucketUrl('trend-06-header.jpg', ''),
     imageAlt: 'Visitors moving through a curated branded exhibition environment with designed experiential zones',
     depth: [
-      'The "immersive" bar has moved. Judges and attendees have stopped rewarding sensory density — more screens, more activations, more noise — and started rewarding booths that guide you somewhere. The best floors in 2025–26 read like attractions: you know exactly where you are in the narrative at every step.',
-      "Award-winning examples from EXHIBITOR and PosterGarden's 2025 picks share one structural trait — a deliberate sequence. Problem, solution, proof, impact. Entry threshold, discovery zone, demonstration moment, exit beat. The spatial plan isn't decorative. It's directional.",
-      "The implication for exhibitors: stop designing square footage and start designing a visitor arc. A booth without a journey is just a room. The orchestration is the differentiator — not the LED wall, not the hanging sign, not the headcount.",
+      'The "immersive" bar has moved. Judges and attendees have stopped rewarding sensory density, more screens, more activations, more noise, and started rewarding booths that guide you somewhere. The best floors in 2025–26 read like attractions: you know exactly where you are in the narrative at every step.',
+      "Award-winning examples from EXHIBITOR and PosterGarden's 2025 picks share one structural trait, a deliberate sequence. Problem, solution, proof, impact. Entry threshold, discovery zone, demonstration moment, exit beat. The spatial plan isn't decorative. It's directional.",
+      "The implication for exhibitors: stop designing square footage and start designing a visitor arc. A booth without a journey is just a room. The orchestration is the differentiator, not the LED wall, not the hanging sign, not the headcount.",
     ],
     gallery: [
       { src: bucketUrl('trend-06-detail-a.jpg', ''), alt: 'Architectural exhibition space with dramatic lighting guiding visitor flow' },
@@ -259,8 +259,8 @@ const makeTrends = (): Trend[] => [
     shortTitle: 'Hospitality-Led Booths',
     bullets: [
       'Leading exhibitors are building lounge-first environments where the product conversation finds the visitor, not the other way around',
-      'Intentionally zoned comfort areas — F&B, soft seating, ambient lighting, concierge staffing — increase dwell time up to 2.5x compared to demo-first layouts',
-      'The shift reframes the booth as a place to stay, not a place to stop — fewer leads, significantly higher quality',
+      'Intentionally zoned comfort areas, F&B, soft seating, ambient lighting, concierge staffing, increase dwell time up to 2.5x compared to demo-first layouts',
+      'The shift reframes the booth as a place to stay, not a place to stop, fewer leads, significantly higher quality',
     ],
     yoy: 'From "here\'s a chair while we pitch you" to "here\'s an environment built for the conversation you actually want to have."',
     question: 'Is your booth designed to attract traffic, or to hold the right conversation long enough to matter?',
@@ -268,9 +268,9 @@ const makeTrends = (): Trend[] => [
     imageAlt: 'Hospitality-led trade show booth lounge with soft seating and ambient lighting',
     cluster: 'Design',
     depth: [
-      'The demo-first booth assumes the product is the draw. Hospitality-led design flips that assumption — the environment is the draw, and the product conversation happens inside it. AWS, Google Cloud, and Salesforce have been building this way for years at their flagship events: barista stations, semi-private lounge pods, warm materials, ambient sound — not as perks bolted on, but as the primary engagement architecture.',
-      'The business case is in the dwell time. Intentionally zoned comfort areas increase how long a visitor stays by up to 2.5x. Longer stays mean deeper conversations, more qualified intent signals, and staff who can move past the pitch into actual problem-solving. The tradeoff — lower raw lead volume — is increasingly seen as the right trade.',
-      'In 2026, this extends beyond F&B. Scent branding, sound design, concierge-style staffing models, and domestic-grade finishes (wood, stone, soft lighting) are all part of the same strategy: make the visitor feel something before they hear anything. The booths winning on quality-of-conversation metrics aren\'t the loudest ones on the floor — they\'re the ones that feel like somewhere you\'d actually want to spend 20 minutes.',
+      'The demo-first booth assumes the product is the draw. Hospitality-led design flips that assumption, the environment is the draw, and the product conversation happens inside it. AWS, Google Cloud, and Salesforce have been building this way for years at their flagship events: barista stations, semi-private lounge pods, warm materials, ambient sound, not as perks bolted on, but as the primary engagement architecture.',
+      'The business case is in the dwell time. Intentionally zoned comfort areas increase how long a visitor stays by up to 2.5x. Longer stays mean deeper conversations, more qualified intent signals, and staff who can move past the pitch into actual problem-solving. The tradeoff, lower raw lead volume, is increasingly seen as the right trade.',
+      'In 2026, this extends beyond F&B. Scent branding, sound design, concierge-style staffing models, and domestic-grade finishes (wood, stone, soft lighting) are all part of the same strategy: make the visitor feel something before they hear anything. The booths winning on quality-of-conversation metrics aren\'t the loudest ones on the floor, they\'re the ones that feel like somewhere you\'d actually want to spend 20 minutes.',
     ],
     gallery: [
       { src: bucketUrl('trend-07-detail-a.jpg', ''), alt: 'Warm, dimly lit hospitality lounge with comfortable seating' },
@@ -284,7 +284,7 @@ const makeTrends = (): Trend[] => [
     title: 'The Booth as Campaign Asset',
     shortTitle: 'Campaign Asset',
     bullets: [
-      'The booth is no longer the event — it\'s the content hub for a 6-week campaign',
+      'The booth is no longer the event, it\'s the content hub for a 6-week campaign',
       'Pre-show teasers, live social capture, post-show video clips, and email sequences are planned before the build begins',
       'Booth design decisions now have to serve the camera and the campaign, not just the floor visitor',
     ],
@@ -295,9 +295,9 @@ const makeTrends = (): Trend[] => [
     licenseNote: true,
     cluster: 'Flexibility',
     depth: [
-      'The booth is no longer the event — it\'s the content hub for a six-week campaign that surrounds the event. The week on the floor is the production shoot; the value lives in what gets cut, posted, and sequenced before and after.',
+      'The booth is no longer the event, it\'s the content hub for a six-week campaign that surrounds the event. The week on the floor is the production shoot; the value lives in what gets cut, posted, and sequenced before and after.',
       'Pre-show teasers, live social capture, post-show video clips, and follow-up email sequences are now planned before the build begins. Camera angles, lighting, and "hero shot" zones get designed alongside the floor plan, not after.',
-      'This reframes every design decision. The booth has to serve two audiences simultaneously — the visitor walking through it, and the much larger remote audience watching the campaign that the booth feeds.',
+      'This reframes every design decision. The booth has to serve two audiences simultaneously, the visitor walking through it, and the much larger remote audience watching the campaign that the booth feeds.',
     ],
     gallery: [
       { src: bucketUrl('trend-08-detail-a.jpg', ''), alt: 'Mezzanine level above an active exhibit floor' },
@@ -311,18 +311,18 @@ const makeTrends = (): Trend[] => [
     title: 'LED as the Booth\'s Operating System',
     shortTitle: 'LED Architecture',
     bullets: [
-      'LED is no longer a display — it\'s the architecture itself',
+      'LED is no longer a display, it\'s the architecture itself',
       'Floor-to-ceiling walls, ceiling canopies, and dynamic content zones change by session, audience, or time of day',
       'The booth becomes a programmable environment that re-skins itself for each audience segment',
     ],
     yoy: 'From screens on a wall to walls as screens.',
     question: 'Is your visual technology flexible enough to serve every audience segment on the floor?',
-    // Unsplash photo PwlsQn-RyRU — free to use
+    // Unsplash photo PwlsQn-RyRU, free to use
     image: bucketUrl('trend-09-header.jpg', ''),
     imageAlt: 'Floor-to-ceiling LED wall as exhibit architecture',
     cluster: 'Flexibility',
     depth: [
-      'LED is no longer a display bolted onto a wall — it has become the wall, the ceiling, and increasingly the floor. The exhibit architecture itself is luminous, dynamic, and addressable rather than printed and fixed.',
+      'LED is no longer a display bolted onto a wall, it has become the wall, the ceiling, and increasingly the floor. The exhibit architecture itself is luminous, dynamic, and addressable rather than printed and fixed.',
       'Floor-to-ceiling walls, ceiling canopies, and dynamic content zones now change by session, audience, or time of day. The same physical booth presents a completely different environment for the 9am clinical demo and the 4pm executive reception.',
       'The shift turns the booth into a programmable operating system. Content schedules replace graphic packages, and the cost of pivoting messaging mid-show drops to a file swap instead of a reprint.',
     ],
@@ -349,9 +349,9 @@ const makeTrends = (): Trend[] => [
     licenseNote: true,
     cluster: 'Flexibility',
     depth: [
-      'Transparent LED — ClearLED — is moving from novelty effect into structural material. Brands are deploying it as entry portals, hanging planes, and semi-open facades that carry video content without behaving like an opaque wall.',
+      'Transparent LED, ClearLED, is moving from novelty effect into structural material. Brands are deploying it as entry portals, hanging planes, and semi-open facades that carry video content without behaving like an opaque wall.',
       'The strategic appeal is that you get the visual impact of a massive screen without sacrificing the sightlines and openness that make a booth approachable. Visitors can see through the architecture, which means they keep walking toward it.',
-      'The reframe is from "giant screen" to "breathable media architecture." The display becomes part of the booth\'s skeleton rather than a slab parked in front of it — closer to stage scenery than to a TV.',
+      'The reframe is from "giant screen" to "breathable media architecture." The display becomes part of the booth\'s skeleton rather than a slab parked in front of it, closer to stage scenery than to a TV.',
     ],
     gallery: [
       { src: bucketUrl('trend-10-detail-a.jpg', ''), alt: 'Branded coffee bar at an event activation' },
@@ -366,7 +366,7 @@ const makeTrends = (): Trend[] => [
     shortTitle: 'Unexpected Environment',
     bullets: [
       "The booth that shouldn't exist here is the one everyone remembers",
-      "Snowflake's ski lodge, a jazz bar in a convention center, a greenhouse in a tech hall — displacement is the brand impression",
+      "Snowflake's ski lodge, a jazz bar in a convention center, a greenhouse in a tech hall, displacement is the brand impression",
       "These aren't storytelling environments; they're displacement environments where the world has no logical connection to the product",
     ],
     yoy: 'From "how do we express our brand?" to "what world would make people stop walking and want to stay?"',
@@ -375,11 +375,11 @@ const makeTrends = (): Trend[] => [
     imageAlt: 'Warm atmospheric interior of a bar or lodge with dramatic ambient lighting',
     cluster: 'Design',
     depth: [
-      "The shift: Traditional booth design asks 'how do we express our brand?' The unexpected environment asks something different: 'what world would make people stop walking and want to stay?' The answer is usually somewhere they'd never expect to find themselves — and that surprise is the brand impression.",
-      "Why it works in 2026: Attention on the show floor is the scarcest resource in B2B marketing. An unexpected environment creates an involuntary stop — you don't decide to notice it, you just do. The rise of 'selfie architecture' has changed the ROI math. A booth that gets shared 500 times on LinkedIn has media value that dwarfs the cost of a themed build. Younger, digitally-native attendees don't respond to static brand messaging. They respond to moments.",
-      "Where AI comes in: AI hasn't just made this trend possible — it's removed the primary barrier. Conceptualizing and rendering a fully realized unexpected environment used to require weeks of design iteration. Now a creative team can generate, refine, and pressure-test 10 scenic concepts before a single dollar is committed to fabrication. The creative ceiling has gone up because ideation is no longer the bottleneck.",
-      "Who's doing it: Still a premium play in 2026 — most visible at flagship shows (CES, Dreamforce, HIMSS, AWS re:Invent). But the tactic is moving down-market as AI-assisted design and modular fabrication reduce the cost of building 'a world.'",
-      "The 2026 signal: This isn't about theme for theme's sake. The brands winning with this approach understand that memorability is the metric — and an environment that displaces you spatially is the most reliable way to earn it.",
+      "The shift: Traditional booth design asks 'how do we express our brand?' The unexpected environment asks something different: 'what world would make people stop walking and want to stay?' The answer is usually somewhere they'd never expect to find themselves, and that surprise is the brand impression.",
+      "Why it works in 2026: Attention on the show floor is the scarcest resource in B2B marketing. An unexpected environment creates an involuntary stop, you don't decide to notice it, you just do. The rise of 'selfie architecture' has changed the ROI math. A booth that gets shared 500 times on LinkedIn has media value that dwarfs the cost of a themed build. Younger, digitally-native attendees don't respond to static brand messaging. They respond to moments.",
+      "Where AI comes in: AI hasn't just made this trend possible, it's removed the primary barrier. Conceptualizing and rendering a fully realized unexpected environment used to require weeks of design iteration. Now a creative team can generate, refine, and pressure-test 10 scenic concepts before a single dollar is committed to fabrication. The creative ceiling has gone up because ideation is no longer the bottleneck.",
+      "Who's doing it: Still a premium play in 2026, most visible at flagship shows (CES, Dreamforce, HIMSS, AWS re:Invent). But the tactic is moving down-market as AI-assisted design and modular fabrication reduce the cost of building 'a world.'",
+      "The 2026 signal: This isn't about theme for theme's sake. The brands winning with this approach understand that memorability is the metric, and an environment that displaces you spatially is the most reliable way to earn it.",
     ],
     gallery: [
       { src: bucketUrl('trend-11-detail-a.jpg', ''), alt: 'Cozy warm lodge interior with dramatic lighting' },
@@ -394,7 +394,7 @@ const makeTrends = (): Trend[] => [
     shortTitle: 'The One-Idea Booth',
     bullets: [
       'EXHIBITOR\'s 2025 award analysis found one universal trait across winners: a single organizing idea executed completely',
-      'Not a collage of product messages — one sentence, committed all the way through layout, graphics, and staff scripting',
+      'Not a collage of product messages, one sentence, committed all the way through layout, graphics, and staff scripting',
       'In 2026, judges reward conceptual clarity as much as visual ambition',
     ],
     yoy: 'From "impressive build" to "unforgettable premise."',
@@ -404,9 +404,9 @@ const makeTrends = (): Trend[] => [
     licenseNote: true,
     cluster: 'Design',
     depth: [
-      'EXHIBITOR\'s 2025 award analysis surfaced one trait shared by every winner: a single organizing idea executed completely. Not a clever feature, not a great photo — a unifying premise that every element of the booth was clearly built to serve.',
+      'EXHIBITOR\'s 2025 award analysis surfaced one trait shared by every winner: a single organizing idea executed completely. Not a clever feature, not a great photo, a unifying premise that every element of the booth was clearly built to serve.',
       'The losing pattern is a collage of product messages stacked into one footprint. The winning pattern is one sentence, committed all the way through layout, graphics, lighting, staff scripting, and giveaway. Everything off-thesis gets cut.',
-      'In 2026, judges and buyers alike reward conceptual clarity as much as visual ambition. An "impressive build" without a premise loses to a simpler booth with an unforgettable one — because the premise is what gets remembered after teardown.',
+      'In 2026, judges and buyers alike reward conceptual clarity as much as visual ambition. An "impressive build" without a premise loses to a simpler booth with an unforgettable one, because the premise is what gets remembered after teardown.',
     ],
     gallery: [
       { src: bucketUrl('trend-12-detail-a.jpg', ''), alt: 'Bold, saturated color exhibit activation' },
@@ -710,7 +710,7 @@ const TrendReport2026 = () => {
               <span className="thin">So You Don't Have To</span>
             </h1>
             <p className="hero-sub">
-              From January through June 2026, our team was on the ground at HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more — distilling 12 actionable trends that give busy B2B exhibit marketers a strategic edge. No flights. No badge lines. Just the intelligence that matters.
+              From January through June 2026, our team was on the ground at HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more, distilling 12 actionable trends that give busy B2B exhibit marketers a strategic edge. No flights. No badge lines. Just the intelligence that matters.
             </p>
           </div>
           <div className="hero-scroll">
@@ -722,7 +722,7 @@ const TrendReport2026 = () => {
         <section className="section section--w" id="tldr">
           <div className="pr"></div>
           <div className="sl">Section 00</div>
-          <h2 className="st">TL;DR — Your Strategic Edge in 60 Seconds</h2>
+          <h2 className="st">TL;DR, Your Strategic Edge in 60 Seconds</h2>
           <FadeIn>
             <div className="tldr">
               <h3>What changed in 2026</h3>
@@ -745,7 +745,7 @@ const TrendReport2026 = () => {
           <h2 className="st">The Three Pain-Point Clusters</h2>
           <FadeIn>
             <p className="pp-intro">
-              We heard the same three challenges from marketers at every show we covered — the friction points that keep showing up in booth briefs, RFPs, and post-show debriefs. Every trend in this report maps back to at least one of them, so you can focus on strategy instead of scouting.
+              We heard the same three challenges from marketers at every show we covered, the friction points that keep showing up in booth briefs, RFPs, and post-show debriefs. Every trend in this report maps back to at least one of them, so you can focus on strategy instead of scouting.
             </p>
             <div className="pp-grid">
               <div className="pp">
@@ -753,7 +753,7 @@ const TrendReport2026 = () => {
                 <div className="pp-label">Cluster 01</div>
                 <div className="pp-title">Flexibility</div>
                 <p className="pp-desc">
-                  Booths that adapt to multiple shows, footprints, and audience tiers — without rebuilding from scratch. Immersive storyworlds, booth-as-campaign-asset thinking, LED as a flexible operating system, and transparent LED as structural design.
+                  Booths that adapt to multiple shows, footprints, and audience tiers, without rebuilding from scratch. Immersive storyworlds, booth-as-campaign-asset thinking, LED as a flexible operating system, and transparent LED as structural design.
                 </p>
                 <a className="pp-link" href="#t3">Trend 3</a>
                 <a className="pp-link" href="#t8">Trend 8</a>
@@ -835,7 +835,7 @@ const TrendReport2026 = () => {
                 <div className="contact-cta-body">
                 <div className="contact-cta-text">
                   <p>
-                    Let's turn these trends into your competitive advantage on the show floor. In one focused conversation, we'll map your 2026 calendar against the shifts in this report — where buyers actually engage, where budgets are getting wasted, and where a sharper booth strategy compounds into pipeline.
+                    Let's turn these trends into your competitive advantage on the show floor. In one focused conversation, we'll map your 2026 calendar against the shifts in this report, where buyers actually engage, where budgets are getting wasted, and where a sharper booth strategy compounds into pipeline.
                   </p>
                   <p>
                     You'll walk away with a clear point of view on which trends matter for your category, two or three concrete moves you can make on your next build, and a partner who's already executing this playbook for brands like yours.
