@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { FileText, AlertTriangle, Mail, LayoutGrid, DollarSign, Palette } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -31,6 +31,36 @@ const BUCKET_FILES = [
 // Mutable map populated at runtime with signed URLs from Supabase storage.
 // Until populated, bucketUrl() returns the provided Unsplash fallback.
 const signedUrlMap: Record<string, string> = {};
+const inflightSigned = new Set<string>();
+let onSignedUrlsLoaded: (() => void) | null = null;
+
+async function loadSignedUrls(files: readonly string[]) {
+  const toFetch = files.filter((f) => f && !signedUrlMap[f] && !inflightSigned.has(f));
+  if (!toFetch.length) return;
+  toFetch.forEach((f) => inflightSigned.add(f));
+  const results = await Promise.all(
+    toFetch.map(async (file) => {
+      try {
+        const { data, error } = await supabase.storage
+          .from(BUCKET_NAME)
+          .createSignedUrl(file, SIGNED_URL_TTL_SECONDS);
+        if (error || !data?.signedUrl) return null;
+        return [file, data.signedUrl] as const;
+      } catch {
+        return null;
+      }
+    }),
+  );
+  let added = 0;
+  for (const entry of results) {
+    if (entry) {
+      signedUrlMap[entry[0]] = entry[1];
+      added++;
+    }
+  }
+  toFetch.forEach((f) => inflightSigned.delete(f));
+  if (added > 0) onSignedUrlsLoaded?.();
+}
 
 function bucketUrl(filename: string, fallback: string): string {
   return signedUrlMap[filename] ?? fallback;
@@ -398,14 +428,31 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 
 const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: (s: string) => void; headerPosition: number }) => {
   const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '400px 0px' });
+  useEffect(() => {
+    if (!inView) return;
+    const num = String(trend.num).padStart(2, '0');
+    loadSignedUrls([
+      `trend-${num}-header.jpg`,
+      `trend-${num}-detail-a.jpg`,
+      `trend-${num}-detail-b.jpg`,
+    ]);
+  }, [inView, trend.num]);
   return (
-    <div className="trend-card" id={trend.id}>
+    <div className="trend-card" id={trend.id} ref={ref}>
       <div className="tc-media" onClick={() => onImage(trend.image)} style={{ cursor: 'pointer' }}>
-        <img
+        <motion.img
           src={trend.image}
           alt={trend.imageAlt}
           loading="lazy"
+          decoding="async"
+          className="tc-media-img"
           style={{ objectPosition: `center ${headerPosition}%` }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
         />
       </div>
       <div className="tc-body">
@@ -430,7 +477,17 @@ const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: 
             <div className="tc-gallery">
               {trend.gallery.map((g, i) => (
                 <figure key={i} className="tc-gallery-item" onClick={() => onImage(g.src)}>
-                  <img src={g.src} alt={g.alt} loading="lazy" />
+                  <motion.img
+                    src={g.src}
+                    alt={g.alt}
+                    loading="lazy"
+                    decoding="async"
+                    className="tc-gallery-img"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-30px' }}
+                    transition={{ duration: 0.55, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                  />
                 </figure>
               ))}
             </div>
@@ -491,38 +548,21 @@ const TrendReport2026 = () => {
     };
   }, []);
 
-  // Fetch signed URLs for all bucket files on mount and store them in the
-  // module-level signedUrlMap. Bumping signedVersion re-runs the useMemo
-  // calls below so the rendered URLs swap from Unsplash to signed storage.
+  // Register a subscriber so on-demand signed-URL loads (triggered by trend
+  // cards entering the viewport) re-render the tree with the new URLs.
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const results = await Promise.all(
-        BUCKET_FILES.map(async (file) => {
-          try {
-            const { data, error } = await supabase.storage
-              .from(BUCKET_NAME)
-              .createSignedUrl(file, SIGNED_URL_TTL_SECONDS);
-            if (error || !data?.signedUrl) return null;
-            return [file, data.signedUrl] as const;
-          } catch {
-            return null;
-          }
-        }),
-      );
-      if (cancelled) return;
-      let added = 0;
-      for (const entry of results) {
-        if (entry) {
-          signedUrlMap[entry[0]] = entry[1];
-          added++;
-        }
-      }
-      if (added > 0) setSignedVersion((v) => v + 1);
-    })();
+    onSignedUrlsLoaded = () => setSignedVersion((v) => v + 1);
     return () => {
-      cancelled = true;
+      onSignedUrlsLoaded = null;
     };
+  }, []);
+
+  // Eagerly load above-the-fold assets: hero crossfade + Andrew Childers headshot.
+  useEffect(() => {
+    loadSignedUrls([
+      'hero-1.jpg', 'hero-2.jpg', 'hero-3.jpg', 'hero-4.jpg',
+      'Andrew Childers.png',
+    ]);
   }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
