@@ -917,12 +917,37 @@ const TrendReport2026 = () => {
         </button>
       </div>
 
-      {lightboxSrc && (
-        <div className="lightbox-overlay" onClick={() => setLightboxSrc(null)}>
-          <button className="lightbox-close" onClick={() => setLightboxSrc(null)}>
+      {lightbox && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">
             &times;
           </button>
-          <img src={lightboxSrc} alt="" onClick={(e) => e.stopPropagation()} />
+          {lightbox.images.length > 1 && (
+            <>
+              <button
+                className="lightbox-nav lightbox-prev"
+                onClick={(e) => { e.stopPropagation(); prevLightbox(); }}
+                aria-label="Previous image"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button
+                className="lightbox-nav lightbox-next"
+                onClick={(e) => { e.stopPropagation(); nextLightbox(); }}
+                aria-label="Next image"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 6l6 6-6 6"/></svg>
+              </button>
+              <div className="lightbox-counter" onClick={(e) => e.stopPropagation()}>
+                {lightbox.index + 1} / {lightbox.images.length}
+              </div>
+            </>
+          )}
+          <img
+            src={lightbox.images[lightbox.index]}
+            alt=""
+            onClick={(e) => e.stopPropagation()}
+          />
         </div>
       )}
     </>
