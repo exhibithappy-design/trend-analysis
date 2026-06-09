@@ -714,7 +714,15 @@ const TrendReport2026 = () => {
           <div className="hero-img hero-slider" aria-hidden="true">
             {HERO_SLIDES.map((src, i) => (
               <div key={src} className={`hero-slide ${i === heroIdx ? 'is-active' : ''}`}>
-                <img src={src} alt="" draggable={false} />
+                <img
+                  src={src}
+                  alt=""
+                  draggable={false}
+                  loading="eager"
+                  decoding={i === 0 ? 'sync' : 'async'}
+                  // @ts-expect-error fetchpriority is valid HTML, supported in React 18.3+
+                  fetchpriority={i === 0 ? 'high' : 'auto'}
+                />
               </div>
             ))}
           </div>
