@@ -39,8 +39,9 @@
 .pp a.pp-link + a.pp-link{margin-left:14px}
 
 /* Trend card (Compact/Depth) */
-.trend-card{background:var(--white);border:1px solid var(--light-card);border-radius:14px;overflow:hidden;margin-bottom:28px;transition:box-shadow .25s,border-color .25s;display:flex;flex-direction:column}
-.trend-card:hover{border-color:rgba(255,0,105,.25);box-shadow:0 8px 32px var(--pink-soft)}
+.trend-card{background:var(--white);border:1px solid rgba(15,23,42,0.12);border-radius:14px;overflow:hidden;margin-bottom:28px;transition:box-shadow .25s,border-color .25s,transform .25s;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(15,23,42,0.04),0 6px 18px rgba(15,23,42,0.07),0 18px 40px -20px rgba(15,23,42,0.12)}
+.trend-card:hover{border-color:rgba(255,0,105,.32);box-shadow:0 2px 4px rgba(15,23,42,0.05),0 10px 28px rgba(15,23,42,0.10),0 24px 50px -18px rgba(255,0,105,0.18)}
+.tc-media-img,.tc-gallery-img{will-change:transform,opacity}
 .trend-card .tc-media{position:relative;background:var(--light-card);overflow:hidden;width:100%;aspect-ratio:16/6;max-height:260px}
 .trend-card .tc-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .trend-card:hover .tc-media img{transform:scale(1.02)}
@@ -108,9 +109,22 @@
   .gate{padding:32px 22px}
   .gate h3{font-size:22px}
   .trend-card .tc-media{aspect-ratio:16/9;max-height:180px}
-  .trend-card .tc-body{padding:24px 22px}
+  .trend-card .tc-body{padding:22px 18px}
   .trend-card .tc-title{font-size:20px}
+  .trend-card ul.tc-bullets li{font-size:13.5px;padding:7px 0 7px 20px}
+  .tc-depth .tc-prose p{font-size:14px}
   .tc-gallery{grid-template-columns:1fr}
+  .pp-grid{grid-template-columns:1fr;gap:14px}
+  .pp{padding:20px 18px}
+}
+@media(max-width:480px){
+  .trend-card{border-radius:12px;margin-bottom:20px}
+  .trend-card .tc-media{aspect-ratio:16/10;max-height:200px}
+  .trend-card .tc-body{padding:20px 16px}
+  .trend-card .tc-title{font-size:18px}
+  .tc-toggle{width:100%;justify-content:center;padding:12px 18px;min-height:44px}
+  .contact-btn{padding:14px 24px;font-size:12px;min-height:48px}
+  .hero-ey{font-size:11px;letter-spacing:2.5px}
 }
 /* Textured background for dark sections (matches admin login texture) */
 .section--b,.ch{position:relative;background-color:#000;background-image:url('/__l5e/assets-v1/54ddde45-55f0-40b9-ac3d-0d68a7856eb7/black-background.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;isolation:isolate}
