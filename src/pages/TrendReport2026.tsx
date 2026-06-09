@@ -243,8 +243,8 @@ const makeTrends = (): Trend[] => [
       'In 2026, this extends beyond F&B. Scent branding, sound design, concierge-style staffing models, and domestic-grade finishes (wood, stone, soft lighting) are all part of the same strategy: make the visitor feel something before they hear anything. The booths winning on quality-of-conversation metrics aren\'t the loudest ones on the floor — they\'re the ones that feel like somewhere you\'d actually want to spend 20 minutes.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=900&auto=format&fit=crop&q=80', alt: 'Warm, dimly lit hospitality lounge with comfortable seating' },
-      { src: 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=900&auto=format&fit=crop&q=80', alt: 'Soft materials and ambient accent lighting in a lounge-style booth environment' },
+      { src: bucketUrl('trend-07-detail-a.jpg', 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=900&auto=format&fit=crop&q=80'), alt: 'Warm, dimly lit hospitality lounge with comfortable seating' },
+      { src: bucketUrl('trend-07-detail-b.jpg', 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=900&auto=format&fit=crop&q=80'), alt: 'Soft materials and ambient accent lighting in a lounge-style booth environment' },
     ],
   },
   {
@@ -260,7 +260,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From one-week activation to always-on content engine.',
     question: 'What content does your booth produce before, during, and after the show?',
-    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-08-header.jpg', 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Branded content production setup at a live event',
     licenseNote: true,
     cluster: 'Flexibility',
@@ -288,7 +288,7 @@ const makeTrends = (): Trend[] => [
     yoy: 'From screens on a wall to walls as screens.',
     question: 'Is your visual technology flexible enough to serve every audience segment on the floor?',
     // Unsplash photo PwlsQn-RyRU — free to use
-    image: 'https://images.unsplash.com/photo-1564540583246-934409427776?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-09-header.jpg', 'https://images.unsplash.com/photo-1564540583246-934409427776?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Floor-to-ceiling LED wall as exhibit architecture',
     cluster: 'Flexibility',
     depth: [
@@ -297,8 +297,8 @@ const makeTrends = (): Trend[] => [
       'The shift turns the booth into a programmable operating system. Content schedules replace graphic packages, and the cost of pivoting messaging mid-show drops to a file swap instead of a reprint.',
     ],
     gallery: [
-      { src: bucketUrl('trend-09-detail-a.jpg', 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&auto=format&fit=crop&q=80'), alt: 'Upscale hospitality lounge with workspace amenities' },
-      { src: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&auto=format&fit=crop&q=80', alt: 'Collaborative lounge with seating and laptops' },
+      { src: bucketUrl('trend-09-detail-a.jpg', 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&auto=format&fit=crop&q=80'), alt: 'Floor-to-ceiling LED wall serving as exhibit architecture' },
+      { src: bucketUrl('trend-09-detail-b.jpg', 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&auto=format&fit=crop&q=80'), alt: 'Programmable LED canopy and dynamic content zones' },
     ],
   },
   {
@@ -379,8 +379,8 @@ const makeTrends = (): Trend[] => [
       'In 2026, judges and buyers alike reward conceptual clarity as much as visual ambition. An "impressive build" without a premise loses to a simpler booth with an unforgettable one — because the premise is what gets remembered after teardown.',
     ],
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&auto=format&fit=crop&q=80', alt: 'Bold, saturated color exhibit activation' },
-      { src: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=900&auto=format&fit=crop&q=80', alt: 'Vivid color palette installation breaking category norms' },
+      { src: bucketUrl('trend-12-detail-a.jpg', 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&auto=format&fit=crop&q=80'), alt: 'Bold, saturated color exhibit activation' },
+      { src: bucketUrl('trend-12-detail-b.jpg', 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=900&auto=format&fit=crop&q=80'), alt: 'Vivid color palette installation breaking category norms' },
     ],
   },
 ];
