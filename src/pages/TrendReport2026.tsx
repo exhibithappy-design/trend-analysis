@@ -847,7 +847,7 @@ const TrendReport2026 = () => {
           <div className="section section--w" style={{ paddingTop: 40 }}>
             {functional.map((t, i) => (
               <FadeIn key={t.id}>
-                <TrendCard trend={t} onImage={setLightboxSrc} headerPosition={trendPositions[t.num] ?? 50} eager={i < 2} />
+                <TrendCard trend={t} onImage={openLightbox} headerPosition={trendPositions[t.num] ?? 50} eager={i < 2} />
               </FadeIn>
             ))}
           </div>
@@ -862,7 +862,7 @@ const TrendReport2026 = () => {
           <div className="section section--w" style={{ paddingTop: 40 }}>
             {design.map((t) => (
               <FadeIn key={t.id}>
-                <TrendCard trend={t} onImage={setLightboxSrc} headerPosition={trendPositions[t.num] ?? 50} />
+                <TrendCard trend={t} onImage={openLightbox} headerPosition={trendPositions[t.num] ?? 50} />
               </FadeIn>
             ))}
           </div>
