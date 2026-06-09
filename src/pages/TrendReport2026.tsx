@@ -181,7 +181,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From "build for the show" to "build for the circuit."',
     question: 'How many shows is your current booth designed to serve?',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&auto=format&fit=crop&q=80',
+    image: bucketUrl('trend-05-header.jpg', 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&auto=format&fit=crop&q=80'),
     imageAlt: 'Modular architectural exhibition structure',
     licenseNote: true,
     cluster: 'Budget',
