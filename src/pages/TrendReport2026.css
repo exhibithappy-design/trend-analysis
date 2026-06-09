@@ -272,6 +272,39 @@
 .as-save-row input{flex:1;min-width:220px;background:var(--white);border:1px solid rgba(15,23,42,0.14);border-radius:8px;padding:12px 14px;font:inherit;font-size:14px;color:var(--dark-gray)}
 .as-save-row input:focus{outline:none;border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-soft)}
 .as-save-confirm{font-size:14px;color:var(--dark-gray);background:var(--pink-soft);border:1px solid rgba(255,0,105,.18);border-radius:8px;padding:14px 18px;display:inline-block}
+
+/* Locked teaser */
+.as-teaser{margin-top:8px;background:var(--light-card);border:1px solid rgba(15,23,42,0.08);border-radius:16px;padding:36px 40px}
+.as-teaser-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--pink);margin-bottom:14px}
+.as-teaser-desc{font-size:16px;color:var(--gray-body);line-height:1.75;margin:0 0 22px;max-width:760px}
+.as-teaser-meta{display:flex;flex-wrap:wrap;gap:18px 28px;margin:0 0 26px;padding:0;list-style:none}
+.as-teaser-meta li{font-size:13px;color:var(--dark-gray);font-weight:600;display:flex;align-items:center;gap:8px}
+.as-teaser-meta li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pink)}
+
+/* Sticky bottom bar */
+.as-sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(15,23,42,0.86);backdrop-filter:saturate(160%) blur(14px);-webkit-backdrop-filter:saturate(160%) blur(14px);border-top:1px solid rgba(255,255,255,0.10);color:#fff;padding:12px 24px;display:flex;align-items:center;gap:20px;box-shadow:0 -10px 30px -10px rgba(0,0,0,0.5)}
+.as-sticky-id{display:flex;flex-direction:column;line-height:1.2;min-width:0;flex:0 0 auto}
+.as-sticky-name{font-family:'Natom Pro',sans-serif;font-weight:700;font-size:14px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.as-sticky-co{font-size:12px;color:rgba(255,255,255,0.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.as-sticky-save{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;font-size:12px;color:rgba(255,255,255,0.78);letter-spacing:.5px}
+.as-sticky-save-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,0.18)}
+.as-sticky-save.is-saving .as-sticky-save-dot{background:#facc15;box-shadow:0 0 0 4px rgba(250,204,21,0.18)}
+.as-sticky-actions{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.as-sticky-btn{background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.16);border-radius:8px;padding:10px 16px;font:inherit;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .18s,border-color .18s}
+.as-sticky-btn:hover{background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.28)}
+.as-sticky-btn.is-primary{background:var(--pink);border-color:var(--pink)}
+.as-sticky-btn.is-primary:hover{background:#d6005a;border-color:#d6005a}
+.as-sticky-btn.is-ghost{background:transparent}
+.as-sticky-toast{position:absolute;bottom:calc(100% + 10px);right:24px;background:#fff;color:var(--dark-gray);font-size:12px;font-weight:600;padding:8px 14px;border-radius:8px;box-shadow:0 10px 30px -10px rgba(0,0,0,0.4)}
+body.has-as-sticky{padding-bottom:80px}
+@media(max-width:768px){
+  .as-teaser{padding:26px 22px}
+  .as-sticky{flex-wrap:wrap;gap:10px;padding:10px 14px}
+  .as-sticky-save{order:3;flex-basis:100%;justify-content:flex-start;font-size:11px}
+  .as-sticky-actions{margin-left:auto}
+  .as-sticky-btn{padding:8px 12px;font-size:11px;letter-spacing:1px}
+  body.has-as-sticky{padding-bottom:120px}
+}
 @media(max-width:1024px){
   .as-options{grid-template-columns:1fr}
   .as-gate-grid{grid-template-columns:1fr}
