@@ -456,7 +456,7 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   </motion.div>
 );
 
-const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: (s: string) => void; headerPosition: number }) => {
+const TrendCard = ({ trend, onImage, headerPosition, eager }: { trend: Trend; onImage: (s: string) => void; headerPosition: number; eager?: boolean }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   return (
@@ -465,8 +465,9 @@ const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: 
         <motion.img
           src={trend.image}
           alt={trend.imageAlt}
-          loading="lazy"
-          decoding="async"
+          loading={eager ? 'eager' : 'lazy'}
+          decoding={eager ? 'sync' : 'async'}
+          fetchPriority={eager ? 'high' : 'auto'}
           className="tc-media-img"
           style={{ objectPosition: `center ${headerPosition}%` }}
           initial={{ opacity: 0, y: 24 }}
