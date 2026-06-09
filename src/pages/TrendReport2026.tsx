@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FileText, AlertTriangle, Mail, LayoutGrid, DollarSign, Palette } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -38,25 +38,21 @@ async function loadSignedUrls(files: readonly string[]) {
   const toFetch = files.filter((f) => f && !signedUrlMap[f] && !inflightSigned.has(f));
   if (!toFetch.length) return;
   toFetch.forEach((f) => inflightSigned.add(f));
-  const results = await Promise.all(
-    toFetch.map(async (file) => {
-      try {
-        const { data, error } = await supabase.storage
-          .from(BUCKET_NAME)
-          .createSignedUrl(file, SIGNED_URL_TTL_SECONDS);
-        if (error || !data?.signedUrl) return null;
-        return [file, data.signedUrl] as const;
-      } catch {
-        return null;
-      }
-    }),
-  );
   let added = 0;
-  for (const entry of results) {
-    if (entry) {
-      signedUrlMap[entry[0]] = entry[1];
-      added++;
+  try {
+    const { data, error } = await supabase.storage
+      .from(BUCKET_NAME)
+      .createSignedUrls(toFetch as string[], SIGNED_URL_TTL_SECONDS);
+    if (!error && Array.isArray(data)) {
+      for (const row of data) {
+        if (row?.path && row.signedUrl) {
+          signedUrlMap[row.path] = row.signedUrl;
+          added++;
+        }
+      }
     }
+  } catch {
+    // swallow — fallbacks remain in place
   }
   toFetch.forEach((f) => inflightSigned.delete(f));
   if (added > 0) onSignedUrlsLoaded?.();
@@ -429,16 +425,6 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: (s: string) => void; headerPosition: number }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '400px 0px' });
-  useEffect(() => {
-    if (!inView) return;
-    const num = String(trend.num).padStart(2, '0');
-    loadSignedUrls([
-      `trend-${num}-header.jpg`,
-      `trend-${num}-detail-a.jpg`,
-      `trend-${num}-detail-b.jpg`,
-    ]);
-  }, [inView, trend.num]);
   return (
     <div className="trend-card" id={trend.id} ref={ref}>
       <div className="tc-media" onClick={() => onImage(trend.image)} style={{ cursor: 'pointer' }}>
@@ -557,12 +543,9 @@ const TrendReport2026 = () => {
     };
   }, []);
 
-  // Eagerly load above-the-fold assets: hero crossfade + Andrew Childers headshot.
+  // Eagerly batch-fetch every signed URL for the report in a single request.
   useEffect(() => {
-    loadSignedUrls([
-      'hero-1.jpg', 'hero-2.jpg', 'hero-3.jpg', 'hero-4.jpg',
-      'Andrew Childers.png',
-    ]);
+    loadSignedUrls(BUCKET_FILES);
   }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
