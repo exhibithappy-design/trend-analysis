@@ -171,3 +171,25 @@
   .contact-cta-action{justify-content:flex-start}
   .contact-btn{width:100%}
 }
+
+/* ============ Global typography pass (scoped) ============ */
+/* Eyebrow labels — bumped for legibility */
+.trend-report-2026 .sl{font-size:12px;letter-spacing:3px}
+.trend-report-2026 .cname{font-size:40px}
+.trend-report-2026 .nav-group-label{font-size:10px;letter-spacing:2.5px}
+
+/* Body copy — enforce minimum size 15px and consistent color per surface */
+.trend-report-2026 .ed{font-size:16px;color:var(--gray-body);line-height:1.85}
+.trend-report-2026 .ev-card p{font-size:15px;color:var(--gray-subtle);line-height:1.75}
+.trend-report-2026 .stx{font-size:15px;color:var(--gray-body);line-height:1.75}
+.trend-report-2026 .sk{font-size:12px;letter-spacing:2px}
+.trend-report-2026 .tbody p{font-size:15px;color:var(--gray-body);line-height:1.8}
+.trend-report-2026 .co p{font-size:15px;line-height:1.75}
+.trend-report-2026 .col{font-size:11px;letter-spacing:2.5px}
+.trend-report-2026 .hero-sub{font-size:17px;line-height:1.75}
+
+/* Mobile nav label override stays larger on mobile takeover */
+@media(max-width:1024px){
+  .trend-report-2026 .nav-group-label,
+  .sidebar .nav-group-label{font-size:11px;letter-spacing:2.5px}
+}
