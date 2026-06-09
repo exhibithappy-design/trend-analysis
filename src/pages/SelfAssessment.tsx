@@ -247,24 +247,32 @@ const SelfAssessment: React.FC = () => {
         <h2 className="st">Now let's put these trends to work for you</h2>
 
         <div className="as-teaser">
-          <div className="as-teaser-eyebrow">6-Question Diagnostic</div>
-          <p className="as-teaser-desc">
-            A focused read on where your exhibit program actually stands against the 12 trends in this report. Six questions, your honest answers, and a personalized response from our team on where to focus next.
-          </p>
-          <ul className="as-teaser-meta">
-            <li>Takes about 5 minutes</li>
-            <li>Your answers auto-save</li>
-            <li>Personalized response from our team</li>
-          </ul>
+          <div className="as-teaser-inner">
+            <div className="as-teaser-left">
+              <div className="as-teaser-eyebrow">6-Question Diagnostic</div>
+              <p className="as-teaser-desc">
+                A focused read on where your exhibit program actually stands against the 12 trends in this report. Six questions, your honest answers, and a personalized response from our team on where to focus next.
+              </p>
+              <ul className="as-teaser-meta">
+                <li>Takes about 5 minutes</li>
+                <li>Your answers auto-save</li>
+                <li>Personalized response from our team</li>
+              </ul>
+            </div>
 
-          {!gateOpen && (
-            <button type="button" className="as-cta" onClick={() => setGateOpen(true)}>
-              Start the Assessment
-            </button>
-          )}
+            <div className="as-teaser-right">
+              {!gateOpen && (
+                <>
+                  <p className="as-teaser-invite">Six questions. Your honest answers. A clearer path forward.</p>
+                  <button type="button" className="as-cta-hero" onClick={() => setGateOpen(true)}>
+                    Start the Assessment
+                  </button>
+                  <p className="as-teaser-sub">About 5 minutes. Your progress saves automatically.</p>
+                </>
+              )}
 
-          {gateOpen && (
-            <form className="as-gate" onSubmit={onSubmitGate} noValidate style={{ marginTop: 24 }}>
+              {gateOpen && (
+                <form className="as-gate" onSubmit={onSubmitGate} noValidate>
               <div className="as-gate-head">
                 <div className="as-gate-eyebrow">Quick intro</div>
                 <h3 className="as-gate-title">Tell us who's taking this</h3>
@@ -288,15 +296,17 @@ const SelfAssessment: React.FC = () => {
                 </div>
               </div>
               <div className="as-gate-actions">
-                <button type="submit" className="as-cta" disabled={submitting}>
+                <button type="submit" className="as-cta-hero" disabled={submitting}>
                   {submitting ? 'Loading...' : 'Begin Assessment'}
                 </button>
                 <button type="button" className="as-link" onClick={() => setGateOpen(false)} disabled={submitting}>
                   Cancel
                 </button>
               </div>
-            </form>
-          )}
+                </form>
+              )}
+            </div>
+          </div>
         </div>
       </section>
     );
