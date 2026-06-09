@@ -107,6 +107,10 @@ const SelfAssessment: React.FC = () => {
   const [gateErrors, setGateErrors] = useState<{ name?: string; email?: string; company?: string }>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [gateMode, setGateMode] = useState<'new' | 'returning'>('new');
+  const [resumeEmail, setResumeEmail] = useState('');
+  const [resumeError, setResumeError] = useState<string | undefined>();
+  const [resumeSent, setResumeSent] = useState(false);
   const [showResume, setShowResume] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
   const [savingPulse, setSavingPulse] = useState(false);
@@ -218,6 +222,22 @@ const SelfAssessment: React.FC = () => {
     }, 500);
   };
 
+  const onSubmitResume = (e: React.FormEvent) => {
+    e.preventDefault();
+    const email = resumeEmail.trim();
+    if (!email) { setResumeError('Required'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setResumeError('Enter a valid email'); return; }
+    setResumeError(undefined);
+    setResumeSent(true);
+  };
+
+  const switchGateMode = (mode: 'new' | 'returning') => {
+    setGateErrors({});
+    setResumeError(undefined);
+    setResumeSent(false);
+    setGateMode(mode);
+  };
+
   const onSubmitAssessment = () => {
     setStickyToast('Assessment submitted. We will be in touch shortly.');
   };
@@ -275,9 +295,20 @@ const SelfAssessment: React.FC = () => {
                 <form className="as-gate" onSubmit={onSubmitGate} noValidate>
               <div className="as-gate-head">
                 <div className="as-gate-eyebrow">Quick intro</div>
-                <h3 className="as-gate-title">Tell us who's taking this</h3>
-                <p className="as-gate-sub">So we can tailor your response and save your progress as you go.</p>
+                <h3 className="as-gate-title">{gateMode === 'new' ? 'Before we begin' : 'Welcome back'}</h3>
+                <p className="as-gate-sub">
+                  {gateMode === 'new'
+                    ? 'Your answers are saved to your profile and personalized to your program. This takes about 5 minutes.'
+                    : "Enter the email you used and we'll send your resume link."}
+                </p>
               </div>
+              <div className="as-mode-toggle" role="tablist" aria-label="Assessment mode">
+                <button type="button" role="tab" aria-selected={gateMode === 'new'} className={`as-mode-btn${gateMode === 'new' ? ' is-active' : ''}`} onClick={() => switchGateMode('new')}>New to this assessment</button>
+                <button type="button" role="tab" aria-selected={gateMode === 'returning'} className={`as-mode-btn${gateMode === 'returning' ? ' is-active' : ''}`} onClick={() => switchGateMode('returning')}>Already started</button>
+              </div>
+              <div className="as-mode-panel" key={gateMode}>
+              {gateMode === 'new' ? (
+                <>
               <div className="as-gate-grid">
                 <div className="as-field">
                   <label htmlFor="as-name">Name</label>
@@ -302,6 +333,36 @@ const SelfAssessment: React.FC = () => {
                 <button type="button" className="as-link" onClick={() => setGateOpen(false)} disabled={submitting}>
                   Cancel
                 </button>
+              </div>
+              <button type="button" className="as-mode-switch" onClick={() => switchGateMode('returning')}>
+                Already started? Resume your assessment
+              </button>
+                </>
+              ) : (
+                <>
+                  <div className="as-gate-grid as-gate-grid--single">
+                    <div className="as-field">
+                      <label htmlFor="as-resume-email">Email</label>
+                      <input id="as-resume-email" type="email" value={resumeEmail} onChange={(e) => { setResumeEmail(e.target.value); setResumeSent(false); }} aria-invalid={!!resumeError} maxLength={200} />
+                      {resumeError && <div className="as-err">{resumeError}</div>}
+                    </div>
+                  </div>
+                  <div className="as-gate-actions">
+                    <button type="button" className="as-cta-hero" onClick={(e) => onSubmitResume(e as unknown as React.FormEvent)}>
+                      Send My Link
+                    </button>
+                    <button type="button" className="as-link" onClick={() => setGateOpen(false)}>
+                      Cancel
+                    </button>
+                  </div>
+                  {resumeSent && (
+                    <div className="as-resume-confirm" role="status">Check your inbox, your link is on the way.</div>
+                  )}
+                  <button type="button" className="as-mode-switch" onClick={() => switchGateMode('new')}>
+                    New here? Start fresh
+                  </button>
+                </>
+              )}
               </div>
                 </form>
               )}
