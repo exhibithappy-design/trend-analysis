@@ -12,20 +12,20 @@ const BUCKET_NAME = 'trend-images';
 const SIGNED_URL_TTL_SECONDS = 31536000; // 1 year
 
 const BUCKET_FILES = [
-  'hero-1.jpg', 'hero-2.jpg', 'hero-3.jpg',
+  'Andrew Childers.png',
+  'hero-1.jpg', 'hero-2.jpg', 'hero-3.jpg', 'hero-4.jpg',
   'trend-01-header.jpg', 'trend-01-detail-a.jpg', 'trend-01-detail-b.jpg',
   'trend-02-header.jpg', 'trend-02-detail-a.jpg', 'trend-02-detail-b.jpg',
   'trend-03-header.jpg', 'trend-03-detail-a.jpg', 'trend-03-detail-b.jpg',
   'trend-04-header.jpg', 'trend-04-detail-a.jpg', 'trend-04-detail-b.jpg',
-  'trend-05-detail-a.jpg', 'trend-05-detail-b.jpg',
+  'trend-05-header.jpg', 'trend-05-detail-a.jpg', 'trend-05-detail-b.jpg',
   'trend-06-header.jpg', 'trend-06-detail-a.jpg', 'trend-06-detail-b.jpg',
-  // 'trend-07-header.jpg', // no uploaded header yet — uses Unsplash fallback
-  'trend-08-detail-a.jpg', 'trend-08-detail-b.jpg',
-  'trend-09-detail-a.jpg',
+  'trend-07-header.jpg', 'trend-07-detail-a.jpg', 'trend-07-detail-b.jpg',
+  'trend-08-header.jpg', 'trend-08-detail-a.jpg', 'trend-08-detail-b.jpg',
+  'trend-09-header.jpg', 'trend-09-detail-a.jpg', 'trend-09-detail-b.jpg',
   'trend-10-header.jpg', 'trend-10-detail-a.jpg', 'trend-10-detail-b.jpg',
   'trend-11-header.jpg', 'trend-11-detail-a.jpg', 'trend-11-detail-b.jpg',
-  'trend-12-header.jpg',
-  'Andrew Childers.png',
+  'trend-12-header.jpg', 'trend-12-detail-a.jpg', 'trend-12-detail-b.jpg',
 ] as const;
 
 // Mutable map populated at runtime with signed URLs from Supabase storage.
@@ -463,6 +463,7 @@ const makeHeroSlides = (): string[] => [
   bucketUrl('hero-1.jpg', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80'),
   bucketUrl('hero-2.jpg', 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80'),
   bucketUrl('hero-3.jpg', 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1920&auto=format&fit=crop&q=80'),
+  bucketUrl('hero-4.jpg', 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80'),
 ];
 
 const TrendReport2026 = () => {
