@@ -206,6 +206,7 @@ const SelfAssessment: React.FC = () => {
 
   const onSubmitGate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (gateMode === 'returning') { onSubmitResume(e); return; }
     const errs: typeof gateErrors = {};
     if (!draft.name.trim()) errs.name = 'Required';
     if (!draft.email.trim()) errs.email = 'Required';
