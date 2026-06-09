@@ -691,7 +691,7 @@ const TrendReport2026 = () => {
         </div>
       </nav>
 
-      <div className="main">
+      <div className="main trend-report-2026">
         <section className="hero" id="top">
           <div className="hero-img hero-slider" aria-hidden="true">
             {HERO_SLIDES.map((src, i) => (
