@@ -302,14 +302,14 @@
 .as-teaser .as-gate-grid{grid-template-columns:1fr}
 .as-teaser .as-link{color:var(--gray-body)}
 .as-teaser .as-link:hover{color:var(--dark-gray)}
-.as-mode-toggle{display:inline-flex;gap:4px;padding:4px;background:rgba(15,23,42,0.05);border:1px solid rgba(15,23,42,0.08);border-radius:10px;margin-bottom:18px}
-.as-mode-btn{background:transparent;border:none;font:inherit;font-size:12px;font-weight:600;letter-spacing:.3px;color:var(--gray-body);padding:8px 14px;border-radius:7px;cursor:pointer;transition:background .18s,color .18s}
+.as-mode-toggle{display:flex;justify-content:center;align-items:center;gap:18px;margin-bottom:16px}
+.as-mode-btn{background:transparent;border:none;font:inherit;font-size:11px;font-weight:500;color:var(--gray-body);padding:2px 0;cursor:pointer;transition:color .18s,border-color .18s;letter-spacing:.2px;border-bottom:1px solid transparent}
 .as-mode-btn:hover{color:var(--dark-gray)}
-.as-mode-btn.is-active{background:#fff;color:var(--dark-gray);box-shadow:0 1px 2px rgba(15,23,42,0.08)}
+.as-mode-btn.is-active{color:var(--dark-gray);border-bottom-color:var(--pink);font-weight:600}
 .as-mode-panel{animation:asModeIn .28s ease-out}
 @keyframes asModeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .as-gate-grid--single{grid-template-columns:1fr !important;max-width:380px}
-.as-mode-switch{display:block;background:transparent;border:none;font:inherit;font-size:12.5px;color:var(--gray-body);margin-top:14px;padding:4px 0;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(15,23,42,0.2);text-underline-offset:3px;transition:color .2s,text-decoration-color .2s}
+.as-mode-switch{display:block;background:transparent;border:none;font:inherit;font-size:12.5px;color:var(--gray-body);margin:14px auto 0;padding:4px 0;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(15,23,42,0.2);text-underline-offset:3px;transition:color .2s,text-decoration-color .2s;width:fit-content}
 .as-mode-switch:hover{color:var(--pink);text-decoration-color:var(--pink)}
 .as-resume-confirm{margin-top:14px;padding:12px 14px;background:rgba(255,0,105,0.08);border:1px solid rgba(255,0,105,0.18);border-radius:8px;font-size:13px;color:var(--dark-gray)}
 
