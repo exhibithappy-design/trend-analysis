@@ -813,9 +813,9 @@ const TrendReport2026 = () => {
             <div className="cname">Functional Component Trends</div>
           </div>
           <div className="section section--w" style={{ paddingTop: 40 }}>
-            {functional.map((t) => (
+            {functional.map((t, i) => (
               <FadeIn key={t.id}>
-                <TrendCard trend={t} onImage={setLightboxSrc} headerPosition={trendPositions[t.num] ?? 50} />
+                <TrendCard trend={t} onImage={setLightboxSrc} headerPosition={trendPositions[t.num] ?? 50} eager={i < 2} />
               </FadeIn>
             ))}
           </div>
