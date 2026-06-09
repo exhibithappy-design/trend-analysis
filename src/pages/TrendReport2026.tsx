@@ -549,7 +549,27 @@ const makeHeroSlides = (): string[] => [
 ];
 
 const TrendReport2026 = () => {
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
+  const openLightbox = useCallback((images: string[], index: number) => {
+    setLightbox({ images, index });
+  }, []);
+  const closeLightbox = useCallback(() => setLightbox(null), []);
+  const nextLightbox = useCallback(() => {
+    setLightbox((lb) => (lb ? { ...lb, index: (lb.index + 1) % lb.images.length } : lb));
+  }, []);
+  const prevLightbox = useCallback(() => {
+    setLightbox((lb) => (lb ? { ...lb, index: (lb.index - 1 + lb.images.length) % lb.images.length } : lb));
+  }, []);
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowRight') nextLightbox();
+      else if (e.key === 'ArrowLeft') prevLightbox();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightbox, closeLightbox, nextLightbox, prevLightbox]);
   const [heroIdx, setHeroIdx] = useState(0);
   const [signedVersion, setSignedVersion] = useState(0);
   const [trendPositions, setTrendPositions] = useState<Record<number, number>>({});
