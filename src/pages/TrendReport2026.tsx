@@ -631,35 +631,46 @@ const TrendReport2026 = () => {
 
   useEffect(() => {
     const sects = document.querySelectorAll('section[id], .trend-card[id]');
-    const links = document.querySelectorAll('.sidebar .nav-link, .pp-link');
     let lockedId: string | null = null;
 
     const setActive = (id: string) => {
-      links.forEach((l) =>
+      document.querySelectorAll('.sidebar .nav-link, .pp-link').forEach((l) =>
         l.classList.toggle('active', l.getAttribute('href') === '#' + id),
       );
     };
 
-    const onClick = (e: Event) => {
-      const a = e.currentTarget as HTMLAnchorElement;
+    // Delegated, capture-phase handler so it overrides default anchor jump,
+    // React onClick handlers, and any future-rendered hash links.
+    const onDocClick = (e: MouseEvent) => {
+      const path = e.composedPath() as HTMLElement[];
+      const a = path.find(
+        (el) => el && el.tagName === 'A' && (el as HTMLAnchorElement).getAttribute?.('href')?.startsWith('#'),
+      ) as HTMLAnchorElement | undefined;
+      if (!a) return;
       const href = a.getAttribute('href') || '';
-      if (!href.startsWith('#')) return;
       const id = href.slice(1);
+      if (!id) return;
       const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
+      e.stopPropagation();
       lockedId = id;
       setActive(id);
-      const rect = target.getBoundingClientRect();
-      const top =
-        rect.top + window.scrollY - (window.innerHeight - rect.height) / 2;
-      window.scrollTo({
-        top: Math.max(0, top),
-        behavior: 'smooth',
-      });
+      // Centered scroll: place the element's vertical midpoint at the
+      // viewport's vertical midpoint. Clamp for tall sections so the top
+      // of the element doesn't disappear above the fold.
+      const elTop = target.getBoundingClientRect().top + window.scrollY;
+      const elH = target.offsetHeight;
+      const winH = window.innerHeight;
+      let top = elTop + elH / 2 - winH / 2;
+      // For sections taller than the viewport, align near top with breathing room
+      if (elH > winH) top = elTop - winH * 0.12;
+      const max = document.documentElement.scrollHeight - winH;
+      top = Math.max(0, Math.min(top, max));
+      window.scrollTo({ top, behavior: 'smooth' });
       if (history.replaceState) history.replaceState(null, '', '#' + id);
     };
-    links.forEach((l) => l.addEventListener('click', onClick));
+    document.addEventListener('click', onDocClick, true);
 
     let scrollTimer: number | undefined;
     const onUserScroll = () => {
@@ -688,7 +699,7 @@ const TrendReport2026 = () => {
     sects.forEach((s) => obs.observe(s));
     return () => {
       obs.disconnect();
-      links.forEach((l) => l.removeEventListener('click', onClick));
+      document.removeEventListener('click', onDocClick, true);
       window.removeEventListener('wheel', onUserScroll);
       window.removeEventListener('touchmove', onUserScroll);
       window.removeEventListener('keydown', onUserScroll);
