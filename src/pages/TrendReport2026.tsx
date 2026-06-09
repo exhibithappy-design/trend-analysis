@@ -74,7 +74,7 @@ const makeTrends = (): Trend[] => [
     yoy: 'From "here\'s what it does" to "watch it solve your problem."',
     question: 'Is your booth designed to present, or to prove?',
     // Unsplash photo BKpOVik79lA — free to use
-    image: bucketUrl('trend-01-header.jpg', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-01-header.jpg', ''),
     imageAlt: 'People at a business exhibition interacting with a booth',
     cluster: 'Design',
     depth: [
@@ -83,8 +83,8 @@ const makeTrends = (): Trend[] => [
       'The shift reframes the booth as a working environment instead of a stage. Square footage moves out of seating banks and into solution stations where staff can actually demonstrate value against a buyer\'s real scenario.',
     ],
     gallery: [
-      { src: bucketUrl('trend-01-detail-a.jpg', 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=900&auto=format&fit=crop&q=80'), alt: 'Attendees engaging hands-on with a product demo station' },
-      { src: bucketUrl('trend-01-detail-b.jpg', 'https://images.unsplash.com/photo-1531058020387-3be344556be6?w=900&auto=format&fit=crop&q=80'), alt: 'Modern interactive product experience zone' },
+      { src: bucketUrl('trend-01-detail-a.jpg', ''), alt: 'Attendees engaging hands-on with a product demo station' },
+      { src: bucketUrl('trend-01-detail-b.jpg', ''), alt: 'Modern interactive product experience zone' },
     ],
   },
   {
@@ -100,7 +100,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From passive scanning to active participation that qualifies itself.',
     question: 'Is your booth game generating pipeline data or just foot traffic?',
-    image: bucketUrl('trend-02-header.jpg', 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-02-header.jpg', ''),
     imageAlt: 'Interactive gaming activation at a trade show',
     licenseNote: true,
     cluster: 'Design',
@@ -110,8 +110,8 @@ const makeTrends = (): Trend[] => [
       'The exhibitors winning with this are treating the game as infrastructure, not entertainment. It\'s designed alongside the CRM hand-off, the staff scripting, and the post-show sequence, not bolted on after the booth is built.',
     ],
     gallery: [
-      { src: bucketUrl('trend-02-detail-a.jpg', 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=900&auto=format&fit=crop&q=80'), alt: 'Bright interactive game activation at a conference' },
-      { src: bucketUrl('trend-02-detail-b.jpg', 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=900&auto=format&fit=crop&q=80'), alt: 'Attendees competing in a branded leaderboard challenge' },
+      { src: bucketUrl('trend-02-detail-a.jpg', ''), alt: 'Bright interactive game activation at a conference' },
+      { src: bucketUrl('trend-02-detail-b.jpg', ''), alt: 'Attendees competing in a branded leaderboard challenge' },
     ],
   },
   {
@@ -128,7 +128,7 @@ const makeTrends = (): Trend[] => [
     yoy: 'From branded walls to narrative worlds visitors move through.',
     question: 'Can you describe your booth concept in one sentence?',
     // Unsplash photo PwlsQn-RyRU — free to use
-    image: bucketUrl('trend-03-header.jpg', 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-03-header.jpg', ''),
     imageAlt: 'Immersive themed brand environment at a trade show',
     cluster: 'Flexibility',
     depth: [
@@ -137,8 +137,8 @@ const makeTrends = (): Trend[] => [
       'The discipline this requires is editorial more than architectural. The brands that win have a one-sentence concept they\'ll defend against every "could we also add…" — and the design holds together because of what was left out.',
     ],
     gallery: [
-      { src: bucketUrl('trend-03-detail-a.jpg', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&auto=format&fit=crop&q=80'), alt: 'Private meeting suite within a larger exhibit space' },
-      { src: bucketUrl('trend-03-detail-b.jpg', 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=900&auto=format&fit=crop&q=80'), alt: 'Tiered exhibit layout with public and private zones' },
+      { src: bucketUrl('trend-03-detail-a.jpg', ''), alt: 'Private meeting suite within a larger exhibit space' },
+      { src: bucketUrl('trend-03-detail-b.jpg', ''), alt: 'Tiered exhibit layout with public and private zones' },
     ],
   },
   {
@@ -154,7 +154,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: '2024 = game as crowd magnet. 2026 = game as live AI product demo.',
     question: 'Is your booth engagement just entertaining, or is it proof that your AI actually works?',
-    image: bucketUrl('trend-04-header.jpg', 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-04-header.jpg', ''),
     imageAlt: 'Interactive technology kiosk with digital human screen',
     licenseNote: true,
     cluster: 'Budget',
@@ -164,8 +164,8 @@ const makeTrends = (): Trend[] => [
       'The arc from 2024 to 2026 is clean: the game used to be the crowd magnet that pulled people toward the real demo. Now the game is the demo. The mechanic and the message have collapsed into the same moment.',
     ],
     gallery: [
-      { src: bucketUrl('trend-04-detail-a.jpg', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=900&auto=format&fit=crop&q=80'), alt: 'Interactive AI display engaging visitors' },
-      { src: bucketUrl('trend-04-detail-b.jpg', 'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=900&auto=format&fit=crop&q=80'), alt: 'Touchscreen kiosk with AI-driven interface' },
+      { src: bucketUrl('trend-04-detail-a.jpg', ''), alt: 'Interactive AI display engaging visitors' },
+      { src: bucketUrl('trend-04-detail-b.jpg', ''), alt: 'Touchscreen kiosk with AI-driven interface' },
     ],
   },
   {
@@ -181,7 +181,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From "build for the show" to "build for the circuit."',
     question: 'How many shows is your current booth designed to serve?',
-    image: bucketUrl('trend-05-header.jpg', 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-05-header.jpg', ''),
     imageAlt: 'Modular architectural exhibition structure',
     licenseNote: true,
     cluster: 'Budget',
@@ -191,8 +191,8 @@ const makeTrends = (): Trend[] => [
       'The strategic reframe is "build for the circuit," not "build for the show." Booth assets become a managed inventory with a multi-year ROI, not a one-time spend that ends in a dumpster after teardown.',
     ],
     gallery: [
-      { src: bucketUrl('trend-05-detail-a.jpg', 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=900&auto=format&fit=crop&q=80'), alt: 'Modular exhibition structure being assembled' },
-      { src: bucketUrl('trend-05-detail-b.jpg', 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&auto=format&fit=crop&q=80'), alt: 'Reconfigurable trade show stand components' },
+      { src: bucketUrl('trend-05-detail-a.jpg', ''), alt: 'Modular exhibition structure being assembled' },
+      { src: bucketUrl('trend-05-detail-b.jpg', ''), alt: 'Reconfigurable trade show stand components' },
     ],
   },
   {
@@ -209,7 +209,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From "how do we wow them?" to "how do we move them through our world?"',
     question: 'Does your booth have a journey, or just a footprint?',
-    image: bucketUrl('trend-06-header.jpg', 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-06-header.jpg', ''),
     imageAlt: 'Visitors moving through a curated branded exhibition environment with designed experiential zones',
     depth: [
       'The "immersive" bar has moved. Judges and attendees have stopped rewarding sensory density — more screens, more activations, more noise — and started rewarding booths that guide you somewhere. The best floors in 2025–26 read like attractions: you know exactly where you are in the narrative at every step.',
@@ -217,8 +217,8 @@ const makeTrends = (): Trend[] => [
       "The implication for exhibitors: stop designing square footage and start designing a visitor arc. A booth without a journey is just a room. The orchestration is the differentiator — not the LED wall, not the hanging sign, not the headcount.",
     ],
     gallery: [
-      { src: bucketUrl('trend-06-detail-a.jpg', 'https://images.unsplash.com/photo-1478147427649-052d98135194?w=900&auto=format&fit=crop&q=80'), alt: 'Architectural exhibition space with dramatic lighting guiding visitor flow' },
-      { src: bucketUrl('trend-06-detail-b.jpg', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&auto=format&fit=crop&q=80'), alt: 'People moving through a designed experiential environment' },
+      { src: bucketUrl('trend-06-detail-a.jpg', ''), alt: 'Architectural exhibition space with dramatic lighting guiding visitor flow' },
+      { src: bucketUrl('trend-06-detail-b.jpg', ''), alt: 'People moving through a designed experiential environment' },
     ],
   },
   {
@@ -234,7 +234,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From "here\'s a chair while we pitch you" to "here\'s an environment built for the conversation you actually want to have."',
     question: 'Is your booth designed to attract traffic, or to hold the right conversation long enough to matter?',
-    image: bucketUrl('trend-07-header.jpg', 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-07-header.jpg', ''),
     imageAlt: 'Hospitality-led trade show booth lounge with soft seating and ambient lighting',
     cluster: 'Design',
     depth: [
@@ -243,8 +243,8 @@ const makeTrends = (): Trend[] => [
       'In 2026, this extends beyond F&B. Scent branding, sound design, concierge-style staffing models, and domestic-grade finishes (wood, stone, soft lighting) are all part of the same strategy: make the visitor feel something before they hear anything. The booths winning on quality-of-conversation metrics aren\'t the loudest ones on the floor — they\'re the ones that feel like somewhere you\'d actually want to spend 20 minutes.',
     ],
     gallery: [
-      { src: bucketUrl('trend-07-detail-a.jpg', 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=900&auto=format&fit=crop&q=80'), alt: 'Warm, dimly lit hospitality lounge with comfortable seating' },
-      { src: bucketUrl('trend-07-detail-b.jpg', 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=900&auto=format&fit=crop&q=80'), alt: 'Soft materials and ambient accent lighting in a lounge-style booth environment' },
+      { src: bucketUrl('trend-07-detail-a.jpg', ''), alt: 'Warm, dimly lit hospitality lounge with comfortable seating' },
+      { src: bucketUrl('trend-07-detail-b.jpg', ''), alt: 'Soft materials and ambient accent lighting in a lounge-style booth environment' },
     ],
   },
   {
@@ -260,7 +260,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From one-week activation to always-on content engine.',
     question: 'What content does your booth produce before, during, and after the show?',
-    image: bucketUrl('trend-08-header.jpg', 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-08-header.jpg', ''),
     imageAlt: 'Branded content production setup at a live event',
     licenseNote: true,
     cluster: 'Flexibility',
@@ -270,8 +270,8 @@ const makeTrends = (): Trend[] => [
       'This reframes every design decision. The booth has to serve two audiences simultaneously — the visitor walking through it, and the much larger remote audience watching the campaign that the booth feeds.',
     ],
     gallery: [
-      { src: bucketUrl('trend-08-detail-a.jpg', 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&auto=format&fit=crop&q=80'), alt: 'Mezzanine level above an active exhibit floor' },
-      { src: bucketUrl('trend-08-detail-b.jpg', 'https://images.unsplash.com/photo-1486718448742-163732cd1544?w=900&auto=format&fit=crop&q=80'), alt: 'Two-story architectural structure with upper deck meeting area' },
+      { src: bucketUrl('trend-08-detail-a.jpg', ''), alt: 'Mezzanine level above an active exhibit floor' },
+      { src: bucketUrl('trend-08-detail-b.jpg', ''), alt: 'Two-story architectural structure with upper deck meeting area' },
     ],
   },
   {
@@ -288,7 +288,7 @@ const makeTrends = (): Trend[] => [
     yoy: 'From screens on a wall to walls as screens.',
     question: 'Is your visual technology flexible enough to serve every audience segment on the floor?',
     // Unsplash photo PwlsQn-RyRU — free to use
-    image: bucketUrl('trend-09-header.jpg', 'https://images.unsplash.com/photo-1564540583246-934409427776?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-09-header.jpg', ''),
     imageAlt: 'Floor-to-ceiling LED wall as exhibit architecture',
     cluster: 'Flexibility',
     depth: [
@@ -297,8 +297,8 @@ const makeTrends = (): Trend[] => [
       'The shift turns the booth into a programmable operating system. Content schedules replace graphic packages, and the cost of pivoting messaging mid-show drops to a file swap instead of a reprint.',
     ],
     gallery: [
-      { src: bucketUrl('trend-09-detail-a.jpg', 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&auto=format&fit=crop&q=80'), alt: 'Floor-to-ceiling LED wall serving as exhibit architecture' },
-      { src: bucketUrl('trend-09-detail-b.jpg', 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&auto=format&fit=crop&q=80'), alt: 'Programmable LED canopy and dynamic content zones' },
+      { src: bucketUrl('trend-09-detail-a.jpg', ''), alt: 'Floor-to-ceiling LED wall serving as exhibit architecture' },
+      { src: bucketUrl('trend-09-detail-b.jpg', ''), alt: 'Programmable LED canopy and dynamic content zones' },
     ],
   },
   {
@@ -314,7 +314,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From "giant screen" to "breathable media architecture."',
     question: 'Does your display technology open your booth or wall it off?',
-    image: bucketUrl('trend-10-header.jpg', 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-10-header.jpg', ''),
     imageAlt: 'Transparent LED panel forming an entry portal',
     licenseNote: true,
     cluster: 'Flexibility',
@@ -324,8 +324,8 @@ const makeTrends = (): Trend[] => [
       'The reframe is from "giant screen" to "breathable media architecture." The display becomes part of the booth\'s skeleton rather than a slab parked in front of it — closer to stage scenery than to a TV.',
     ],
     gallery: [
-      { src: bucketUrl('trend-10-detail-a.jpg', 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&auto=format&fit=crop&q=80'), alt: 'Branded coffee bar at an event activation' },
-      { src: bucketUrl('trend-10-detail-b.jpg', 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=900&auto=format&fit=crop&q=80'), alt: 'Specialty coffee preparation in a booth setting' },
+      { src: bucketUrl('trend-10-detail-a.jpg', ''), alt: 'Branded coffee bar at an event activation' },
+      { src: bucketUrl('trend-10-detail-b.jpg', ''), alt: 'Specialty coffee preparation in a booth setting' },
     ],
   },
   {
@@ -341,7 +341,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From "how do we express our brand?" to "what world would make people stop walking and want to stay?"',
     question: 'Does your booth make people forget they\'re on a show floor?',
-    image: bucketUrl('trend-11-header.jpg', 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-11-header.jpg', ''),
     imageAlt: 'Warm atmospheric interior of a bar or lodge with dramatic ambient lighting',
     cluster: 'Design',
     depth: [
@@ -352,8 +352,8 @@ const makeTrends = (): Trend[] => [
       "The 2026 signal: This isn't about theme for theme's sake. The brands winning with this approach understand that memorability is the metric — and an environment that displaces you spatially is the most reliable way to earn it.",
     ],
     gallery: [
-      { src: bucketUrl('trend-11-detail-a.jpg', 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=900&auto=format&fit=crop&q=80'), alt: 'Cozy warm lodge interior with dramatic lighting' },
-      { src: bucketUrl('trend-11-detail-b.jpg', 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=900&auto=format&fit=crop&q=80'), alt: 'Atmospheric bar interior with ambient lighting' },
+      { src: bucketUrl('trend-11-detail-a.jpg', ''), alt: 'Cozy warm lodge interior with dramatic lighting' },
+      { src: bucketUrl('trend-11-detail-b.jpg', ''), alt: 'Atmospheric bar interior with ambient lighting' },
     ],
   },
   {
@@ -369,7 +369,7 @@ const makeTrends = (): Trend[] => [
     ],
     yoy: 'From "impressive build" to "unforgettable premise."',
     question: 'What\'s the one idea your booth communicates, and does every element serve it?',
-    image: bucketUrl('trend-12-header.jpg', 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1200&auto=format&fit=crop&q=80'),
+    image: bucketUrl('trend-12-header.jpg', ''),
     imageAlt: 'Booth design unified by a single bold creative concept',
     licenseNote: true,
     cluster: 'Design',
@@ -379,8 +379,8 @@ const makeTrends = (): Trend[] => [
       'In 2026, judges and buyers alike reward conceptual clarity as much as visual ambition. An "impressive build" without a premise loses to a simpler booth with an unforgettable one — because the premise is what gets remembered after teardown.',
     ],
     gallery: [
-      { src: bucketUrl('trend-12-detail-a.jpg', 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900&auto=format&fit=crop&q=80'), alt: 'Bold, saturated color exhibit activation' },
-      { src: bucketUrl('trend-12-detail-b.jpg', 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=900&auto=format&fit=crop&q=80'), alt: 'Vivid color palette installation breaking category norms' },
+      { src: bucketUrl('trend-12-detail-a.jpg', ''), alt: 'Bold, saturated color exhibit activation' },
+      { src: bucketUrl('trend-12-detail-b.jpg', ''), alt: 'Vivid color palette installation breaking category norms' },
     ],
   },
 ];
@@ -460,10 +460,10 @@ const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: 
 };
 
 const makeHeroSlides = (): string[] => [
-  bucketUrl('hero-1.jpg', 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&auto=format&fit=crop&q=80'),
-  bucketUrl('hero-2.jpg', 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80'),
-  bucketUrl('hero-3.jpg', 'https://images.unsplash.com/photo-1559223607-a43c990c692c?w=1920&auto=format&fit=crop&q=80'),
-  bucketUrl('hero-4.jpg', 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1920&auto=format&fit=crop&q=80'),
+  bucketUrl('hero-1.jpg', ''),
+  bucketUrl('hero-2.jpg', ''),
+  bucketUrl('hero-3.jpg', ''),
+  bucketUrl('hero-4.jpg', ''),
 ];
 
 const TrendReport2026 = () => {
