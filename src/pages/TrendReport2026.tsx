@@ -456,12 +456,16 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   </motion.div>
 );
 
-const TrendCard = ({ trend, onImage, headerPosition, eager }: { trend: Trend; onImage: (s: string) => void; headerPosition: number; eager?: boolean }) => {
+const TrendCard = ({ trend, onImage, headerPosition, eager }: { trend: Trend; onImage: (images: string[], index: number) => void; headerPosition: number; eager?: boolean }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const trendImages = useMemo(
+    () => [trend.image, ...trend.gallery.map((g) => g.src)],
+    [trend.image, trend.gallery],
+  );
   return (
     <div className="trend-card" id={trend.id} ref={ref}>
-      <div className="tc-media" onClick={() => onImage(trend.image)} style={{ cursor: 'pointer' }}>
+      <div className="tc-media" onClick={() => onImage(trendImages, 0)} style={{ cursor: 'pointer' }}>
         <motion.img
           src={trend.image}
           alt={trend.imageAlt}
@@ -497,7 +501,7 @@ const TrendCard = ({ trend, onImage, headerPosition, eager }: { trend: Trend; on
             </div>
             <div className="tc-gallery">
               {trend.gallery.map((g, i) => (
-                <figure key={i} className="tc-gallery-item" onClick={() => onImage(g.src)}>
+                <figure key={i} className="tc-gallery-item" onClick={() => onImage(trendImages, i + 1)}>
                   <motion.img
                     src={g.src}
                     alt={g.alt}
@@ -545,7 +549,27 @@ const makeHeroSlides = (): string[] => [
 ];
 
 const TrendReport2026 = () => {
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
+  const openLightbox = useCallback((images: string[], index: number) => {
+    setLightbox({ images, index });
+  }, []);
+  const closeLightbox = useCallback(() => setLightbox(null), []);
+  const nextLightbox = useCallback(() => {
+    setLightbox((lb) => (lb ? { ...lb, index: (lb.index + 1) % lb.images.length } : lb));
+  }, []);
+  const prevLightbox = useCallback(() => {
+    setLightbox((lb) => (lb ? { ...lb, index: (lb.index - 1 + lb.images.length) % lb.images.length } : lb));
+  }, []);
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowRight') nextLightbox();
+      else if (e.key === 'ArrowLeft') prevLightbox();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightbox, closeLightbox, nextLightbox, prevLightbox]);
   const [heroIdx, setHeroIdx] = useState(0);
   const [signedVersion, setSignedVersion] = useState(0);
   const [trendPositions, setTrendPositions] = useState<Record<number, number>>({});
@@ -823,7 +847,7 @@ const TrendReport2026 = () => {
           <div className="section section--w" style={{ paddingTop: 40 }}>
             {functional.map((t, i) => (
               <FadeIn key={t.id}>
-                <TrendCard trend={t} onImage={setLightboxSrc} headerPosition={trendPositions[t.num] ?? 50} eager={i < 2} />
+                <TrendCard trend={t} onImage={openLightbox} headerPosition={trendPositions[t.num] ?? 50} eager={i < 2} />
               </FadeIn>
             ))}
           </div>
@@ -838,7 +862,7 @@ const TrendReport2026 = () => {
           <div className="section section--w" style={{ paddingTop: 40 }}>
             {design.map((t) => (
               <FadeIn key={t.id}>
-                <TrendCard trend={t} onImage={setLightboxSrc} headerPosition={trendPositions[t.num] ?? 50} />
+                <TrendCard trend={t} onImage={openLightbox} headerPosition={trendPositions[t.num] ?? 50} />
               </FadeIn>
             ))}
           </div>
@@ -893,12 +917,37 @@ const TrendReport2026 = () => {
         </button>
       </div>
 
-      {lightboxSrc && (
-        <div className="lightbox-overlay" onClick={() => setLightboxSrc(null)}>
-          <button className="lightbox-close" onClick={() => setLightboxSrc(null)}>
+      {lightbox && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">
             &times;
           </button>
-          <img src={lightboxSrc} alt="" onClick={(e) => e.stopPropagation()} />
+          {lightbox.images.length > 1 && (
+            <>
+              <button
+                className="lightbox-nav lightbox-prev"
+                onClick={(e) => { e.stopPropagation(); prevLightbox(); }}
+                aria-label="Previous image"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button
+                className="lightbox-nav lightbox-next"
+                onClick={(e) => { e.stopPropagation(); nextLightbox(); }}
+                aria-label="Next image"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 6l6 6-6 6"/></svg>
+              </button>
+              <div className="lightbox-counter" onClick={(e) => e.stopPropagation()}>
+                {lightbox.index + 1} / {lightbox.images.length}
+              </div>
+            </>
+          )}
+          <img
+            src={lightbox.images[lightbox.index]}
+            alt=""
+            onClick={(e) => e.stopPropagation()}
+          />
         </div>
       )}
     </>
