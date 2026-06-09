@@ -10,6 +10,8 @@ import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
 const BUCKET_NAME = 'trend-images';
 const SIGNED_URL_TTL_SECONDS = 31536000; // 1 year
+const SIGNED_URL_CACHE_KEY = 'trend-images-signed-urls-v1';
+const SIGNED_URL_CACHE_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 30 * 11; // ~11 months
 
 const BUCKET_FILES = [
   'Andrew Childers.png',
@@ -34,6 +36,35 @@ const signedUrlMap: Record<string, string> = {};
 const inflightSigned = new Set<string>();
 let onSignedUrlsLoaded: (() => void) | null = null;
 
+// Hydrate from localStorage cache so return visits skip the round trip.
+(function hydrateSignedUrlCache() {
+  if (typeof window === 'undefined') return;
+  try {
+    const raw = window.localStorage.getItem(SIGNED_URL_CACHE_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw) as { ts: number; urls: Record<string, string> };
+    if (!parsed?.ts || !parsed.urls) return;
+    if (Date.now() - parsed.ts > SIGNED_URL_CACHE_MAX_AGE_MS) return;
+    for (const [k, v] of Object.entries(parsed.urls)) {
+      if (typeof v === 'string' && v) signedUrlMap[k] = v;
+    }
+  } catch {
+    // ignore
+  }
+})();
+
+function persistSignedUrlCache() {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(
+      SIGNED_URL_CACHE_KEY,
+      JSON.stringify({ ts: Date.now(), urls: signedUrlMap }),
+    );
+  } catch {
+    // ignore quota errors
+  }
+}
+
 async function loadSignedUrls(files: readonly string[]) {
   const toFetch = files.filter((f) => f && !signedUrlMap[f] && !inflightSigned.has(f));
   if (!toFetch.length) return;
@@ -55,7 +86,10 @@ async function loadSignedUrls(files: readonly string[]) {
     // swallow — fallbacks remain in place
   }
   toFetch.forEach((f) => inflightSigned.delete(f));
-  if (added > 0) onSignedUrlsLoaded?.();
+  if (added > 0) {
+    persistSignedUrlCache();
+    onSignedUrlsLoaded?.();
+  }
 }
 
 function bucketUrl(filename: string, fallback: string): string {
@@ -422,7 +456,7 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   </motion.div>
 );
 
-const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: (s: string) => void; headerPosition: number }) => {
+const TrendCard = ({ trend, onImage, headerPosition, eager }: { trend: Trend; onImage: (s: string) => void; headerPosition: number; eager?: boolean }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   return (
@@ -431,8 +465,9 @@ const TrendCard = ({ trend, onImage, headerPosition }: { trend: Trend; onImage: 
         <motion.img
           src={trend.image}
           alt={trend.imageAlt}
-          loading="lazy"
-          decoding="async"
+          loading={eager ? 'eager' : 'lazy'}
+          decoding={eager ? 'sync' : 'async'}
+          fetchPriority={eager ? 'high' : 'auto'}
           className="tc-media-img"
           style={{ objectPosition: `center ${headerPosition}%` }}
           initial={{ opacity: 0, y: 24 }}
@@ -679,7 +714,15 @@ const TrendReport2026 = () => {
           <div className="hero-img hero-slider" aria-hidden="true">
             {HERO_SLIDES.map((src, i) => (
               <div key={src} className={`hero-slide ${i === heroIdx ? 'is-active' : ''}`}>
-                <img src={src} alt="" draggable={false} />
+                <img
+                  src={src}
+                  alt=""
+                  draggable={false}
+                  loading="eager"
+                  decoding={i === 0 ? 'sync' : 'async'}
+                  // @ts-expect-error fetchpriority is valid HTML, supported in React 18.3+
+                  fetchpriority={i === 0 ? 'high' : 'auto'}
+                />
               </div>
             ))}
           </div>
@@ -778,9 +821,9 @@ const TrendReport2026 = () => {
             <div className="cname">Functional Component Trends</div>
           </div>
           <div className="section section--w" style={{ paddingTop: 40 }}>
-            {functional.map((t) => (
+            {functional.map((t, i) => (
               <FadeIn key={t.id}>
-                <TrendCard trend={t} onImage={setLightboxSrc} headerPosition={trendPositions[t.num] ?? 50} />
+                <TrendCard trend={t} onImage={setLightboxSrc} headerPosition={trendPositions[t.num] ?? 50} eager={i < 2} />
               </FadeIn>
             ))}
           </div>
