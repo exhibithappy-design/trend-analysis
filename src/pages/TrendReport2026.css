@@ -274,7 +274,7 @@
 .as-save-confirm{font-size:14px;color:var(--dark-gray);background:var(--pink-soft);border:1px solid rgba(255,0,105,.18);border-radius:8px;padding:14px 18px;display:inline-block}
 
 /* Locked teaser — dark glassmorphic card */
-.as-teaser{position:relative;margin-top:8px;background:rgba(255,255,255,0.72);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid #e5e7eb;border-radius:18px;padding:0;overflow:hidden;isolation:isolate;box-shadow:0 30px 60px -20px rgba(15,23,42,0.22), 0 12px 24px -12px rgba(15,23,42,0.14), 0 2px 6px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.9)}
+.as-teaser{position:relative;margin-top:8px;background:rgba(255,255,255,0.72);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);border:1px solid rgba(0,0,0,0.06);border-radius:18px;padding:0;overflow:hidden;isolation:isolate;box-shadow:0 30px 60px -20px rgba(15,23,42,0.22), 0 12px 24px -12px rgba(15,23,42,0.14), 0 2px 6px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.9)}
 .as-teaser::before{content:'';position:absolute;top:-25%;right:-10%;width:65%;height:140%;background:radial-gradient(ellipse at center, rgba(255,0,105,0.22) 0%, rgba(255,0,105,0.08) 38%, transparent 70%);pointer-events:none;z-index:0;filter:blur(28px)}
 .as-teaser-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center;padding:52px 56px}
 .as-teaser-left{min-width:0}
