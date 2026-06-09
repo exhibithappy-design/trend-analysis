@@ -753,7 +753,7 @@ const TrendReport2026 = () => {
             <div className="tldr">
               <h3>What changed in 2026</h3>
               <p>
-                We spent 2026 embedded at the industry's most important trade shows so you don't have to. The exhibit floor has moved decisively from <strong>broadcast</strong> to <strong>experience</strong>. Static booths and scripted theaters are being replaced by outcome-driven engagement, AI-powered interactions, modular architecture, and design built around a single sharp idea. On the design side, comfort-first environments, unexpected spatial concepts, and deliberately orchestrated visitor journeys are the new defaults across categories that used to be uniformly white.
+                We spent 2026 embedded at the industry's most important trade shows so you don't have to. The exhibit floor has moved decisively from <strong>broadcast</strong> to <strong>experience</strong>. Static booths and scripted theaters are being replaced by outcome-driven engagement, AI-powered interactions, modular architecture, and design built around a single sharp idea. On the design side, comfort-first environments, unexpected spatial concepts, and deliberately orchestrated visitor journeys are the new defaults across categories that have run on the same proven playbook for years.
               </p>
               <ul>
                 <li><strong>Functional shift:</strong> attendee-led problem-solving, AI engagement that demonstrates and delights, modular systems built for multi-show ROI, gamified lead capture, and booths repurposed as year-round campaign assets.</li>
