@@ -687,11 +687,11 @@ const TrendReport2026 = () => {
             <div className="tldr">
               <h3>What changed in 2026</h3>
               <p>
-                We spent 2026 embedded at the industry's most important trade shows so you don't have to. The exhibit floor has moved decisively from <strong>broadcast</strong> to <strong>experience</strong>. Static booths, scripted theaters, and badge-scan KPIs are being replaced by self-directed demos, AI staff, modular architecture, and pipeline-quality measurement. On the design side, dark architectural finishes, double-decker builds, curved organic forms, and integrated F&B are the new defaults across categories that used to be uniformly white.
+                We spent 2026 embedded at the industry's most important trade shows so you don't have to. The exhibit floor has moved decisively from <strong>broadcast</strong> to <strong>experience</strong>. Static booths and scripted theaters are being replaced by outcome-driven engagement, AI-powered interactions, modular architecture, and design built around a single sharp idea. On the design side, comfort-first environments, unexpected spatial concepts, and deliberately orchestrated visitor journeys are the new defaults across categories that used to be uniformly white.
               </p>
               <ul>
-                <li><strong>Functional shift:</strong> attendee-led discovery, AI avatars, invite-only zones, modular systems, gamified lead capture, and pipeline metrics over scan counts.</li>
-                <li><strong>Design shift:</strong> dark finishes, double-decker minimums, "workspitality" lounges, F&B retention plays, curved architecture, and deliberate color non-conformity.</li>
+                <li><strong>Functional shift:</strong> attendee-led problem-solving, AI engagement that demonstrates and delights, modular systems built for multi-show ROI, gamified lead capture, and booths repurposed as year-round campaign assets.</li>
+                <li><strong>Design shift:</strong> comfort as a conversion strategy, unexpected environments that stop traffic, orchestrated journeys over spectacle, LED as structural architecture, and single-concept clarity over scenic complexity.</li>
                 <li><strong>Three pain-point clusters drive every trend below:</strong> Flexibility, Budget, and Design.</li>
               </ul>
             </div>
@@ -713,7 +713,7 @@ const TrendReport2026 = () => {
                 <div className="pp-label">Cluster 01</div>
                 <div className="pp-title">Flexibility</div>
                 <p className="pp-desc">
-                  Booths that adapt to multiple shows, footprints, and audience tiers — without rebuilding from scratch. Tiered access, multi-story layouts, hospitality hybrids, and F&B retention plays.
+                  Booths that adapt to multiple shows, footprints, and audience tiers — without rebuilding from scratch. Immersive storyworlds, booth-as-campaign-asset thinking, LED as a flexible operating system, and transparent LED as structural design.
                 </p>
                 <a className="pp-link" href="#t3">Trend 3</a>
                 <a className="pp-link" href="#t8">Trend 8</a>
@@ -725,21 +725,21 @@ const TrendReport2026 = () => {
                 <div className="pp-label">Cluster 02</div>
                 <div className="pp-title">Budget</div>
                 <p className="pp-desc">
-                  Where exhibit dollars are flowing in 2026: AI staffing that doesn't fatigue, modular systems that cut 30–50% per show, and pipeline measurement that justifies six- and seven-figure spends.
+                  Where exhibit dollars are flowing in 2026: AI engagement that scales without headcount, and modular systems that cut cost-per-show by 30–50%.
                 </p>
                 <a className="pp-link" href="#t4">Trend 4</a>
                 <a className="pp-link" href="#t5">Trend 5</a>
-                <a className="pp-link" href="#t6">Trend 6</a>
               </div>
               <div className="pp">
                 <div className="pp-icon"><Palette size={22} /></div>
                 <div className="pp-label">Cluster 03</div>
                 <div className="pp-title">Design</div>
                 <p className="pp-desc">
-                  How the floor looks and feels different: dark finishes, organic curves, deliberate color deviation, gamified play mechanics, and the death of the scripted product theater.
+                  How the floor looks and feels different: comfort zones that convert, unexpected environments that stop traffic, orchestrated visitor journeys, single-concept clarity, gamified engagement, and the death of the scripted product theater.
                 </p>
                 <a className="pp-link" href="#t1">Trend 1</a>
                 <a className="pp-link" href="#t2">Trend 2</a>
+                <a className="pp-link" href="#t6">Trend 6</a>
                 <a className="pp-link" href="#t7">Trend 7</a>
                 <a className="pp-link" href="#t11">Trend 11</a>
                 <a className="pp-link" href="#t12">Trend 12</a>
