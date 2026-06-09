@@ -10,6 +10,8 @@ import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 
 const BUCKET_NAME = 'trend-images';
 const SIGNED_URL_TTL_SECONDS = 31536000; // 1 year
+const SIGNED_URL_CACHE_KEY = 'trend-images-signed-urls-v1';
+const SIGNED_URL_CACHE_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 30 * 11; // ~11 months
 
 const BUCKET_FILES = [
   'Andrew Childers.png',
@@ -34,6 +36,35 @@ const signedUrlMap: Record<string, string> = {};
 const inflightSigned = new Set<string>();
 let onSignedUrlsLoaded: (() => void) | null = null;
 
+// Hydrate from localStorage cache so return visits skip the round trip.
+(function hydrateSignedUrlCache() {
+  if (typeof window === 'undefined') return;
+  try {
+    const raw = window.localStorage.getItem(SIGNED_URL_CACHE_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw) as { ts: number; urls: Record<string, string> };
+    if (!parsed?.ts || !parsed.urls) return;
+    if (Date.now() - parsed.ts > SIGNED_URL_CACHE_MAX_AGE_MS) return;
+    for (const [k, v] of Object.entries(parsed.urls)) {
+      if (typeof v === 'string' && v) signedUrlMap[k] = v;
+    }
+  } catch {
+    // ignore
+  }
+})();
+
+function persistSignedUrlCache() {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(
+      SIGNED_URL_CACHE_KEY,
+      JSON.stringify({ ts: Date.now(), urls: signedUrlMap }),
+    );
+  } catch {
+    // ignore quota errors
+  }
+}
+
 async function loadSignedUrls(files: readonly string[]) {
   const toFetch = files.filter((f) => f && !signedUrlMap[f] && !inflightSigned.has(f));
   if (!toFetch.length) return;
@@ -55,7 +86,10 @@ async function loadSignedUrls(files: readonly string[]) {
     // swallow — fallbacks remain in place
   }
   toFetch.forEach((f) => inflightSigned.delete(f));
-  if (added > 0) onSignedUrlsLoaded?.();
+  if (added > 0) {
+    persistSignedUrlCache();
+    onSignedUrlsLoaded?.();
+  }
 }
 
 function bucketUrl(filename: string, fallback: string): string {
