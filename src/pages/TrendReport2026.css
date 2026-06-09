@@ -309,7 +309,7 @@
 .as-mode-panel{animation:asModeIn .28s ease-out}
 @keyframes asModeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .as-gate-grid--single{grid-template-columns:1fr !important;max-width:380px}
-.as-mode-switch{display:block;background:transparent;border:none;font:inherit;font-size:12.5px;color:var(--gray-body);margin-top:14px;padding:4px 0;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(15,23,42,0.2);text-underline-offset:3px;transition:color .2s,text-decoration-color .2s}
+.as-mode-switch{display:block;background:transparent;border:none;font:inherit;font-size:12.5px;color:var(--gray-body);margin:14px auto 0;padding:4px 0;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(15,23,42,0.2);text-underline-offset:3px;transition:color .2s,text-decoration-color .2s;width:fit-content}
 .as-mode-switch:hover{color:var(--pink);text-decoration-color:var(--pink)}
 .as-resume-confirm{margin-top:14px;padding:12px 14px;background:rgba(255,0,105,0.08);border:1px solid rgba(255,0,105,0.18);border-radius:8px;font-size:13px;color:var(--dark-gray)}
 
