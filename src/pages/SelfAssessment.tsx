@@ -84,78 +84,114 @@ export const ASSESSMENT_QUESTIONS: Question[] = [
   },
 ];
 
-const STORAGE_KEY = 'trend2026-assessment-v1';
+const STORAGE_KEY = 'trend2026-assessment-v2';
 
 type AnswerState = Record<string, { choice?: 'A' | 'B' | 'C' | 'D'; unpack?: string }>;
-type Persisted = { answers: AnswerState; gate?: { name: string; email: string; company: string }; submittedAt?: number };
+type Identity = { name: string; email: string; company: string };
+type Persisted = { answers: AnswerState; identity?: Identity; unlockedAt?: number; submittedAt?: number };
+
+function formatRelative(ts: number | null): string {
+  if (!ts) return 'Not saved yet';
+  const diff = Math.max(0, Date.now() - ts);
+  if (diff < 5_000) return 'Answers saved just now';
+  if (diff < 60_000) return `Answers saved ${Math.floor(diff / 1000)}s ago`;
+  if (diff < 3_600_000) return `Answers saved ${Math.floor(diff / 60_000)}m ago`;
+  return `Answers saved ${Math.floor(diff / 3_600_000)}h ago`;
+}
 
 const SelfAssessment: React.FC = () => {
   const [answers, setAnswers] = useState<AnswerState>({});
+  const [identity, setIdentity] = useState<Identity | null>(null);
   const [gateOpen, setGateOpen] = useState(false);
-  const [gate, setGate] = useState({ name: '', email: '', company: '' });
+  const [draft, setDraft] = useState<Identity>({ name: '', email: '', company: '' });
   const [gateErrors, setGateErrors] = useState<{ name?: string; email?: string; company?: string }>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showResume, setShowResume] = useState(false);
-  const [saveOpen, setSaveOpen] = useState(false);
-  const [saveEmail, setSaveEmail] = useState('');
-  const [saveSent, setSaveSent] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
+  const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
+  const [savingPulse, setSavingPulse] = useState(false);
+  const [, setNow] = useState(0);
+  const [stickyToast, setStickyToast] = useState<string | null>(null);
   const hydrated = useRef(false);
   const debounceRef = useRef<number | undefined>(undefined);
 
-  // Hydrate from localStorage
+  // Hydrate
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw) as Persisted;
-        if (parsed?.answers) {
-          setAnswers(parsed.answers);
-          if (Object.values(parsed.answers).some((a) => a?.choice)) setShowResume(true);
+        if (parsed?.answers) setAnswers(parsed.answers);
+        if (parsed?.identity) {
+          setIdentity(parsed.identity);
+          setDraft(parsed.identity);
+          setSubmitted(true);
+          setShowResume(true);
         }
-        if (parsed?.gate) setGate(parsed.gate);
+        if (parsed?.submittedAt) setLastSavedAt(parsed.submittedAt);
       }
-    } catch {
-      // ignore
-    }
+    } catch {/* ignore */}
     hydrated.current = true;
-    if (showResume) {
-      const t = window.setTimeout(() => setShowResume(false), 4000);
-      return () => window.clearTimeout(t);
-    }
   }, []);
+
+  // Hide welcome-back after a few seconds
+  useEffect(() => {
+    if (!showResume) return;
+    const t = window.setTimeout(() => setShowResume(false), 5000);
+    return () => window.clearTimeout(t);
+  }, [showResume]);
+
+  // Toggle body class when sticky bar visible
+  useEffect(() => {
+    if (submitted) {
+      document.body.classList.add('has-as-sticky');
+      return () => document.body.classList.remove('has-as-sticky');
+    }
+  }, [submitted]);
 
   // Debounced auto-save
   useEffect(() => {
     if (!hydrated.current) return;
+    setSavingPulse(true);
     window.clearTimeout(debounceRef.current);
     debounceRef.current = window.setTimeout(() => {
       try {
-        const payload: Persisted = { answers, gate: submitted ? gate : undefined, submittedAt: submitted ? Date.now() : undefined };
+        const payload: Persisted = {
+          answers,
+          identity: identity ?? undefined,
+          submittedAt: identity ? Date.now() : undefined,
+        };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-      } catch {
-        // ignore
-      }
-    }, 350);
+        setLastSavedAt(Date.now());
+      } catch {/* ignore */}
+      setSavingPulse(false);
+    }, 400);
     return () => window.clearTimeout(debounceRef.current);
-  }, [answers, gate, submitted]);
+  }, [answers, identity]);
+
+  // Re-render relative timestamp every 15s
+  useEffect(() => {
+    if (!submitted) return;
+    const id = window.setInterval(() => setNow((n) => n + 1), 15_000);
+    return () => window.clearInterval(id);
+  }, [submitted]);
+
+  // Auto-dismiss sticky toast
+  useEffect(() => {
+    if (!stickyToast) return;
+    const t = window.setTimeout(() => setStickyToast(null), 3000);
+    return () => window.clearTimeout(t);
+  }, [stickyToast]);
 
   const answeredCount = useMemo(
     () => Object.values(answers).filter((a) => a?.choice).length,
     [answers],
   );
-  const canSubmit = answeredCount >= 1;
 
   const selectOption = (qid: string, key: 'A' | 'B' | 'C' | 'D') => {
     setAnswers((prev) => {
       const existing = prev[qid] ?? {};
-      // If clicking the same option, collapse it
-      if (existing.choice === key) {
-        const next = { ...prev };
-        next[qid] = { ...existing, choice: undefined };
-        return next;
-      }
+      if (existing.choice === key) return { ...prev, [qid]: { ...existing, choice: undefined } };
       return { ...prev, [qid]: { ...existing, choice: key } };
     });
   };
@@ -167,215 +203,189 @@ const SelfAssessment: React.FC = () => {
   const onSubmitGate = (e: React.FormEvent) => {
     e.preventDefault();
     const errs: typeof gateErrors = {};
-    if (!gate.name.trim()) errs.name = 'Required';
-    if (!gate.email.trim()) errs.email = 'Required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gate.email.trim())) errs.email = 'Enter a valid email';
-    if (!gate.company.trim()) errs.company = 'Required';
+    if (!draft.name.trim()) errs.name = 'Required';
+    if (!draft.email.trim()) errs.email = 'Required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email.trim())) errs.email = 'Enter a valid email';
+    if (!draft.company.trim()) errs.company = 'Required';
     setGateErrors(errs);
     if (Object.keys(errs).length) return;
     setSubmitting(true);
-    // No backend in this phase
     window.setTimeout(() => {
       setSubmitting(false);
+      setIdentity({ name: draft.name.trim(), email: draft.email.trim(), company: draft.company.trim() });
       setSubmitted(true);
-    }, 700);
+      setGateOpen(false);
+    }, 500);
   };
 
-  const onSubmitSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaveError(null);
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(saveEmail.trim())) {
-      setSaveError('Enter a valid email');
-      return;
-    }
-    setSaveSent(true);
+  const onSubmitAssessment = () => {
+    setStickyToast('Assessment submitted. We will be in touch shortly.');
   };
 
-  return (
-    <section className="section section--w assessment" id="assessment">
-      <div className="pr"></div>
-      <div className="sl">Self-Assessment</div>
-      <h2 className="st">Now let's put these trends to work for you</h2>
+  const onSaveForLater = () => {
+    if (!identity) return;
+    setStickyToast(`Link sent to ${identity.email}`);
+  };
 
-      {showResume && (
-        <div className="as-resume" role="status">
-          <span className="as-resume-dot" aria-hidden="true"></span>
-          Welcome back, your previous answers were restored.
-        </div>
-      )}
+  const onSignOut = () => {
+    try { localStorage.removeItem(STORAGE_KEY); } catch {/* ignore */}
+    setAnswers({});
+    setIdentity(null);
+    setDraft({ name: '', email: '', company: '' });
+    setGateOpen(false);
+    setSubmitted(false);
+    setLastSavedAt(null);
+    setStickyToast(null);
+  };
 
-      <p className="as-intro">
-        Six quick questions. Pick the option that best matches your reality, optionally unpack it in your own words, and we'll send you a personalized read on where to focus next.
-      </p>
+  // LOCKED STATE
+  if (!submitted) {
+    return (
+      <section className="section section--w assessment" id="assessment">
+        <div className="pr"></div>
+        <div className="sl">Self-Assessment</div>
+        <h2 className="st">Now let's put these trends to work for you</h2>
 
-      <div className="as-questions">
-        {ASSESSMENT_QUESTIONS.map((q) => {
-          const state = answers[q.id] ?? {};
-          return (
-            <div className="as-q" key={q.id} id={`as-${q.id}`}>
-              <div className="as-q-head">
-                <span className="as-q-num">Q{q.num}</span>
-                <h3 className="as-q-title">{q.prompt}</h3>
-              </div>
-              <div className="as-options" role="radiogroup" aria-label={q.prompt}>
-                {q.options.map((opt) => {
-                  const selected = state.choice === opt.key;
-                  return (
-                    <button
-                      type="button"
-                      key={opt.key}
-                      className={`as-opt${selected ? ' is-selected' : ''}`}
-                      onClick={() => selectOption(q.id, opt.key)}
-                      role="radio"
-                      aria-checked={selected}
-                    >
-                      <span className="as-opt-key">{opt.key}</span>
-                      <span className="as-opt-text">{opt.text}</span>
-                      <span className="as-opt-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 12l5 5L20 7" /></svg>
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-              {state.choice && (
-                <div className="as-unpack">
-                  <label className="as-unpack-label" htmlFor={`unpack-${q.id}`}>
-                    {q.unpackPrompt} <span className="as-optional">(optional)</span>
-                  </label>
-                  <textarea
-                    id={`unpack-${q.id}`}
-                    className="as-unpack-input"
-                    value={state.unpack ?? ''}
-                    onChange={(e) => setUnpack(q.id, e.target.value)}
-                    rows={3}
-                    placeholder="Type your answer..."
-                    maxLength={1000}
-                  />
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="as-footer">
-        <div className="as-progress">
-          <span className="as-progress-count">{answeredCount}/6 answered</span>
-        </div>
-        {!gateOpen && !submitted && (
-          <button
-            type="button"
-            className="as-cta"
-            disabled={!canSubmit}
-            onClick={() => setGateOpen(true)}
-          >
-            Get My Results
-          </button>
-        )}
-      </div>
-
-      {gateOpen && !submitted && (
-        <form className="as-gate" onSubmit={onSubmitGate} noValidate>
-          <div className="as-gate-head">
-            <div className="as-gate-eyebrow">Final step</div>
-            <h3 className="as-gate-title">Where should we send your results?</h3>
-            <p className="as-gate-sub">A short, tailored read based on what you selected above.</p>
-          </div>
-          <div className="as-gate-grid">
-            <div className="as-field">
-              <label htmlFor="as-name">Name</label>
-              <input
-                id="as-name"
-                type="text"
-                value={gate.name}
-                onChange={(e) => setGate((g) => ({ ...g, name: e.target.value }))}
-                aria-invalid={!!gateErrors.name}
-                maxLength={120}
-              />
-              {gateErrors.name && <div className="as-err">{gateErrors.name}</div>}
-            </div>
-            <div className="as-field">
-              <label htmlFor="as-email">Email</label>
-              <input
-                id="as-email"
-                type="email"
-                value={gate.email}
-                onChange={(e) => setGate((g) => ({ ...g, email: e.target.value }))}
-                aria-invalid={!!gateErrors.email}
-                maxLength={200}
-              />
-              {gateErrors.email && <div className="as-err">{gateErrors.email}</div>}
-            </div>
-            <div className="as-field">
-              <label htmlFor="as-company">Company</label>
-              <input
-                id="as-company"
-                type="text"
-                value={gate.company}
-                onChange={(e) => setGate((g) => ({ ...g, company: e.target.value }))}
-                aria-invalid={!!gateErrors.company}
-                maxLength={120}
-              />
-              {gateErrors.company && <div className="as-err">{gateErrors.company}</div>}
-            </div>
-          </div>
-          <div className="as-gate-actions">
-            <button type="submit" className="as-cta" disabled={submitting}>
-              {submitting ? 'Sending...' : 'Send my results'}
-            </button>
-            <button type="button" className="as-link" onClick={() => setGateOpen(false)} disabled={submitting}>
-              Back to questions
-            </button>
-          </div>
-        </form>
-      )}
-
-      {submitted && (
-        <div className="as-success" role="status" aria-live="polite">
-          <div className="as-success-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12l5 5L20 7" /></svg>
-          </div>
-          <div className="as-success-title">Thanks, {gate.name.split(' ')[0] || 'we got it'}.</div>
-          <p className="as-success-text">
-            Your personalized read is on the way to <strong>{gate.email}</strong>. In the meantime, feel free to keep exploring the report.
+        <div className="as-teaser">
+          <div className="as-teaser-eyebrow">6-Question Diagnostic</div>
+          <p className="as-teaser-desc">
+            A focused read on where your exhibit program actually stands against the 12 trends in this report. Six questions, your honest answers, and a personalized response from our team on where to focus next.
           </p>
-        </div>
-      )}
+          <ul className="as-teaser-meta">
+            <li>Takes about 5 minutes</li>
+            <li>Your answers auto-save</li>
+            <li>Personalized response from our team</li>
+          </ul>
 
-      {answeredCount >= 1 && !submitted && (
-        <div className="as-save">
-          {!saveOpen && !saveSent && (
-            <button type="button" className="as-link as-save-link" onClick={() => setSaveOpen(true)}>
-              Save my progress and finish later
+          {!gateOpen && (
+            <button type="button" className="as-cta" onClick={() => setGateOpen(true)}>
+              Start the Assessment
             </button>
           )}
-          {saveOpen && !saveSent && (
-            <form className="as-save-form" onSubmit={onSubmitSave} noValidate>
-              <label htmlFor="as-save-email">Email me a link to resume</label>
-              <div className="as-save-row">
-                <input
-                  id="as-save-email"
-                  type="email"
-                  value={saveEmail}
-                  onChange={(e) => setSaveEmail(e.target.value)}
-                  placeholder="you@company.com"
-                  maxLength={200}
-                />
-                <button type="submit" className="as-cta as-cta-sm">Send me a link</button>
-                <button type="button" className="as-link" onClick={() => setSaveOpen(false)}>Cancel</button>
+
+          {gateOpen && (
+            <form className="as-gate" onSubmit={onSubmitGate} noValidate style={{ marginTop: 24 }}>
+              <div className="as-gate-head">
+                <div className="as-gate-eyebrow">Quick intro</div>
+                <h3 className="as-gate-title">Tell us who's taking this</h3>
+                <p className="as-gate-sub">So we can tailor your response and save your progress as you go.</p>
               </div>
-              {saveError && <div className="as-err">{saveError}</div>}
+              <div className="as-gate-grid">
+                <div className="as-field">
+                  <label htmlFor="as-name">Name</label>
+                  <input id="as-name" type="text" value={draft.name} onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))} aria-invalid={!!gateErrors.name} maxLength={120} />
+                  {gateErrors.name && <div className="as-err">{gateErrors.name}</div>}
+                </div>
+                <div className="as-field">
+                  <label htmlFor="as-email">Email</label>
+                  <input id="as-email" type="email" value={draft.email} onChange={(e) => setDraft((d) => ({ ...d, email: e.target.value }))} aria-invalid={!!gateErrors.email} maxLength={200} />
+                  {gateErrors.email && <div className="as-err">{gateErrors.email}</div>}
+                </div>
+                <div className="as-field">
+                  <label htmlFor="as-company">Company Name</label>
+                  <input id="as-company" type="text" value={draft.company} onChange={(e) => setDraft((d) => ({ ...d, company: e.target.value }))} aria-invalid={!!gateErrors.company} maxLength={120} />
+                  {gateErrors.company && <div className="as-err">{gateErrors.company}</div>}
+                </div>
+              </div>
+              <div className="as-gate-actions">
+                <button type="submit" className="as-cta" disabled={submitting}>
+                  {submitting ? 'Loading...' : 'Begin Assessment'}
+                </button>
+                <button type="button" className="as-link" onClick={() => setGateOpen(false)} disabled={submitting}>
+                  Cancel
+                </button>
+              </div>
             </form>
           )}
-          {saveSent && (
-            <div className="as-save-confirm" role="status">
-              Check your inbox, your link is on the way.
-            </div>
-          )}
+        </div>
+      </section>
+    );
+  }
+
+  // UNLOCKED STATE
+  const firstName = identity?.name.split(' ')[0] || 'there';
+  return (
+    <>
+      <section className="section section--w assessment" id="assessment">
+        <div className="pr"></div>
+        <div className="sl">Self-Assessment</div>
+        <h2 className="st">Now let's put these trends to work for you</h2>
+
+        {showResume && (
+          <div className="as-resume" role="status">
+            <span className="as-resume-dot" aria-hidden="true"></span>
+            Welcome back, {firstName}.
+          </div>
+        )}
+
+        <p className="as-intro">
+          Six quick questions. Pick the option that best matches your reality, optionally unpack it in your own words, and we'll send you a personalized read on where to focus next.
+        </p>
+
+        <div className="as-questions">
+          {ASSESSMENT_QUESTIONS.map((q) => {
+            const state = answers[q.id] ?? {};
+            return (
+              <div className="as-q" key={q.id} id={`as-${q.id}`}>
+                <div className="as-q-head">
+                  <span className="as-q-num">Q{q.num}</span>
+                  <h3 className="as-q-title">{q.prompt}</h3>
+                </div>
+                <div className="as-options" role="radiogroup" aria-label={q.prompt}>
+                  {q.options.map((opt) => {
+                    const selected = state.choice === opt.key;
+                    return (
+                      <button type="button" key={opt.key} className={`as-opt${selected ? ' is-selected' : ''}`} onClick={() => selectOption(q.id, opt.key)} role="radio" aria-checked={selected}>
+                        <span className="as-opt-key">{opt.key}</span>
+                        <span className="as-opt-text">{opt.text}</span>
+                        <span className="as-opt-check" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 12l5 5L20 7" /></svg>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {state.choice && (
+                  <div className="as-unpack">
+                    <label className="as-unpack-label" htmlFor={`unpack-${q.id}`}>
+                      {q.unpackPrompt} <span className="as-optional">(optional)</span>
+                    </label>
+                    <textarea id={`unpack-${q.id}`} className="as-unpack-input" value={state.unpack ?? ''} onChange={(e) => setUnpack(q.id, e.target.value)} rows={3} placeholder="Type your answer..." maxLength={1000} />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="as-footer">
+          <div className="as-progress">
+            <span className="as-progress-count">{answeredCount}/6 answered</span>
+          </div>
+          <button type="button" className="as-cta" disabled={answeredCount < 1} onClick={onSubmitAssessment}>
+            Submit My Assessment
+          </button>
+        </div>
+      </section>
+
+      {identity && (
+        <div className="as-sticky" role="region" aria-label="Assessment session">
+          <div className="as-sticky-id">
+            <span className="as-sticky-name">{identity.name}</span>
+            <span className="as-sticky-co">{identity.company}</span>
+          </div>
+          <div className={`as-sticky-save${savingPulse ? ' is-saving' : ''}`} aria-live="polite">
+            <span className="as-sticky-save-dot" aria-hidden="true"></span>
+            <span>{savingPulse ? 'Saving...' : formatRelative(lastSavedAt)}</span>
+          </div>
+          <div className="as-sticky-actions">
+            <button type="button" className="as-sticky-btn" onClick={onSaveForLater}>Save for Later</button>
+            <button type="button" className="as-sticky-btn is-ghost" onClick={onSignOut}>Sign Out</button>
+          </div>
+          {stickyToast && <div className="as-sticky-toast" role="status">{stickyToast}</div>}
         </div>
       )}
-    </section>
+    </>
   );
 };
 
