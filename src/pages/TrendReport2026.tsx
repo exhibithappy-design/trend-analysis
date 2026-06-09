@@ -687,7 +687,7 @@ const TrendReport2026 = () => {
           </a>
         </div>
         <div className="sidebar-footer">
-          <span>&copy; 2026 Exhibit Happy</span>
+          <span>&copy; 2026 Exhibit Happy by Steelhead</span>
         </div>
       </nav>
 
