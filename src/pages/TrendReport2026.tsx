@@ -456,12 +456,16 @@ const FadeIn = ({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   </motion.div>
 );
 
-const TrendCard = ({ trend, onImage, headerPosition, eager }: { trend: Trend; onImage: (s: string) => void; headerPosition: number; eager?: boolean }) => {
+const TrendCard = ({ trend, onImage, headerPosition, eager }: { trend: Trend; onImage: (images: string[], index: number) => void; headerPosition: number; eager?: boolean }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const trendImages = useMemo(
+    () => [trend.image, ...trend.gallery.map((g) => g.src)],
+    [trend.image, trend.gallery],
+  );
   return (
     <div className="trend-card" id={trend.id} ref={ref}>
-      <div className="tc-media" onClick={() => onImage(trend.image)} style={{ cursor: 'pointer' }}>
+      <div className="tc-media" onClick={() => onImage(trendImages, 0)} style={{ cursor: 'pointer' }}>
         <motion.img
           src={trend.image}
           alt={trend.imageAlt}
@@ -497,7 +501,7 @@ const TrendCard = ({ trend, onImage, headerPosition, eager }: { trend: Trend; on
             </div>
             <div className="tc-gallery">
               {trend.gallery.map((g, i) => (
-                <figure key={i} className="tc-gallery-item" onClick={() => onImage(g.src)}>
+                <figure key={i} className="tc-gallery-item" onClick={() => onImage(trendImages, i + 1)}>
                   <motion.img
                     src={g.src}
                     alt={g.alt}
