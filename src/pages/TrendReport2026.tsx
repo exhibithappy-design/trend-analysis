@@ -895,6 +895,11 @@ const TrendReport2026 = () => {
           </div>
         </section>
 
+        {/* Self-Assessment */}
+        <FadeIn>
+          <SelfAssessment />
+        </FadeIn>
+
         {/* Contact CTA */}
         <section className="section section--b" id="contact">
           <div className="pr"></div>
