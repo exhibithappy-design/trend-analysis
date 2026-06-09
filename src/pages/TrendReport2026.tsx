@@ -631,7 +631,7 @@ const TrendReport2026 = () => {
 
   useEffect(() => {
     const sects = document.querySelectorAll('section[id], .trend-card[id]');
-    const links = document.querySelectorAll('.sidebar .nav-link');
+    const links = document.querySelectorAll('.sidebar .nav-link, .pp-link');
     let lockedId: string | null = null;
 
     const setActive = (id: string) => {
@@ -644,8 +644,20 @@ const TrendReport2026 = () => {
       const a = e.currentTarget as HTMLAnchorElement;
       const href = a.getAttribute('href') || '';
       if (!href.startsWith('#')) return;
-      lockedId = href.slice(1);
-      setActive(lockedId);
+      const id = href.slice(1);
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      lockedId = id;
+      setActive(id);
+      const rect = target.getBoundingClientRect();
+      const top =
+        rect.top + window.scrollY - (window.innerHeight - rect.height) / 2;
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: 'smooth',
+      });
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
     };
     links.forEach((l) => l.addEventListener('click', onClick));
 
