@@ -543,12 +543,9 @@ const TrendReport2026 = () => {
     };
   }, []);
 
-  // Eagerly load above-the-fold assets: hero crossfade + Andrew Childers headshot.
+  // Eagerly batch-fetch every signed URL for the report in a single request.
   useEffect(() => {
-    loadSignedUrls([
-      'hero-1.jpg', 'hero-2.jpg', 'hero-3.jpg', 'hero-4.jpg',
-      'Andrew Childers.png',
-    ]);
+    loadSignedUrls(BUCKET_FILES);
   }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
