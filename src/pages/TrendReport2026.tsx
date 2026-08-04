@@ -9,6 +9,9 @@ import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 import SelfAssessment from './SelfAssessment';
 
+// Feature flag: set to true to bring the Self-Assessment section (and its nav link) back.
+const SHOW_SELF_ASSESSMENT = false;
+
 const BUCKET_NAME = 'trend-images';
 const SIGNED_URL_TTL_SECONDS = 31536000; // 1 year
 const SIGNED_URL_CACHE_KEY = 'trend-images-signed-urls-v1';
@@ -748,9 +751,11 @@ const TrendReport2026 = () => {
             </a>
           ))}
           <div className="nav-group-label">Next</div>
-          <a href="#assessment" className="nav-link" onClick={closeMobile}>
-            <FileText size={13} className="nav-icon" /> Self-Assessment
-          </a>
+          {SHOW_SELF_ASSESSMENT && (
+            <a href="#assessment" className="nav-link" onClick={closeMobile}>
+              <FileText size={13} className="nav-icon" /> Self-Assessment
+            </a>
+          )}
           <a href="#contact" className="nav-link" onClick={closeMobile}>
             <Mail size={13} className="nav-icon" /> Get in Touch
           </a>
@@ -896,9 +901,11 @@ const TrendReport2026 = () => {
         </section>
 
         {/* Self-Assessment */}
-        <FadeIn>
-          <SelfAssessment />
-        </FadeIn>
+        {SHOW_SELF_ASSESSMENT && (
+          <FadeIn>
+            <SelfAssessment />
+          </FadeIn>
+        )}
 
         {/* Contact CTA */}
         <section className="section section--b" id="contact">
