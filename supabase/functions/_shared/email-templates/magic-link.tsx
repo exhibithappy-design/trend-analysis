@@ -45,26 +45,29 @@ export const MagicLinkEmail = ({
 
 export default MagicLinkEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
+const main = { backgroundColor: '#ffffff', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }
+const container = { padding: '32px 28px', maxWidth: '560px', border: '1px solid #ececee', borderRadius: '8px' }
 const h1 = {
-  fontSize: '22px',
+  fontSize: '24px',
+  letterSpacing: '-0.02em',
   fontWeight: 'bold' as const,
   color: '#000000',
   margin: '0 0 20px',
 }
 const text = {
-  fontSize: '14px',
-  color: '#55575d',
+  fontSize: '15px',
+  color: '#3f3f46',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
 const button = {
-  backgroundColor: '#000000',
+  backgroundColor: '#ff0069',
   color: '#ffffff',
-  fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
+  fontSize: '15px',
+  borderRadius: '4px',
+  padding: '13px 22px',
+  fontWeight: 'bold' as const,
+  display: 'inline-block',
   textDecoration: 'none',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
