@@ -922,14 +922,10 @@ const TrendReport2026 = () => {
                   <p>
                     You'll walk away with a clear point of view on which trends matter for your category, two or three concrete moves you can make on your next build, and a partner who's already executing this playbook for brands like yours.
                   </p>
-                  <div className="contact-person">
-                    <div className="contact-name">Andrew Childers</div>
-                    <div className="contact-title">Director of Business Development, Exhibit Happy by Steelhead</div>
-                  </div>
                 </div>
                 <div className="contact-cta-action">
                   <a href="#" className="contact-btn">
-                    Book a Time with Andrew
+                    Book a Time with Us
                   </a>
                 </div>
                 </div>
