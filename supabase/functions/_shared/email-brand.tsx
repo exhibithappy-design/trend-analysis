@@ -4,7 +4,7 @@ import * as React from 'npm:react@18.3.1'
 import { Font, Head, Img, Section } from 'npm:@react-email/components@0.0.22'
 
 export const LOGO_URL =
-  'https://trends.exhibithappy.design/__l5e/assets-v1/13c77081-f5e2-4cda-b9cb-d0ce326ef83b/exhibithappy-logo-email.png'
+  'https://trends.exhibithappy.design/__l5e/assets-v1/43de4a81-3e05-4e53-80d5-644980459878/exhibithappy-logo-email-v2.png'
 
 export const fontStack =
   "'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif"
