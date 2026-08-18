@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import './HIMSSReport.css';
 import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
-import teamPhoto from '@/assets/exhibit-happy-team-v2.png.asset.json';
+import teamPhoto from '@/assets/exhibit-happy-team-v3.png.asset.json';
 import SelfAssessment from './SelfAssessment';
 
 const BUCKET_NAME = 'trend-images';
