@@ -434,9 +434,14 @@ const SelfAssessment: React.FC = () => {
           <div className="as-progress">
             <span className="as-progress-count">{answeredCount}/6 answered</span>
           </div>
-          <button type="button" className="as-cta" disabled={answeredCount < 1} onClick={onSubmitAssessment}>
-            Submit My Assessment
-          </button>
+          <div className="as-footer-actions">
+            <button type="button" className="as-cta" disabled={answeredCount < 1} onClick={onSubmitAssessment}>
+              Submit My Assessment
+            </button>
+            <button type="button" className="as-cta as-cta--secondary" onClick={onSaveForLater}>
+              Save for Later
+            </button>
+          </div>
         </div>
       </section>
 
