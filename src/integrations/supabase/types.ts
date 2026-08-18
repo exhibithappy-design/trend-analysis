@@ -237,6 +237,48 @@ export type Database = {
         }
         Relationships: []
       }
+      assessment_submissions: {
+        Row: {
+          answered_count: number
+          answers: Json
+          company: string
+          completed: boolean
+          created_at: string
+          email: string
+          id: string
+          last_email_sent_at: string | null
+          name: string
+          submitted_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          answered_count?: number
+          answers?: Json
+          company: string
+          completed?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          last_email_sent_at?: string | null
+          name: string
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          answered_count?: number
+          answers?: Json
+          company?: string
+          completed?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          last_email_sent_at?: string | null
+          name?: string
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       authorized_emails: {
         Row: {
           email: string
