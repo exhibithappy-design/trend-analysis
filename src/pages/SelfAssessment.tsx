@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 type Option = { key: 'A' | 'B' | 'C' | 'D'; text: string };
 type Question = {
@@ -215,12 +216,17 @@ const SelfAssessment: React.FC = () => {
     setGateErrors(errs);
     if (Object.keys(errs).length) return;
     setSubmitting(true);
-    window.setTimeout(() => {
+    const nextIdentity: Identity = {
+      name: draft.name.trim(),
+      email: draft.email.trim(),
+      company: draft.company.trim(),
+    };
+    void sendAssessment(nextIdentity, 'start').finally(() => {
       setSubmitting(false);
-      setIdentity({ name: draft.name.trim(), email: draft.email.trim(), company: draft.company.trim() });
+      setIdentity(nextIdentity);
       setSubmitted(true);
       setGateOpen(false);
-    }, 500);
+    });
   };
 
   const onSubmitResume = (e: React.FormEvent) => {
@@ -239,13 +245,24 @@ const SelfAssessment: React.FC = () => {
     setGateMode(mode);
   };
 
+  const sendAssessment = async (who: Identity, action: 'start' | 'save' | 'submit') => {
+    try {
+      await supabase.functions.invoke('assessment-submit', {
+        body: { ...who, action, answers },
+      });
+    } catch {/* email is best effort */}
+  };
+
   const onSubmitAssessment = () => {
-    setStickyToast('Assessment submitted. We will be in touch shortly.');
+    if (!identity) return;
+    setStickyToast('Assessment submitted. Check your inbox for your results link.');
+    void sendAssessment(identity, 'submit');
   };
 
   const onSaveForLater = () => {
     if (!identity) return;
     setStickyToast(`Link sent to ${identity.email}`);
+    void sendAssessment(identity, 'save');
   };
 
   const onSignOut = () => {
