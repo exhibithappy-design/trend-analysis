@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import './HIMSSReport.css';
 import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
+import teamPhoto from '@/assets/exhibit-happy-team.jpg.asset.json';
 import SelfAssessment from './SelfAssessment';
 
 const BUCKET_NAME = 'trend-images';
@@ -15,7 +16,6 @@ const SIGNED_URL_CACHE_KEY = 'trend-images-signed-urls-v1';
 const SIGNED_URL_CACHE_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 30 * 11; // ~11 months
 
 const BUCKET_FILES = [
-  'Andrew Childers.png',
   'hero-1.jpg', 'hero-2.jpg', 'hero-3.jpg', 'hero-4.jpg',
   'trend-01-header.jpg', 'trend-01-detail-a.jpg', 'trend-01-detail-b.jpg',
   'trend-02-header.jpg', 'trend-02-detail-a.jpg', 'trend-02-detail-b.jpg',
@@ -910,8 +910,9 @@ const TrendReport2026 = () => {
               <div className="contact-cta-inner">
                 <div className="contact-cta-photo">
                   <img
-                    src={bucketUrl('Andrew Childers.png', '')}
-                    alt="Andrew Childers"
+                    src={teamPhoto.url}
+                    alt="Exhibit Happy team: Andrew, Omar and Sarah"
+                    loading="lazy"
                   />
                 </div>
                 <div className="contact-cta-body">
