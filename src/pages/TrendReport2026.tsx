@@ -925,7 +925,12 @@ const TrendReport2026 = () => {
                   </p>
                 </div>
                 <div className="contact-cta-action">
-                  <a href="#" className="contact-btn">
+                  <a
+                    href="https://na2.hubs.ly/H07hSDX0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-btn"
+                  >
                     Book a Time with Us
                   </a>
                 </div>
