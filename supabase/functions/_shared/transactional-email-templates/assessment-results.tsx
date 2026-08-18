@@ -11,6 +11,7 @@ import {
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
+import { BrandHead, BrandHeader, fontStack } from '../email-brand.tsx'
 import type { TemplateEntry } from './registry.ts'
 
 interface Props {
@@ -20,10 +21,11 @@ interface Props {
 
 const Email = ({ name, resultsUrl = 'https://trends.exhibithappy.design/#assessment' }: Props) => (
   <Html lang="en" dir="ltr">
-    <Head />
+    <BrandHead />
     <Preview>Your exhibit program self-assessment is in</Preview>
     <Body style={main}>
       <Container style={container}>
+        <BrandHeader />
         <div style={eyebrow}>2026 EXHIBIT TREND REPORT</div>
         <Heading style={h1}>View your assessment results</Heading>
         <Text style={text}>
@@ -50,7 +52,7 @@ export const template = {
   previewData: { name: 'Jane' },
 } satisfies TemplateEntry
 
-const main = { backgroundColor: '#ffffff', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }
+const main = { backgroundColor: '#ffffff', fontFamily: fontStack }
 const container = { padding: '32px 28px', maxWidth: '560px', border: '1px solid #ececee', borderRadius: '8px' }
 const eyebrow = {
   fontSize: '11px',
