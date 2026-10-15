@@ -8,12 +8,19 @@ import './HIMSSReport.css';
 import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 import teamPhoto from '@/assets/exhibit-happy-team-v3.png.asset.json';
-import t13Header from '@/assets/trend-13-header.jpg';
-import t13A from '@/assets/trend-13-detail-a.jpg';
-import t13B from '@/assets/trend-13-detail-b.jpg';
-import t14Header from '@/assets/trend-14-header.jpg';
-import t14A from '@/assets/trend-14-detail-a.jpg';
-import t14B from '@/assets/trend-14-detail-b.jpg';
+// Real G2E 2026 photos (The Venetian Expo), sourced from G3 Newswire and QCI's own posts.
+import g2eMerkur from '@/assets/g2e-merkur-floor.jpg.asset.json';
+import g2eQciDemo from '@/assets/g2e-qci-demo.jpg.asset.json';
+import g2eNovomatic from '@/assets/g2e-novomatic-booth.jpg.asset.json';
+import g2eQciRvLounge from '@/assets/g2e-qci-rv-lounge.jpg.asset.json';
+import g2eQciRv from '@/assets/g2e-qci-rv.jpg.asset.json';
+import g2eQciTeam from '@/assets/g2e-qci-team-lounge.jpg.asset.json';
+const t13Header = g2eMerkur.url;
+const t13A = g2eQciDemo.url;
+const t13B = g2eNovomatic.url;
+const t14Header = g2eQciRvLounge.url;
+const t14A = g2eQciRv.url;
+const t14B = g2eQciTeam.url;
 import SelfAssessment from './SelfAssessment';
 
 const BUCKET_NAME = 'trend-images';
