@@ -8,12 +8,19 @@ import './HIMSSReport.css';
 import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 import teamPhoto from '@/assets/exhibit-happy-team-v3.png.asset.json';
-import t13Header from '@/assets/trend-13-header.jpg';
-import t13A from '@/assets/trend-13-detail-a.jpg';
-import t13B from '@/assets/trend-13-detail-b.jpg';
-import t14Header from '@/assets/trend-14-header.jpg';
-import t14A from '@/assets/trend-14-detail-a.jpg';
-import t14B from '@/assets/trend-14-detail-b.jpg';
+// Real G2E 2026 photos (The Venetian Expo), sourced from G3 Newswire and QCI's own posts.
+import g2eMerkur from '@/assets/g2e-merkur-floor.jpg.asset.json';
+import g2eQciDemo from '@/assets/g2e-qci-demo.jpg.asset.json';
+import g2eNovomatic from '@/assets/g2e-novomatic-booth.jpg.asset.json';
+import g2eQciRvLounge from '@/assets/g2e-qci-rv-lounge.jpg.asset.json';
+import g2eQciRv from '@/assets/g2e-qci-rv.jpg.asset.json';
+import g2eQciTeam from '@/assets/g2e-qci-team-lounge.jpg.asset.json';
+const t13Header = g2eMerkur.url;
+const t13A = g2eQciDemo.url;
+const t13B = g2eNovomatic.url;
+const t14Header = g2eQciRvLounge.url;
+const t14A = g2eQciRv.url;
+const t14B = g2eQciTeam.url;
 import SelfAssessment from './SelfAssessment';
 
 const BUCKET_NAME = 'trend-images';
@@ -453,7 +460,7 @@ const makeTrends = (): Trend[] => [
   {
     id: 't13',
     num: 13,
-    category: 'Functional Component',
+    category: 'Design Feature',
     title: 'The Two-Speed Floor Plan',
     shortTitle: 'Two-Speed Floor Plan',
     bullets: [
@@ -464,7 +471,7 @@ const makeTrends = (): Trend[] => [
     yoy: 'From one booth doing everything to two speeds doing their jobs.',
     question: 'Where in your booth does a serious buyer go when the crowd shows up?',
     image: t13Header,
-    imageAlt: 'Trade show exhibit with an open demo zone in front and glass-walled meeting suites above',
+    imageAlt: 'Packed open product floor at the Merkur booth, G2E 2026',
     cluster: 'Flexibility',
     depth: [
       'Most mid-to-large booths fail the same way: casual traffic floods the space and the people with real buying intent have nowhere to go. The two-speed floor plan solves this by designing two experiences on purpose, an open discovery perimeter that rewards browsing, and a protected commercial core where conversations happen on a schedule.',
@@ -472,14 +479,14 @@ const makeTrends = (): Trend[] => [
       'The design work is in the hand-off. Staff roles, routing cues, and booking tools all need to move a qualified visitor from the fast lane to the slow lane without friction. Done well, the open zone becomes the filter and the private zone becomes where pipeline is actually built.',
     ],
     gallery: [
-      { src: t13A, alt: 'Open product discovery zone with attendees browsing interactive demo stations' },
-      { src: t13B, alt: 'Private meeting room inside an exhibit with the show floor visible outside' },
+      { src: t13A, alt: 'Live QCI Resorts demo kiosk at QCI\'s main exhibit, G2E 2026' },
+      { src: t13B, alt: 'Novomatic\'s large open exhibit at G2E 2026' },
     ],
   },
   {
     id: 't14',
     num: 14,
-    category: 'Functional Component',
+    category: 'Design Feature',
     title: 'Hospitality as a Deployable Asset',
     shortTitle: 'Deployable Hospitality',
     bullets: [
@@ -490,7 +497,7 @@ const makeTrends = (): Trend[] => [
     yoy: 'From disposable lounges to hospitality you own and redeploy.',
     question: 'Is your hospitality space a line item you rebuild every show, or an asset you own?',
     image: t14Header,
-    imageAlt: 'Branded hospitality RV with lounge seating outside a convention center at dusk',
+    imageAlt: 'QCI\'s branded RV and lounge seating on the G2E 2026 show floor',
     cluster: 'Budget',
     depth: [
       'Hospitality has proven its value on the floor. The new question is what it costs to do it again. Exhibitors are treating meeting and VIP space as a deployable asset, a branded RV, a modular suite, or a plug-in lounge kit that ships from show to show instead of being designed and fabricated from scratch every time.',
@@ -498,8 +505,8 @@ const makeTrends = (): Trend[] => [
       'The budget logic changes too. Hospitality moves from a disposable show expense to a capital asset with a useful life, so it gets planned at the program level, not the event level. For 2027 planning, it\'s worth asking which parts of your hospitality you rebuild out of habit, and which you could own.',
     ],
     gallery: [
-      { src: t14A, alt: 'Interior of a modular hospitality suite with lounge seating and a coffee bar' },
-      { src: t14B, alt: 'Crew assembling reusable modular lounge walls and furniture from road cases' },
+      { src: t14A, alt: 'QCI Resorts Experience RV with lounge area at Booth #2644, G2E 2026' },
+      { src: t14B, alt: 'QCI leadership in the RV lounge at G2E 2026' },
     ],
   },
 ];
