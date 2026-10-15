@@ -8,19 +8,19 @@ import './HIMSSReport.css';
 import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 import teamPhoto from '@/assets/exhibit-happy-team-v3.png.asset.json';
-// Real G2E 2026 photos (The Venetian Expo), sourced from G3 Newswire and QCI's own posts.
+// Real show-floor photos: G2E 2026 (The Venetian Expo) for Trend 13, 2026 circuit hospitality builds for Trend 14.
 import g2eMerkur from '@/assets/g2e-merkur-floor.jpg.asset.json';
-import g2eQciDemo from '@/assets/g2e-qci-demo.jpg.asset.json';
+import g2eLightWonder from '@/assets/g2e-light-wonder-entrance.jpg.asset.json';
 import g2eNovomatic from '@/assets/g2e-novomatic-booth.jpg.asset.json';
-import g2eQciRvLounge from '@/assets/g2e-qci-rv-lounge.jpg.asset.json';
-import g2eQciRv from '@/assets/g2e-qci-rv.jpg.asset.json';
-import g2eQciTeam from '@/assets/g2e-qci-team-lounge.jpg.asset.json';
+import hospSnowflake from '@/assets/hosp-snowflake-pods.jpg.asset.json';
+import hospChg from '@/assets/hosp-chg-lounge.jpg.asset.json';
+import hospTwilio from '@/assets/hosp-twilio-cafe.jpg.asset.json';
 const t13Header = g2eMerkur.url;
-const t13A = g2eQciDemo.url;
+const t13A = g2eLightWonder.url;
 const t13B = g2eNovomatic.url;
-const t14Header = g2eQciRvLounge.url;
-const t14A = g2eQciRv.url;
-const t14B = g2eQciTeam.url;
+const t14Header = hospSnowflake.url;
+const t14A = hospChg.url;
+const t14B = hospTwilio.url;
 import SelfAssessment from './SelfAssessment';
 
 const BUCKET_NAME = 'trend-images';
@@ -465,7 +465,7 @@ const makeTrends = (): Trend[] => [
     shortTitle: 'Two-Speed Floor Plan',
     bullets: [
       'Open, high-energy discovery zones up front; protected, scheduled commercial space behind them',
-      'G2E 2026 at The Venetian Expo made the split explicit, with exhibitors like QCI pairing a main exhibit with a separate RV for focused conversations',
+      'G2E 2026 at The Venetian Expo made the split explicit, with giants like Light & Wonder and Aristocrat pairing open, high-energy floors with reception-gated demo and meeting zones',
       'One footprint, two jobs: attract the floor without letting the floor swallow the deals',
     ],
     yoy: 'From one booth doing everything to two speeds doing their jobs.',
@@ -475,11 +475,11 @@ const makeTrends = (): Trend[] => [
     cluster: 'Flexibility',
     depth: [
       'Most mid-to-large booths fail the same way: casual traffic floods the space and the people with real buying intent have nowhere to go. The two-speed floor plan solves this by designing two experiences on purpose, an open discovery perimeter that rewards browsing, and a protected commercial core where conversations happen on a schedule.',
-      'G2E 2026 at The Venetian Expo was the clearest proof point this year. Exhibitors paired high-energy product floors with separate, controlled spaces for buyer meetings; QCI ran its main exhibit alongside a dedicated RV, so live demos and commercial conversations never competed for the same square footage.',
+      'G2E 2026 at The Venetian Expo was the clearest proof point this year. Light & Wonder framed its 120 by 150 foot space with open screening that let the aisle see the energy inside while keeping the interior focused. Aristocrat routed booked demos through a reception check-in before visitors were walked into private sessions, so live discovery and commercial conversations never competed for the same square footage.',
       'The design work is in the hand-off. Staff roles, routing cues, and booking tools all need to move a qualified visitor from the fast lane to the slow lane without friction. Done well, the open zone becomes the filter and the private zone becomes where pipeline is actually built.',
     ],
     gallery: [
-      { src: t13A, alt: 'Live QCI Resorts demo kiosk at QCI\'s main exhibit, G2E 2026' },
+      { src: t13A, alt: 'Light & Wonder\'s open-framed entrance and crowded interior, G2E 2026' },
       { src: t13B, alt: 'Novomatic\'s large open exhibit at G2E 2026' },
     ],
   },
@@ -490,23 +490,23 @@ const makeTrends = (): Trend[] => [
     title: 'Hospitality as a Deployable Asset',
     shortTitle: 'Deployable Hospitality',
     bullets: [
-      'Hospitality is moving from one-off custom build to a reusable, transportable unit: RVs, modular suites, plug-in lounges',
+      'Hospitality is moving from one-off custom build to a reusable, transportable unit: modular meeting pods, lounge kits, branded cafe counters',
       'Built once, deployed across the circuit, so the cost amortizes over every show instead of resetting each time',
       'The VIP experience stays consistent from show to show, and the budget finally reflects it',
     ],
     yoy: 'From disposable lounges to hospitality you own and redeploy.',
     question: 'Is your hospitality space a line item you rebuild every show, or an asset you own?',
     image: t14Header,
-    imageAlt: 'QCI\'s branded RV and lounge seating on the G2E 2026 show floor',
+    imageAlt: 'Snowflake\'s modular A-frame meeting pods on the 2026 show floor',
     cluster: 'Budget',
     depth: [
-      'Hospitality has proven its value on the floor. The new question is what it costs to do it again. Exhibitors are treating meeting and VIP space as a deployable asset, a branded RV, a modular suite, or a plug-in lounge kit that ships from show to show instead of being designed and fabricated from scratch every time.',
-      'G2E 2026 showed the model working. QCI\'s RV gave it a controlled, premium environment that lived outside the constraints of the main footprint, and that same unit can travel the rest of the gaming circuit. Every redeployment lowers the cost per conversation.',
+      'Hospitality has proven its value on the floor. The new question is what it costs to do it again. Exhibitors are treating meeting and VIP space as a deployable asset, a set of modular meeting pods, a lounge kit, or a branded cafe counter that ships from show to show instead of being designed and fabricated from scratch every time.',
+      'The 2026 circuit showed the model working. Snowflake\'s A-frame meeting pods, CHG Healthcare\'s planted lounge, and the Twilio Cafe are all self-contained units that drop into different footprints with the experience intact. At G2E, exhibitors leaned the same way, booking dedicated suites and meeting zones for the conversations that actually close deals. Every redeployment lowers the cost per conversation.',
       'The budget logic changes too. Hospitality moves from a disposable show expense to a capital asset with a useful life, so it gets planned at the program level, not the event level. For 2027 planning, it\'s worth asking which parts of your hospitality you rebuild out of habit, and which you could own.',
     ],
     gallery: [
-      { src: t14A, alt: 'QCI Resorts Experience RV with lounge area at Booth #2644, G2E 2026' },
-      { src: t14B, alt: 'QCI leadership in the RV lounge at G2E 2026' },
+      { src: t14A, alt: 'CHG Healthcare\'s planted lounge with private seating, 2026' },
+      { src: t14B, alt: 'The Twilio Cafe, a branded hospitality counter, 2026' },
     ],
   },
 ];
