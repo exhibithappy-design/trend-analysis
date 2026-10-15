@@ -8,6 +8,12 @@ import './HIMSSReport.css';
 import './TrendReport2026.css';
 import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 import teamPhoto from '@/assets/exhibit-happy-team-v3.png.asset.json';
+import t13Header from '@/assets/trend-13-header.jpg';
+import t13A from '@/assets/trend-13-detail-a.jpg';
+import t13B from '@/assets/trend-13-detail-b.jpg';
+import t14Header from '@/assets/trend-14-header.jpg';
+import t14A from '@/assets/trend-14-detail-a.jpg';
+import t14B from '@/assets/trend-14-detail-b.jpg';
 import SelfAssessment from './SelfAssessment';
 
 const BUCKET_NAME = 'trend-images';
@@ -168,7 +174,7 @@ const makeTrends = (): Trend[] => [
     depth: [
       'Game mechanics aren\'t a crowd trick anymore, they\'re the lead capture engine. Challenges, leaderboards, and QR-gated registration sit where the badge scanner used to live, turning curiosity into structured first-party data.',
       'The participation itself does the qualifying work. Who opted in, which scenario they picked, how far they got, what role they self-identified as, every interaction emits signal that a passive scan never could.',
-      'The exhibitors winning with this are treating the game as infrastructure, not entertainment. It\'s designed alongside the CRM hand-off, the staff scripting, and the post-show sequence, not bolted on after the booth is built.',
+      'The exhibitors winning with this are treating the game as infrastructure, not entertainment. It\'s designed alongside the CRM hand-off, the staff scripting, and the post-show sequence, not bolted on after the booth is built. At G2E 2026, gaming exhibitors pushed this further with playable product demos that doubled as lead capture, sorting operators by interest before a rep ever said hello.',
     ],
     gallery: [
       { src: bucketUrl('trend-02-detail-a.jpg', ''), alt: 'Bright interactive game activation at a conference' },
@@ -437,11 +443,63 @@ const makeTrends = (): Trend[] => [
     depth: [
       'EXHIBITOR\'s 2025 award analysis surfaced one trait shared by every winner: a single organizing idea executed completely. Not a clever feature, not a great photo, a unifying premise that every element of the booth was clearly built to serve.',
       'The losing pattern is a collage of product messages stacked into one footprint. The winning pattern is one sentence, committed all the way through layout, graphics, lighting, staff scripting, and giveaway. Everything off-thesis gets cut.',
-      'In 2026, judges and buyers alike reward conceptual clarity as much as visual ambition. An "impressive build" without a premise loses to a simpler booth with an unforgettable one, because the premise is what gets remembered after teardown.',
+      'In 2026, judges and buyers alike reward conceptual clarity as much as visual ambition. An "impressive build" without a premise loses to a simpler booth with an unforgettable one, because the premise is what gets remembered after teardown. AGS\'s "The Block" at G2E 2026 is a strong recent example: a whole portfolio organized into one district-style world instead of rows of product.',
     ],
     gallery: [
       { src: bucketUrl('trend-12-detail-a.jpg', ''), alt: 'Bold, saturated color exhibit activation' },
       { src: bucketUrl('trend-12-detail-b.jpg', ''), alt: 'Vivid color palette installation breaking category norms' },
+    ],
+  },
+  {
+    id: 't13',
+    num: 13,
+    category: 'Functional Component',
+    title: 'The Two-Speed Floor Plan',
+    shortTitle: 'Two-Speed Floor Plan',
+    bullets: [
+      'Open, high-energy discovery zones up front; protected, scheduled commercial space behind them',
+      'G2E 2026 at The Venetian Expo made the split explicit, with exhibitors like QCI pairing a main exhibit with a separate RV for focused conversations',
+      'One footprint, two jobs: attract the floor without letting the floor swallow the deals',
+    ],
+    yoy: 'From one booth doing everything to two speeds doing their jobs.',
+    question: 'Where in your booth does a serious buyer go when the crowd shows up?',
+    image: t13Header,
+    imageAlt: 'Trade show exhibit with an open demo zone in front and glass-walled meeting suites above',
+    cluster: 'Flexibility',
+    depth: [
+      'Most mid-to-large booths fail the same way: casual traffic floods the space and the people with real buying intent have nowhere to go. The two-speed floor plan solves this by designing two experiences on purpose, an open discovery perimeter that rewards browsing, and a protected commercial core where conversations happen on a schedule.',
+      'G2E 2026 at The Venetian Expo was the clearest proof point this year. Exhibitors paired high-energy product floors with separate, controlled spaces for buyer meetings; QCI ran its main exhibit alongside a dedicated RV, so live demos and commercial conversations never competed for the same square footage.',
+      'The design work is in the hand-off. Staff roles, routing cues, and booking tools all need to move a qualified visitor from the fast lane to the slow lane without friction. Done well, the open zone becomes the filter and the private zone becomes where pipeline is actually built.',
+    ],
+    gallery: [
+      { src: t13A, alt: 'Open product discovery zone with attendees browsing interactive demo stations' },
+      { src: t13B, alt: 'Private meeting room inside an exhibit with the show floor visible outside' },
+    ],
+  },
+  {
+    id: 't14',
+    num: 14,
+    category: 'Functional Component',
+    title: 'Hospitality as a Deployable Asset',
+    shortTitle: 'Deployable Hospitality',
+    bullets: [
+      'Hospitality is moving from one-off custom build to a reusable, transportable unit: RVs, modular suites, plug-in lounges',
+      'Built once, deployed across the circuit, so the cost amortizes over every show instead of resetting each time',
+      'The VIP experience stays consistent from show to show, and the budget finally reflects it',
+    ],
+    yoy: 'From disposable lounges to hospitality you own and redeploy.',
+    question: 'Is your hospitality space a line item you rebuild every show, or an asset you own?',
+    image: t14Header,
+    imageAlt: 'Branded hospitality RV with lounge seating outside a convention center at dusk',
+    cluster: 'Budget',
+    depth: [
+      'Hospitality has proven its value on the floor. The new question is what it costs to do it again. Exhibitors are treating meeting and VIP space as a deployable asset, a branded RV, a modular suite, or a plug-in lounge kit that ships from show to show instead of being designed and fabricated from scratch every time.',
+      'G2E 2026 showed the model working. QCI\'s RV gave it a controlled, premium environment that lived outside the constraints of the main footprint, and that same unit can travel the rest of the gaming circuit. Every redeployment lowers the cost per conversation.',
+      'The budget logic changes too. Hospitality moves from a disposable show expense to a capital asset with a useful life, so it gets planned at the program level, not the event level. For 2027 planning, it\'s worth asking which parts of your hospitality you rebuild out of habit, and which you could own.',
+    ],
+    gallery: [
+      { src: t14A, alt: 'Interior of a modular hospitality suite with lounge seating and a coffee bar' },
+      { src: t14B, alt: 'Crew assembling reusable modular lounge walls and furniture from road cases' },
     ],
   },
 ];
@@ -787,7 +845,7 @@ const TrendReport2026 = () => {
               <span className="thin">So You Don't Have To</span>
             </h1>
             <p className="hero-sub">
-              From January through June 2026, our team was on the ground at HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, and more, distilling 12 actionable trends that give busy B2B exhibit marketers a strategic edge. No flights. No badge lines. Just the intelligence that matters.
+              From January through October 2026, our team was on the ground at HIMSS, CES, CONEXPO, InfoComm, NAB, Money20/20, G2E, and more, distilling 14 actionable trends that give busy B2B exhibit marketers a strategic edge. No flights. No badge lines. Just the intelligence that matters.
             </p>
           </div>
           <div className="hero-scroll">

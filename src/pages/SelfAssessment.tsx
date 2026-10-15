@@ -289,7 +289,7 @@ const SelfAssessment: React.FC = () => {
             <div className="as-teaser-left">
               <div className="as-teaser-eyebrow">6-Question Diagnostic</div>
               <p className="as-teaser-desc">
-                A focused read on where your exhibit program actually stands against the 12 trends in this report. Six questions, your honest answers, and a personalized response from our team on where to focus next.
+                A focused read on where your exhibit program actually stands against the 14 trends in this report. Six questions, your honest answers, and a personalized response from our team on where to focus next.
               </p>
               <ul className="as-teaser-meta">
                 <li>Takes about 5 minutes</li>
