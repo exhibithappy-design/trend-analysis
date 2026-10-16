@@ -11,7 +11,6 @@ import teamPhoto from '@/assets/exhibit-happy-team-v3.png.asset.json';
 // Real show-floor photos: G2E 2026 (The Venetian Expo) for Trend 13, 2026 circuit hospitality builds for Trend 14.
 import g2eMerkur from '@/assets/g2e-merkur-floor.jpg.asset.json';
 import g2eLightWonder from '@/assets/g2e-light-wonder-entrance.jpg.asset.json';
-import g2eNovomatic from '@/assets/g2e-novomatic-booth.jpg.asset.json';
 import hospSnowflake from '@/assets/hosp-snowflake-pods.jpg.asset.json';
 import hospChg from '@/assets/hosp-chg-lounge.jpg.asset.json';
 import hospTwilio from '@/assets/hosp-twilio-cafe.jpg.asset.json';
@@ -21,7 +20,6 @@ import arFloor from '@/assets/aristocrat-buffalo-floor.webp.asset.json';
 import arGa from '@/assets/aristocrat-ga-analytics-wall.webp.asset.json';
 const t13Header = g2eMerkur.url;
 const t13A = g2eLightWonder.url;
-const t13B = g2eNovomatic.url;
 const t14Header = hospSnowflake.url;
 const t14A = hospChg.url;
 const t14B = hospTwilio.url;
