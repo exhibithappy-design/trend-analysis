@@ -360,3 +360,16 @@ body.has-as-sticky{padding-bottom:80px}
   .as-footer{flex-direction:column;align-items:stretch}
   .as-footer .as-progress{text-align:center}
 }
+
+/* ===== Vision Pro x Exhibit Happy polish ===== */
+.trend-report-2026 .trend-card{border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(250,250,252,.94));border:1px solid rgba(15,23,42,.08);box-shadow:inset 0 1px 0 0 rgba(255,255,255,.7),0 1px 2px rgba(15,23,42,.04),0 20px 50px -18px rgba(0,0,0,.12)}
+.trend-report-2026 .trend-card:hover{transform:translateY(-2px);border-color:rgba(255,0,105,.22);box-shadow:inset 0 1px 0 0 rgba(255,255,255,.8),0 2px 4px rgba(15,23,42,.05),0 28px 60px -20px rgba(255,0,105,.18)}
+.trend-report-2026 .trend-card .tc-media{margin:10px 10px 0;width:calc(100% - 20px);border-radius:14px}
+.trend-report-2026 .trend-card .tc-num{border-radius:999px;background:rgba(255,0,105,.08);border:1px solid rgba(255,0,105,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.7);backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%)}
+.trend-report-2026 .tc-toggle{border-radius:999px;background:linear-gradient(180deg,rgba(40,40,44,.96),rgba(18,18,20,.96));border:1px solid rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(0,0,0,.4),0 8px 20px -10px rgba(0,0,0,.45);padding:11px 22px;transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .25s,box-shadow .25s}
+.trend-report-2026 .tc-toggle:hover{transform:translateY(-2px);background:linear-gradient(180deg,rgba(255,40,130,.96),rgba(230,0,95,.96));box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 14px 28px -12px rgba(255,0,105,.55)}
+.trend-report-2026 .tc-depth .tc-q{border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,0,105,.05));border:1px solid rgba(255,0,105,.16);border-left:4px solid var(--pink);backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 18px 40px -20px rgba(255,0,105,.3)}
+.lightbox-overlay{background:rgba(8,8,10,.72)!important;backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%)}
+.lightbox-overlay img{border-radius:18px!important;box-shadow:0 0 0 1px rgba(255,255,255,.14),inset 0 1px 0 rgba(255,255,255,.2),0 30px 80px -20px rgba(0,0,0,.7)!important}
+.lightbox-nav{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 10px 30px -10px rgba(0,0,0,.5);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%)}
+@media(max-width:600px){.trend-report-2026 .trend-card{border-radius:16px}.trend-report-2026 .trend-card .tc-media{margin:8px 8px 0;width:calc(100% - 16px);border-radius:12px}}

@@ -10,18 +10,14 @@ import ehLogo from '@/assets/exhibithappy-logo.svg.asset.json';
 import teamPhoto from '@/assets/exhibit-happy-team-v3.png.asset.json';
 // Real show-floor photos: G2E 2026 (The Venetian Expo) for Trend 13, 2026 circuit hospitality builds for Trend 14.
 import g2eMerkur from '@/assets/g2e-merkur-floor.jpg.asset.json';
-import g2eLightWonder from '@/assets/g2e-light-wonder-entrance.jpg.asset.json';
 import hospSnowflake from '@/assets/hosp-snowflake-pods.jpg.asset.json';
-import hospChg from '@/assets/hosp-chg-lounge.jpg.asset.json';
 import hospTwilio from '@/assets/hosp-twilio-cafe.jpg.asset.json';
 import arArch from '@/assets/aristocrat-power-of-play-arch.webp.asset.json';
 import arBar from '@/assets/aristocrat-branded-bar.webp.asset.json';
 import arFloor from '@/assets/aristocrat-buffalo-floor.webp.asset.json';
 import arGa from '@/assets/aristocrat-ga-analytics-wall.webp.asset.json';
 const t13Header = g2eMerkur.url;
-const t13A = g2eLightWonder.url;
 const t14Header = hospSnowflake.url;
-const t14A = hospChg.url;
 const t14B = hospTwilio.url;
 import SelfAssessment from './SelfAssessment';
 
@@ -317,10 +313,10 @@ const makeTrends = (): Trend[] => [
     depth: [
       'The demo-first booth assumes the product is the draw. Hospitality-led design flips that assumption, the environment is the draw, and the product conversation happens inside it. AWS, Google Cloud, and Salesforce have been building this way for years at their flagship events: barista stations, semi-private lounge pods, warm materials, ambient sound, not as perks bolted on, but as the primary engagement architecture.',
       'The business case is in the dwell time. Intentionally zoned comfort areas increase how long a visitor stays by up to 2.5x. Longer stays mean deeper conversations, more qualified intent signals, and staff who can move past the pitch into actual problem-solving. The tradeoff, lower raw lead volume, is increasingly seen as the right trade.',
-      'In 2026, this extends beyond F&B. Scent branding, sound design, concierge-style staffing models, and domestic-grade finishes (wood, stone, soft lighting) are all part of the same strategy: make the visitor feel something before they hear anything. Aristocrat\'s G2E 2026 booth put a full branded bar at the center of the floor, with live game screens within arm\'s reach, so the drink became the doorway to the demo. The booths winning on quality-of-conversation metrics aren\'t the loudest ones on the floor, they\'re the ones that feel like somewhere you\'d actually want to spend 20 minutes.',
+      'In 2026, this extends beyond F&B. Scent branding, sound design, concierge-style staffing models, and domestic-grade finishes (wood, stone, soft lighting) are all part of the same strategy: make the visitor feel something before they hear anything. The booths winning on quality-of-conversation metrics aren\'t the loudest ones on the floor, they\'re the ones that feel like somewhere you\'d actually want to spend 20 minutes.',
     ],
     gallery: [
-      { src: arBar.url, alt: 'Aristocrat\'s branded bar with stools and live game screens, built into the booth at G2E 2026' },
+      { src: bucketUrl('trend-07-detail-a.jpg', ''), alt: 'Lounge seating zone inside a hospitality-led booth' },
       { src: bucketUrl('trend-07-detail-b.jpg', ''), alt: 'Soft materials and ambient accent lighting in a lounge-style booth environment' },
     ],
   },
@@ -371,10 +367,10 @@ const makeTrends = (): Trend[] => [
     depth: [
       'LED is no longer a display bolted onto a wall, it has become the wall, the ceiling, and increasingly the floor. The exhibit architecture itself is luminous, dynamic, and addressable rather than printed and fixed.',
       'Floor-to-ceiling walls, ceiling canopies, and dynamic content zones now change by session, audience, or time of day. The same physical booth presents a completely different environment for the 9am clinical demo and the 4pm executive reception.',
-      'The shift turns the booth into a programmable operating system. Content schedules replace graphic packages, and the cost of pivoting messaging mid-show drops to a file swap instead of a reprint. Aristocrat\'s GA Gaming Analytics wall at G2E 2026 shows the B2B version: a live data canvas that doubles as architecture and as the demo itself.',
+      'The shift turns the booth into a programmable operating system. Content schedules replace graphic packages, and the cost of pivoting messaging mid-show drops to a file swap instead of a reprint.',
     ],
     gallery: [
-      { src: arGa.url, alt: 'Aristocrat\'s GA Gaming Analytics LED data wall rising above the game floor, G2E 2026' },
+      { src: bucketUrl('trend-09-detail-a.jpg', ''), alt: 'Floor-to-ceiling LED wall as exhibit architecture' },
       { src: bucketUrl('trend-09-detail-b.jpg', ''), alt: 'Programmable LED canopy and dynamic content zones' },
     ],
   },
@@ -478,12 +474,12 @@ const makeTrends = (): Trend[] => [
     cluster: 'Flexibility',
     depth: [
       'Most mid-to-large booths fail the same way: casual traffic floods the space and the people with real buying intent have nowhere to go. The two-speed floor plan solves this by designing two experiences on purpose, an open discovery perimeter that rewards browsing, and a protected commercial core where conversations happen on a schedule.',
-      'G2E 2026 at The Venetian Expo was the clearest proof point this year. Light & Wonder framed its 120 by 150 foot space with open screening that let the aisle see the energy inside while keeping the interior focused. Aristocrat routed booked demos through a reception check-in before visitors were walked into private sessions, so live discovery and commercial conversations never competed for the same square footage.',
+      'G2E 2026 at The Venetian Expo was the clearest proof point this year. Light & Wonder framed its 120 by 150 foot space with open screening that let the aisle see the energy inside while keeping the interior focused. Aristocrat routed booked demos through a reception check-in before visitors were walked into private sessions, so live discovery and commercial conversations never competed for the same square footage. Aristocrat\'s booth shows both speeds in one footprint: the packed Buffalo floor as the fast lane, and the GA Gaming Analytics zone as the slow lane, where operators sit down with live data.',
       'The design work is in the hand-off. Staff roles, routing cues, and booking tools all need to move a qualified visitor from the fast lane to the slow lane without friction. Done well, the open zone becomes the filter and the private zone becomes where pipeline is actually built.',
     ],
     gallery: [
-      { src: t13A, alt: 'Light & Wonder\'s open-framed entrance and crowded interior, G2E 2026' },
-      { src: arFloor.url, alt: 'The open Buffalo discovery floor at Aristocrat\'s booth, packed with walk-up play, G2E 2026' },
+      { src: arFloor.url, alt: 'The fast lane: Aristocrat\'s open Buffalo discovery floor, packed with walk-up play, G2E 2026' },
+      { src: arGa.url, alt: 'The slow lane: Aristocrat\'s GA Gaming Analytics zone for focused, scheduled conversations, G2E 2026' },
     ],
   },
   {
@@ -504,11 +500,11 @@ const makeTrends = (): Trend[] => [
     cluster: 'Budget',
     depth: [
       'Hospitality has proven its value on the floor. The new question is what it costs to do it again. Exhibitors are treating meeting and VIP space as a deployable asset, a set of modular meeting pods, a lounge kit, or a branded cafe counter that ships from show to show instead of being designed and fabricated from scratch every time.',
-      'The 2026 circuit showed the model working. Snowflake\'s A-frame meeting pods, CHG Healthcare\'s planted lounge, and the Twilio Cafe are all self-contained units that drop into different footprints with the experience intact. At G2E, exhibitors leaned the same way, booking dedicated suites and meeting zones for the conversations that actually close deals. Every redeployment lowers the cost per conversation.',
+      'The 2026 circuit showed the model working. Aristocrat\'s branded bar at G2E put drinks and live game screens on the same counter, so one built piece did two jobs: hospitality and demo. Snowflake\'s A-frame meeting pods and the Twilio Cafe follow the same idea, self-contained units that drop into different footprints with the experience intact. At G2E, exhibitors leaned the same way, booking dedicated suites and meeting zones for the conversations that actually close deals. Every redeployment lowers the cost per conversation.',
       'The budget logic changes too. Hospitality moves from a disposable show expense to a capital asset with a useful life, so it gets planned at the program level, not the event level. For 2027 planning, it\'s worth asking which parts of your hospitality you rebuild out of habit, and which you could own.',
     ],
     gallery: [
-      { src: t14A, alt: 'CHG Healthcare\'s planted lounge with private seating, 2026' },
+      { src: arBar.url, alt: 'Aristocrat\'s branded bar with live game screens built into the counter, G2E 2026' },
       { src: t14B, alt: 'The Twilio Cafe, a branded hospitality counter, 2026' },
     ],
   },
