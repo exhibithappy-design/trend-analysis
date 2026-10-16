@@ -982,7 +982,7 @@ const TrendReport2026 = () => {
                 <div className="contact-cta-body">
                 <div className="contact-cta-text">
                   <p>
-                    Let's turn these trends into your competitive advantage on the show floor. In one focused conversation, we'll map your 2026 calendar against the shifts in this report, where buyers actually engage, where budgets are getting wasted, and where a sharper booth strategy compounds into pipeline.
+                    Let's turn these trends into your competitive advantage as you plan for 2027. In one focused conversation, we'll map your upcoming calendar against the shifts in this report, where buyers actually engage, where budgets are getting wasted, and where a sharper booth strategy compounds into pipeline.
                   </p>
                   <p>
                     You'll walk away with a clear point of view on which trends matter for your category, two or three concrete moves you can make on your next build, and a partner who's already executing this playbook for brands like yours.
