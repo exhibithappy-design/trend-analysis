@@ -95,7 +95,7 @@ async function loadSignedUrls(files: readonly string[]) {
       }
     }
   } catch {
-    // swallow — fallbacks remain in place
+    // swallow, fallbacks remain in place
   }
   toFetch.forEach((f) => inflightSigned.delete(f));
   if (added > 0) {
