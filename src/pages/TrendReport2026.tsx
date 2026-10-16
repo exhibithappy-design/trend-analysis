@@ -11,13 +11,15 @@ import teamPhoto from '@/assets/exhibit-happy-team-v3.png.asset.json';
 // Real show-floor photos: G2E 2026 (The Venetian Expo) for Trend 13, 2026 circuit hospitality builds for Trend 14.
 import g2eMerkur from '@/assets/g2e-merkur-floor.jpg.asset.json';
 import g2eLightWonder from '@/assets/g2e-light-wonder-entrance.jpg.asset.json';
-import g2eNovomatic from '@/assets/g2e-novomatic-booth.jpg.asset.json';
 import hospSnowflake from '@/assets/hosp-snowflake-pods.jpg.asset.json';
 import hospChg from '@/assets/hosp-chg-lounge.jpg.asset.json';
 import hospTwilio from '@/assets/hosp-twilio-cafe.jpg.asset.json';
+import arArch from '@/assets/aristocrat-power-of-play-arch.webp.asset.json';
+import arBar from '@/assets/aristocrat-branded-bar.webp.asset.json';
+import arFloor from '@/assets/aristocrat-buffalo-floor.webp.asset.json';
+import arGa from '@/assets/aristocrat-ga-analytics-wall.webp.asset.json';
 const t13Header = g2eMerkur.url;
 const t13A = g2eLightWonder.url;
-const t13B = g2eNovomatic.url;
 const t14Header = hospSnowflake.url;
 const t14A = hospChg.url;
 const t14B = hospTwilio.url;
@@ -208,11 +210,12 @@ const makeTrends = (): Trend[] => [
     depth: [
       'Award-winning brands are building entire themed environments around one strong premise, committed all the way. No mixed metaphors, no competing messages, every surface, prop, and staff cue serves the same narrative.',
       'Verkada\'s Louvre heist activation at ISC West 2026 is the benchmark: a single creative idea executed at full conviction, where the theme itself functioned as the product demonstration. The story made the technology unforgettable.',
+      'Aristocrat at G2E 2026 applied the same logic at portfolio scale: "The Power of Play" arch frames Timberwolf, Tarzan, and Monopoly as distinct worlds under one premise, so the booth reads as a single story rather than a row of cabinets.',
       'The discipline this requires is editorial more than architectural. The brands that win have a one-sentence concept they\'ll defend against every "could we also add…", and the design holds together because of what was left out.',
     ],
     gallery: [
       { src: bucketUrl('trend-03-detail-a.jpg', ''), alt: 'Private meeting suite within a larger exhibit space' },
-      { src: bucketUrl('trend-03-detail-b.jpg', ''), alt: 'Tiered exhibit layout with public and private zones' },
+      { src: arArch.url, alt: 'Aristocrat\'s "The Power of Play" arch, each game franchise built as its own illuminated world, G2E 2026' },
     ],
   },
   {
@@ -314,10 +317,10 @@ const makeTrends = (): Trend[] => [
     depth: [
       'The demo-first booth assumes the product is the draw. Hospitality-led design flips that assumption, the environment is the draw, and the product conversation happens inside it. AWS, Google Cloud, and Salesforce have been building this way for years at their flagship events: barista stations, semi-private lounge pods, warm materials, ambient sound, not as perks bolted on, but as the primary engagement architecture.',
       'The business case is in the dwell time. Intentionally zoned comfort areas increase how long a visitor stays by up to 2.5x. Longer stays mean deeper conversations, more qualified intent signals, and staff who can move past the pitch into actual problem-solving. The tradeoff, lower raw lead volume, is increasingly seen as the right trade.',
-      'In 2026, this extends beyond F&B. Scent branding, sound design, concierge-style staffing models, and domestic-grade finishes (wood, stone, soft lighting) are all part of the same strategy: make the visitor feel something before they hear anything. The booths winning on quality-of-conversation metrics aren\'t the loudest ones on the floor, they\'re the ones that feel like somewhere you\'d actually want to spend 20 minutes.',
+      'In 2026, this extends beyond F&B. Scent branding, sound design, concierge-style staffing models, and domestic-grade finishes (wood, stone, soft lighting) are all part of the same strategy: make the visitor feel something before they hear anything. Aristocrat\'s G2E 2026 booth put a full branded bar at the center of the floor, with live game screens within arm\'s reach, so the drink became the doorway to the demo. The booths winning on quality-of-conversation metrics aren\'t the loudest ones on the floor, they\'re the ones that feel like somewhere you\'d actually want to spend 20 minutes.',
     ],
     gallery: [
-      { src: bucketUrl('trend-07-detail-a.jpg', ''), alt: 'Warm, dimly lit hospitality lounge with comfortable seating' },
+      { src: arBar.url, alt: 'Aristocrat\'s branded bar with stools and live game screens, built into the booth at G2E 2026' },
       { src: bucketUrl('trend-07-detail-b.jpg', ''), alt: 'Soft materials and ambient accent lighting in a lounge-style booth environment' },
     ],
   },
@@ -368,10 +371,10 @@ const makeTrends = (): Trend[] => [
     depth: [
       'LED is no longer a display bolted onto a wall, it has become the wall, the ceiling, and increasingly the floor. The exhibit architecture itself is luminous, dynamic, and addressable rather than printed and fixed.',
       'Floor-to-ceiling walls, ceiling canopies, and dynamic content zones now change by session, audience, or time of day. The same physical booth presents a completely different environment for the 9am clinical demo and the 4pm executive reception.',
-      'The shift turns the booth into a programmable operating system. Content schedules replace graphic packages, and the cost of pivoting messaging mid-show drops to a file swap instead of a reprint.',
+      'The shift turns the booth into a programmable operating system. Content schedules replace graphic packages, and the cost of pivoting messaging mid-show drops to a file swap instead of a reprint. Aristocrat\'s GA Gaming Analytics wall at G2E 2026 shows the B2B version: a live data canvas that doubles as architecture and as the demo itself.',
     ],
     gallery: [
-      { src: bucketUrl('trend-09-detail-a.jpg', ''), alt: 'Floor-to-ceiling LED wall serving as exhibit architecture' },
+      { src: arGa.url, alt: 'Aristocrat\'s GA Gaming Analytics LED data wall rising above the game floor, G2E 2026' },
       { src: bucketUrl('trend-09-detail-b.jpg', ''), alt: 'Programmable LED canopy and dynamic content zones' },
     ],
   },
@@ -480,7 +483,7 @@ const makeTrends = (): Trend[] => [
     ],
     gallery: [
       { src: t13A, alt: 'Light & Wonder\'s open-framed entrance and crowded interior, G2E 2026' },
-      { src: t13B, alt: 'Novomatic\'s large open exhibit at G2E 2026' },
+      { src: arFloor.url, alt: 'The open Buffalo discovery floor at Aristocrat\'s booth, packed with walk-up play, G2E 2026' },
     ],
   },
   {
