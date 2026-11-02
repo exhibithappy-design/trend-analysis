@@ -19,7 +19,6 @@ import arGa from '@/assets/aristocrat-ga-analytics-wall.webp.asset.json';
 const t13Header = g2eMerkur.url;
 const t14Header = hospSnowflake.url;
 const t14B = hospTwilio.url;
-import SelfAssessment from './SelfAssessment';
 
 const BUCKET_NAME = 'trend-images';
 const SIGNED_URL_TTL_SECONDS = 31536000; // 1 year
@@ -812,9 +811,6 @@ const TrendReport2026 = () => {
             </a>
           ))}
           <div className="nav-group-label">Next</div>
-          <a href="#assessment" className="nav-link" onClick={closeMobile}>
-            <FileText size={13} className="nav-icon" /> Self-Assessment
-          </a>
           <a href="#contact" className="nav-link" onClick={closeMobile}>
             <Mail size={13} className="nav-icon" /> Get in Touch
           </a>
@@ -958,11 +954,6 @@ const TrendReport2026 = () => {
             ))}
           </div>
         </section>
-
-        {/* Self-Assessment */}
-        <FadeIn>
-          <SelfAssessment />
-        </FadeIn>
 
         {/* Contact CTA */}
         <section className="section section--b" id="contact">
